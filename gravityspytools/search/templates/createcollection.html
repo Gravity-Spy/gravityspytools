@@ -1,0 +1,100 @@
+<head>
+<link media="all" href="//netdna.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" type="text/css" rel="stylesheet" />
+<link media="all" href="//cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.5/jquery.fancybox.css" type="text/css" rel="stylesheet" />
+<link media="all" href="//cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.6.0/css/bootstrap-datepicker.min.css" type="text/css" rel="stylesheet" />
+</head>
+
+{% for iurl in urls %}
+<h1><a href="{{ iurl }}">Link to Collection</a></h1>
+{% endfor %}
+
+{% for ientry in results %}
+{% if ientry.uniqueID == ientry.searchedID %}
+<table style="border:3px;border-collapse:collapse;padding:15px;width:75%;" >
+ <tbody>
+  <tr class ="noborder" >
+    <td class ="noborder" >
+      uniqueID
+    </td >
+    <td class ="noborder" >
+      {{ientry.uniqueID}}
+    </td >
+  </tr>
+  <tr class ="noborder" >
+    <td class ="noborder" >
+      zooID
+    </td >
+    <td class ="noborder" >
+      {{ientry.links_subjects}}
+    </td >
+  </tr>
+ </tbody></table>
+
+    <td class ="noborder" style="padding:15px;" >
+      <a class ="embimg" href="{{ientry.imgUrl1}}" TARGET="_blank" ><img class ="embimg"  src="{{ientry.imgUrl1}}"  alt="Gravity spy image" height="150" width="150"/>
+</a>
+      <a class ="embimg" href="{{ientry.imgUrl2}}" TARGET="_blank" ><img class ="embimg"  src="{{ientry.imgUrl2}}"  alt="Gravity spy image" height="150" width="150"/>
+</a>
+      <a class ="embimg" href="{{ientry.imgUrl3}}" TARGET="_blank" ><img class ="embimg"  src="{{ientry.imgUrl3}}"  alt="Gravity spy image" height="150" width="150"/>
+</a>
+      <a class ="embimg" href="{{ientry.imgUrl4}}" TARGET="_blank" ><img class ="embimg"  src="{{ientry.imgUrl4}}"  alt="Gravity spy image" height="150" width="150"/>
+</a>
+    </td >
+</table>
+{% endif %}
+{% endfor %}
+<br></br>
+<br></br>
+{% for ientry in results %}
+{% if ientry.uniqueID != ientry.searchedID %}
+<table style="border:3px;border-collapse:collapse;padding:15px;width:75%;" >
+ <tbody>
+  <tr class ="noborder" >
+    <td class ="noborder" >
+      uniqueID
+    </td >
+    <td class ="noborder" >
+      {{ientry.uniqueID}}
+    </td >
+  </tr>
+  <tr class ="noborder" >
+    <td class ="noborder" >
+      zooID
+    </td >
+    <td class ="noborder" >
+      {{ientry.links_subjects}}
+    </td >
+  </tr>
+  <tr class ="noborder" >
+    <td class ="noborder" >
+      snr
+    </tr >
+    <td class ="noborder" >
+      {{ientry.snr}}
+    </td >
+  </tr>
+  <tr class ="noborder" >
+    <td class ="noborder" >
+      peak_frequency
+    </td >
+    <td class ="noborder" >
+      {{ientry.peak_frequency}}
+    </td >
+  </tr>
+ </tbody></table>
+
+    <td class ="noborder" style="padding:15px;" >
+      <a class ="embimg" href="{{ientry.imgUrl1}}" TARGET="_blank" ><img class ="embimg"  src="{{ientry.imgUrl1}}"  alt="Gravity spy image" height="150" width="150"/>
+</a>
+      <a class ="embimg" href="{{ientry.imgUrl2}}" TARGET="_blank" ><img class ="embimg"  src="{{ientry.imgUrl2}}"  alt="Gravity spy image" height="150" width="150"/>
+</a>
+      <a class ="embimg" href="{{ientry.imgUrl3}}" TARGET="_blank" ><img class ="embimg"  src="{{ientry.imgUrl3}}"  alt="Gravity spy image" height="150" width="150"/>
+</a>
+      <a class ="embimg" href="{{ientry.imgUrl4}}" TARGET="_blank" ><img class ="embimg"  src="{{ientry.imgUrl4}}"  alt="Gravity spy image" height="150" width="150"/>
+</a>
+    </td >
+</table>
+<br></br>
+<br></br>
+{% endif %}
+{% endfor %}
