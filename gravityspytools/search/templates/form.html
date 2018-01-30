@@ -25,8 +25,8 @@
   </style>
 </head>
 
-<form action="/search/do_similarity_search/" method="post" style="display: inline;">
-    {% csrf_token %}
+<form action="/search/do_similarity_search/" method="get" style="display: inline;">
+    <!--{% csrf_token %}-->
 
     <br>
     {% for field in form.visible_fields %}

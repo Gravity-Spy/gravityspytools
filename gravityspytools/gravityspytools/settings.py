@@ -54,6 +54,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'search',
     'home',
+    'collection_to_subjectset',
 ]
 
 MIDDLEWARE = [

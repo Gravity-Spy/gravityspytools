@@ -2,7 +2,7 @@ from gwpy.table import EventTable
 from .forms import SearchForm
 from sqlalchemy.engine import create_engine
 import pandas as pd
-import os
+import os, string, random
 import panoptes_client
 
 
@@ -60,10 +60,15 @@ def create_collection(username, SI_glitches):
     collection_url = 'https://www.zooniverse.org/projects/zooniverse/gravity-spy/collections/'
     collection = panoptes_client.Collection()
     collection.links.project = '1104'
-    collection.display_name = 'User {0}: Similar to {1}'.format(username, subject_id_requested)
+    random_hash = id_generator()
+    collection.display_name = 'Collection Similar to {0} Created By User {1} ID {2}'.format(subject_id_requested, username, random_hash)
     collection.private = False
     urltmp = collection.save()
     collection_url = collection_url + urltmp['collections'][0]['slug']
     collection.add(SI_glitches.links_subjects.tolist())
     collection.set_default_subject(subject_id_requested)
     return collection_url
+
+
+def id_generator(size=5, chars=string.ascii_uppercase + string.digits +string.ascii_lowercase):
+    return ''.join(random.SystemRandom().choice(chars) for _ in range(size))

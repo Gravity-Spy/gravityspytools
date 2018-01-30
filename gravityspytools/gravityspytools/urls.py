@@ -20,5 +20,6 @@ from home import views
 urlpatterns = [
     url(r'^$', views.index, name='home'),
     url(r'^search/', include('search.urls')),
+    url(r'^collection_to_subjectset/', include('collection_to_subjectset.urls')),
     url(r'^admin/', admin.site.urls),
 ]
