@@ -20,6 +20,12 @@ from home import views
 urlpatterns = [
     url(r'^$', views.index, name='home'),
     url(r'^search/', include('search.urls')),
+    url(r'^collectioninfo/', include('collectioninfo.urls')),
     url(r'^collection_to_subjectset/', include('collection_to_subjectset.urls')),
     url(r'^admin/', admin.site.urls),
 ]
+
+from django.conf import settings
+from django.conf.urls.static import static
+
+urlpatterns+= static(settings.STATIC_URL)
