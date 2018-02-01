@@ -4,6 +4,7 @@
 from django.shortcuts import render
 import os
 from django.http import HttpResponse
+from django.http import JsonResponse
 from django.core.exceptions import SuspiciousOperation
 
 from .forms import SearchForm
@@ -54,6 +55,19 @@ def do_similarity_search(request):
             SI_glitches = similarity_search(form)
 
             return render(request, 'searchresults.html', {'results': SI_glitches.to_dict(orient='records')})
+
+
+def similarity_search_restful_API(request):
+    # if this is a POST request we need to process the form data
+    if request.method == 'GET':
+
+        # create a form instance and populate it with data from the request:
+        form = SearchForm(request.GET)
+        # check whether it's valid:
+        if form.is_valid():
+            SI_glitches = similarity_search(form)
+
+            return JsonResponse(SI_glitches.to_dict(orient='list'))
 
 
 def do_collection_creation(request):

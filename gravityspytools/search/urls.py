@@ -8,4 +8,5 @@ urlpatterns = [
     url(r'^get_imageids/$', views.get_imageids, name='get_imageids'),
     url(r'^get_zooids/$', views.get_zooids, name='get_zooids'),
     url(r'^do_collection_creation/$', views.do_collection_creation, name='do_collection_creation'),
+    url(r'^similarity_search_restful_API/$', views.similarity_search_restful_API, name='similarity_search_restful_API'),
 ]
