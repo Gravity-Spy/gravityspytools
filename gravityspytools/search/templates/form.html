@@ -4,38 +4,8 @@
 
 {% block nav-search %}<strong class="nav-active">Similarity Search</strong>{% endblock %}
 
-<form action="/search/do_similarity_search/" method="get" style="display: inline;">
-    <!--{% csrf_token %}-->
-
-    <br>
-    {% for field in form.visible_fields %}
-        {% if field.id_for_label == 'id_imageid' %}
-            <div class="ui-widget">
-              {{ field.label }} : {{ field }}
-            </div>
-            <br>
-        {% elif field.id_for_label == 'id_zooid' %}
-            <div class="ui-widget">
-              {{ field.label }} : {{ field }}
-            </div>
-            <br>
-        {% else %}
-            <div>
-            {{ field.label }} : {{ field }}
-            </div>
-            <br>
-        {% endif %}
-    {% endfor %}
-    <br>
-
-    <input type="submit" value="Execute Similarity Search" />
-</form>
-
-<br>
-<br>
-
 <form action="/search/do_collection_creation/" method="post" style="display: inline;">
-    {% csrf_token %}
+     {% csrf_token %}
 
     <br>
     {% for field in form.visible_fields %}
@@ -58,9 +28,9 @@
     {% endfor %}
     <br>
 
-    <input type="submit" value="Create Zoo Collection" />
+    <input type="submit" value="Execute Similarity Search" formaction="/search/do_similarity_search/" formmethod="get"/>
+    <input type="submit" value="Create Zoo Collection"/>
 </form>
-
 
 <script type="text/javascript">
     $(document).ready(function(){
