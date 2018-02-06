@@ -16,9 +16,11 @@ Including another URLconf
 from django.conf.urls import include, url
 from django.contrib import admin
 from home import views
+from django.views.generic import TemplateView
 
 urlpatterns = [
     url(r'^$', views.index, name='home'),
+    url(r'^about',  TemplateView.as_view(template_name='about.html'), name='about'),
     url(r'^search/', include('search.urls'), name='search'),
     url(r'^collectioninfo/', include('collectioninfo.urls'), name='collectioninfo'),
     url(r'^collection_to_subjectset/', include('collection_to_subjectset.urls'), name='collection_to_subjectset'),
