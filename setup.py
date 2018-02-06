@@ -40,7 +40,6 @@ setup_requires = [
     'pytest-runner',
 ]
 install_requires = [
-    'https://github.com/zooniverse/panoptes-python-client',
     'django',
     'gwpy',
     'psycopg2',
@@ -66,6 +65,7 @@ setup(name=DISTNAME,
       cmdclass=cmdclass,
       setup_requires=setup_requires,
       install_requires=install_requires,
+      dependency_links = ['https://github.com/zooniverse/panoptes-python-client'],
       use_2to3=True,
       classifiers=[
           'Programming Language :: Python',
