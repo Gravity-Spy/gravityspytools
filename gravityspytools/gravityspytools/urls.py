@@ -19,9 +19,9 @@ from home import views
 
 urlpatterns = [
     url(r'^$', views.index, name='home'),
-    url(r'^search/', include('search.urls')),
-    url(r'^collectioninfo/', include('collectioninfo.urls')),
-    url(r'^collection_to_subjectset/', include('collection_to_subjectset.urls')),
+    url(r'^search/', include('search.urls'), name='search'),
+    url(r'^collectioninfo/', include('collectioninfo.urls'), name='collectioninfo'),
+    url(r'^collection_to_subjectset/', include('collection_to_subjectset.urls'), name='collection_to_subjectset'),
     url(r'^admin/', admin.site.urls),
 ]
 

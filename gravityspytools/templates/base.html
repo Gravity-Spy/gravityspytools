@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html class="on-project-page"/>
+<head>
+  
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.3/jquery.min.js" type="text/javascript"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js" type="text/javascript"></script>
+  <script src="//cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js" type="text/javascript"></script>
+
+  <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css" type="text/css" media="all" />
+  <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css" />
+  <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Montserrat&amp;text=ZOONIVERSE">
+  <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Open+Sans:400,400italic,700,700italic" />
+  <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Karla:400,700" />
+  <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Oswald:300,400" />
+  <link rel="stylesheet" href="https://www.zooniverse.org/main-e6f6a309e2d6e21f41e07bee47f15162.css" />
+
+  <!-- Add additional CSS in static file -->
+  {% load static %}
+  <link rel="stylesheet" href="{% static 'css/jquery.dataTables.css' %}" />
+
+  <!-- Facebook OG tags -->
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="Gravity Spy Similarity Search" />
+  <meta property="og:description" content="Gravity Spy is a project of Zooniverse which is the world’s largest and most popular platform for people-powered research." />
+  <meta property="og:image" content= "{% static 'img/ImageOfGravitySpy-Zooniverse.png' %}"/>
+</head>
+<body>
+{% block nav %}
+<ul id="nav">
+    
+    <li>{% block nav-home %}<a href="/">Home</a>{% endblock %}</li>
+    <li>{% block nav-search %}<a href="/search/">Similarity Search</a>{% endblock %}</li>
+    <li>{% block nav-collectioninfo %}<a href="/collectioninfo">Display Your Collection With Metadata Info</a>{% endblock %}</li>
+    <li>{% block nav-collection-to-subjectset %}<a href="/collection_to_subjectset">Create a Workflow to Vet a Collection</a>{% endblock %}</li>
+</ul>
+{% endblock %}
+{% block content %}{% endblock %}
+</body>
+</html>
