@@ -56,7 +56,6 @@ INSTALLED_APPS = [
     'home',
     'collection_to_subjectset',
     'collectioninfo',
-    'search_from_gps',
     'display_glitches_DB',
 ]
 
