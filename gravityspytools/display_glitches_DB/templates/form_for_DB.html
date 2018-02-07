@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+{% block nav-display_glitches_DB %}<strong class="nav-active">Search Glitch DB (not Similarity DB) for Metadata</strong>{% endblock %}
+
+<form action="/display_glitches_DB/do_DB_search/" method="get" style="display: inline;">
+    <br>
+    {% for field in form.visible_fields %}
+        <div>
+        {{ field.label }} : {{ field }}
+        </div>
+        <br>
+    {% endfor %}
+    <br>
+
+    <input type="submit" value="Search Glitches Database"/>
+</form>
+
+{% endblock %}
