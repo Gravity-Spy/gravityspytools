@@ -2,7 +2,7 @@
 
 {% block content %}
 
-{% block nav-collection-to-subjectset %}<strong class="nav-active">UNDER CONSTRUCTION: DOES NOT WORK</strong>{% endblock %}
+{% block nav-collection-to-subjectset %}<a class="active" href="/collection-to-subject-set/">UNDER CONSTRUCTION: DOES NOT WORK</a>{% endblock %}
 
 <form action="/collection_to_subjectset/make_subjectset_from_collection/" method="post" style="display: inline;">
     {% csrf_token %}

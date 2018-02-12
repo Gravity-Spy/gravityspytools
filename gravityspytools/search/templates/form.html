@@ -2,7 +2,7 @@
 
 {% block content %}
 
-{% block nav-search %}<strong class="nav-active">Similarity Search</strong>{% endblock %}
+{% block nav-search %}<a class="active" href="/search/">Similarity Search</a>{% endblock %}
 
 <form action="/search/do_collection_creation/" method="post" style="display: inline;">
      {% csrf_token %}
