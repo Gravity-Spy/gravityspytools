@@ -35,11 +35,13 @@
 {% block nav %}
 <header>
   <nav id="nav">
-    <li>{% block nav-home %}<a href="/">Home</a>{% endblock %}</li>
-    <li>{% block nav-search %}<a href="/search/">Similarity Search</a>{% endblock %}</li>
-    <li>{% block nav-collectioninfo %}<a href="/collection-info">Display Your Collection With Metadata Info</a>{% endblock %}</li>
-    <li>{% block nav-collection-to-subjectset %}<a href="/collection-to-subject-set">Create a Workflow to Vet a Collection</a>{% endblock %}</li>
-    <li>{% block nav-display_glitches_DB %}<a href="/display-glitches-db">Search Glitch DB (not Similarity DB) for Metadata</a>{% endblock %}</li>
+    {% with app_name=request.resolver_match.app_name %}
+    <li><a {% if request.resolver_match.url_name == 'home' %}class="active"{% endif %} href="/">Home</a></li>
+    <li><a {% if app_name == 'search' %}class="active"{% endif %} href="/search/">Similarity Search</a></li>
+    <li><a {% if app_name == 'collectioninfo' %}class="active"{% endif %} href="/collection-info">Display Your Collection With Metadata Info</a></li>
+    <li><a {% if app_name == 'collection_to_subjectset' %}class="active"{% endif %} href="/collection-to-subject-set">Create a Workflow to Vet a Collection</a></li>
+    <li><a {% if app_name == 'display_glitches_DB' %}class="active"{% endif %} href="/display-glitches-db">Search Glitch DB (not Similarity DB) for Metadata</a></li>
+     {% endwith %}
   </nav>
 </header>
 {% endblock %}

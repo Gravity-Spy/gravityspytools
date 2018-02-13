@@ -2,8 +2,7 @@
 
 {% block content %}
 
-{% block nav-display_glitches_DB %}<a class="active" href="/display-glitches-db/">Search Glitch DB (not Similarity DB) for Metadata</a>{% endblock %}
-
+<h1>Search Glitch DB (not Similarity DB) for Metadata</h1>
 <form action="/display_glitches_DB/do_DB_search/" method="get" style="display: inline;">
     <br>
     {% for field in form.visible_fields %}

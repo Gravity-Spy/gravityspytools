@@ -2,8 +2,7 @@
   
 {% block content %}
 
-{% block nav-collectioninfo %}<a class="active" href="/collection-info/">Display Your Collection With Metadata Info</a>{% endblock %}
-
+<h1>Display Your Collection With Metadata Info</h1>
 <form action="/collectioninfo/collectioninfo/" method="get" style="display: inline;">
     <br>
     {% for field in form.visible_fields %}
