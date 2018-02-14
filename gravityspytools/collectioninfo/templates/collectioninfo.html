@@ -2,17 +2,15 @@
   
 {% block content %}
 
-{% block nav-collectioninfo %}<strong class="nav-active">Display Your Collection With Metadata Info</strong>{% endblock %}
-
+<h1>Display Your Collection With Metadata Info</h1>
 <form action="/collectioninfo/collectioninfo/" method="get" style="display: inline;">
-    <br>
+    <fieldset>
     {% for field in form.visible_fields %}
-        <div>
+        <label>
         {{ field.label }} : {{ field }}
-        </div>
-        <br>
+        </label>
     {% endfor %}
-    <br>
+    </fieldset>
 
     <input type="submit" value="Get Collection Info" />
 </form>
