@@ -2,35 +2,31 @@
 
 {% block content %}
 
-{% block nav-search %}<strong class="nav-active">Similarity Search</strong>{% endblock %}
+{% block nav-search %}<a class="active" href="/search/">Similarity Search</a>{% endblock %}
+<h1>Similarity Search</h1>
 
-<form action="/search/do_collection_creation/" method="post" style="display: inline;">
+<div>
+  <form action="/search/do_collection_creation/" method="post" style="display: inline;">
      {% csrf_token %}
 
-    <br>
+    <fieldset>
     {% for field in form.visible_fields %}
-        {% if field.id_for_label == 'id_imageid' %}
-            <div class="ui-widget">
-              {{ field.label }} : {{ field }}
-            </div>
-            <br>
-        {% elif field.id_for_label == 'id_zooid' %}
-            <div class="ui-widget">
-              {{ field.label }} : {{ field }}
-            </div>
-            <br>
-        {% else %}
-            <div>
+        {% if field.id_for_label == 'id_imageid' or field.id_for_label == 'id_zooid' %}
+          <label class="ui-widget">
             {{ field.label }} : {{ field }}
-            </div>
-            <br>
+          </label>
+        {% else %}
+          <label>
+            {{ field.label }} : {{ field }}
+          </label>
         {% endif %}
     {% endfor %}
-    <br>
+    </fieldset>
 
     <input type="submit" value="Execute Similarity Search" formaction="/search/do_similarity_search/" formmethod="get"/>
-    <input type="submit" value="Create Zoo Collection"/>
-</form>
+    <button type="submit">Create Zoo Collection</button>
+  </form>
+</div>
 
 <script type="text/javascript">
     $(document).ready(function(){

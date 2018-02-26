@@ -2,6 +2,7 @@ from django.conf.urls import url
 
 from . import views
 
+app_name = 'search'
 urlpatterns = [
     url(r'^$', views.index, name='index'),
     url(r'^do_similarity_search/$', views.do_similarity_search, name='do_similarity_search'),

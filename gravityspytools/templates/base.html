@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html class="on-project-page"/>
+<html>
 <head>
   
   <meta charset="utf-8">
@@ -10,35 +10,46 @@
   <script src="//cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js" type="text/javascript"></script>
 
   <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css" type="text/css" media="all" />
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
+    crossorigin="anonymous">
   <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css" />
-  <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Montserrat&amp;text=ZOONIVERSE">
   <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Open+Sans:400,400italic,700,700italic" />
-  <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Karla:400,700" />
-  <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Oswald:300,400" />
-  <link rel="stylesheet" href="https://www.zooniverse.org/main-e6f6a309e2d6e21f41e07bee47f15162.css" />
 
   <!-- Add additional CSS in static file -->
   {% load static %}
   <link rel="stylesheet" href="{% static 'css/jquery.dataTables.css' %}" />
+  <link rel="stylesheet" href="{% static 'css/main.css' %}" />  
 
   <!-- Facebook OG tags -->
   <meta property="og:type" content="website" />
   <meta property="og:title" content="Gravity Spy Similarity Search" />
   <meta property="og:description" content="Gravity Spy is a project of Zooniverse which is the world’s largest and most popular platform for people-powered research." />
   <meta property="og:image" content= "{% static 'img/ImageOfGravitySpy-Zooniverse.png' %}"/>
+  <style>
+
+
+
+  </style>
 </head>
 <body>
 {% block nav %}
-<ul id="nav">
-    
-    <li>{% block nav-home %}<a href="/">Home</a>{% endblock %}</li>
-    <li>{% block nav-about %}<a href="/about/">About</a>{% endblock %}</li>
-    <li>{% block nav-search %}<a href="/search/">Similarity Search</a>{% endblock %}</li>
-    <li>{% block nav-collectioninfo %}<a href="/collectioninfo">Display Your Collection With Metadata Info</a>{% endblock %}</li>
-    <li>{% block nav-collection-to-subjectset %}<a href="/collection_to_subjectset">Create a Workflow to Vet a Collection</a>{% endblock %}</li>
-    <li>{% block nav-search_from_gps %}<a href="/search_from_gps">Enter a GPS Time of Any Excess Noise Feature</a>{% endblock %}</li>
-</ul>
+<header>
+  <nav id="nav">
+    {% with app_name=request.resolver_match.app_name %}
+    <li><a {% if request.resolver_match.url_name == 'home' %}class="active"{% endif %} href="/">Home</a></li>
+    <li><a {% if app_name == 'search' %}class="active"{% endif %} href="/search/">Similarity Search</a></li>
+    <li><a {% if app_name == 'collectioninfo' %}class="active"{% endif %} href="/collection-info">Display Your Collection With Metadata Info</a></li>
+    <li><a {% if app_name == 'collection_to_subjectset' %}class="active"{% endif %} href="/collection-to-subject-set">Create a Workflow to Vet a Collection</a></li>
+    <li><a {% if app_name == 'display_glitches_DB' %}class="active"{% endif %} href="/display-glitches-db">Search Glitch DB (not Similarity DB) for Metadata</a></li>
+    <li><a {% if app_name == 'search_from_gps' %}class="active"{% endif %} href="/search-from-gps">Enter a GPS Time of Any Excess Noise Feature</a></li>
+     {% endwith %}
+  </nav>
+</header>
 {% endblock %}
+
+<main>
 {% block content %}{% endblock %}
+</main>
+
 </body>
 </html>

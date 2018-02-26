@@ -20,12 +20,11 @@ from django.views.generic import TemplateView
 
 urlpatterns = [
     url(r'^$', views.index, name='home'),
-    url(r'^about',  TemplateView.as_view(template_name='about.html'), name='about'),
     url(r'^search/', include('search.urls'), name='search'),
-    url(r'^search_from_gps/', include('search_from_gps.urls'), name='search_from_gps'),
-    url(r'^display_glitches_DB/', include('display_glitches_DB.urls'), name='display_glitches_DB'),
-    url(r'^collectioninfo/', include('collectioninfo.urls'), name='collectioninfo'),
-    url(r'^collection_to_subjectset/', include('collection_to_subjectset.urls'), name='collection_to_subjectset'),
+    url(r'^search-from-gps/', include('search_from_gps.urls'), name='search_from_gps'),
+    url(r'^display-glitches-db/', include('display_glitches_DB.urls'), name='display_glitches_DB'),
+    url(r'^collection-info/', include('collectioninfo.urls'), name='collectioninfo'),
+    url(r'^collection-to-subject-set/', include('collection_to_subjectset.urls'), name='collection_to_subjectset'),
     url(r'^admin/', admin.site.urls),
 ]
 
