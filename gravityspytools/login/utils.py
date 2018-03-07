@@ -4,7 +4,7 @@ import requests.auth
 import urllib
 
 def make_authorization_url(
-    REDIRECT_URI="https://gravityspytools.ciera.northwestern.edu/login",
+    REDIRECT_URI=os.environ['REDIRECT_URI'],
     CLIENT_ID=os.environ['PANOPTES_CLIENT_ID'],
     BASE_URL='https://panoptes.zooniverse.org/oauth/authorize'):
 
@@ -17,7 +17,7 @@ def make_authorization_url(
 
 
 def get_token(code,
-    REDIRECT_URI="https://gravityspytools.ciera.northwestern.edu/login",
+    REDIRECT_URI=os.environ['REDIRECT_URI'],
     CLIENT_ID=os.environ['PANOPTES_CLIENT_ID'],
     CLIENT_SECRET=os.environ['PANOPTES_CLIENT_SECRET']):
 
@@ -32,11 +32,23 @@ def get_token(code,
                              data=post_data)
     token_json = response.json()
     return token_json["access_token"]
-    
-    
+
+
 def get_username(access_token):
-    headers = {'Accept': 'application/vnd.api+json; version=1'}
-    headers.update({"Authorization": "Bearer " + access_token})
-    response = requests.get("https://www.zooniverse.org/api/me", headers=headers)
-    me_json = response.json()
-    return me_json['name']
+    try:
+        headers = {'Accept': 'application/vnd.api+json; version=1',
+               'Content-Type': 'application/json',
+               "Authorization": "bearer " + access_token}
+        response = requests.get("https://panoptes.zooniverse.org/api/me", headers=headers)
+        print response
+        response.json()
+    except:
+        headers = {"Authorization": "bearer " + access_token}
+        response = requests.get("https://panoptes.zooniverse.org/api/me", headers=headers)
+
+    print(response)
+    if response.ok:
+        me_json = response.json()
+        return me_json['name']
+    else:
+        return "Bad Response"
