@@ -11,7 +11,8 @@ def make_authorization_url(
     params = {"client_id": CLIENT_ID,
         "response_type" : "code",
         "redirect_uri" : REDIRECT_URI,
-        "scope" : 'user'
+        "scope" : 'user',
+        "scope" : 'public',
              }
     return BASE_URL + '?' + urllib.urlencode(params)
 
@@ -35,20 +36,10 @@ def get_token(code,
 
 
 def get_username(access_token):
-    try:
-        headers = {'Accept': 'application/vnd.api+json; version=1',
-               'Content-Type': 'application/json',
-               "Authorization": "bearer " + access_token}
-        response = requests.get("https://panoptes.zooniverse.org/api/me", headers=headers)
-        print response
-        response.json()
-    except:
-        headers = {"Authorization": "bearer " + access_token}
-        response = requests.get("https://panoptes.zooniverse.org/api/me", headers=headers)
-
-    print(response)
+    headers = {'Accept': 'application/vnd.api+json; version=1',
+           'Content-Type': 'application/json',
+           "Authorization": "Bearer " + str(access_token)}
+    response = requests.get("https://panoptes.zooniverse.org/api/me", headers=headers)
     if response.ok:
         me_json = response.json()
-        return me_json['name']
-    else:
-        return "Bad Response"
+        return me_json['users'][0]['display_name']
