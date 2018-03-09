@@ -42,4 +42,4 @@ def get_username(access_token):
     response = requests.get("https://panoptes.zooniverse.org/api/me", headers=headers)
     if response.ok:
         me_json = response.json()
-        return me_json['users'][0]['display_name']
+        return me_json['users'][0]['login']

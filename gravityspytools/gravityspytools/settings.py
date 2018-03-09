@@ -105,6 +105,13 @@ SESSION_EXPIRE_AT_BROWSER_CLOSE = True
 # wsgi scheme
 os.environ['wsgi.url_scheme'] = 'https'
 
+# Authentication backends for more info
+# https://docs.djangoproject.com/en/2.0/topics/auth/customizing/#writing-an-authentication-backend
+AUTHENTICATION_BACKENDS = (
+    'login.authentication.ZooAuthenticationBackend',
+)
+
+
 # Database
 # https://docs.djangoproject.com/en/1.11/ref/settings/#databases
 

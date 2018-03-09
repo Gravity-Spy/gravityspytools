@@ -2,7 +2,10 @@
 #from __future__ import unicode_literals
 
 from .utils import get_token, get_username
+from django.shortcuts import redirect
 from django.http import HttpResponse
+from django.contrib.auth import login as auth_login
+from django.contrib.auth import authenticate
 import requests
 
 # Create your views here.
@@ -12,5 +15,11 @@ def login(request):
             return HttpResponse(request.GET.get('error'))
         code = request.GET.get('code')
         access_token = get_token(code)
-        request.session["access_token"] = access_token
-        return HttpResponse(get_username(access_token))
+        user = authenticate(request,
+                            token=access_token)
+        if user is not None:
+            auth_login(request, user)
+            request.session["access_token"] = access_token
+            return redirect('/')
+        else:
+            return HttpResponse("Logging in Failed")
