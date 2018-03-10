@@ -55,9 +55,12 @@ def do_similarity_search(request):
         form = SearchForm(request.GET)
         # check whether it's valid:
         if form.is_valid():
+            print form.cleaned_data
             SI_glitches = similarity_search(form)
 
             return render(request, 'searchresults.html', {'results': SI_glitches.to_dict(orient='records')})
+        else:
+            return render(request, 'form.html', {'form': form}) 
 
 
 def similarity_search_restful_API(request):

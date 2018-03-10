@@ -9,16 +9,8 @@ import panoptes_client
 def similarity_search(form):
 
     # process the data in form.cleaned_data as required
-    if len(str(form.cleaned_data['imageid'])) == 10:
-        uniqueID = str(form.cleaned_data['imageid'])
-    else:
-        uniqueID = None
-
-    if len(str(form.cleaned_data['zooid'])) > 6:
-        zooID = float(str(form.cleaned_data['zooid']))
-    else:
-        zooID = None
-
+    uniqueID = str(form.cleaned_data['imageid'])
+    zooID = float(str(form.cleaned_data['zooid']))
     howmany = int(form.cleaned_data['howmany'])
 
     engine = create_engine('postgresql://{0}:{1}@gravityspy.ciera.northwestern.edu:5432/gravityspy'.format(os.environ['GRAVITYSPY_DATABASE_USER'], os.environ['GRAVITYSPY_DATABASE_PASSWD']))

@@ -11,7 +11,36 @@ def get_zooid_json(name=''):
 
 
 class SearchForm(forms.Form):
-    username = forms.CharField(label='Your Zooniverse Username', max_length=100)
     howmany = forms.IntegerField(label='How many similar images would you like to return', max_value=200, min_value=1)
-    zooid = forms.CharField(label = 'This is the Zooniverse assigned random ID of the image (an integer value)', max_length=10, initial='0')
-    imageid = forms.CharField(label='The GravitySpy uniqueid (this is the 10 character hash that uniquely identifies all gravity spy images)', max_length=10, initial='0')
+    zooid = forms.CharField(label = 'This is the Zooniverse assigned random ID of the image (an integer value)', max_length=10, required=False)
+    imageid = forms.CharField(label='The GravitySpy uniqueid (this is the 10 character hash that uniquely identifies all gravity spy images)', max_length=10, required=False)
+    def clean(self):
+        cleaned_data = super(SearchForm, self).clean()
+        zooid = cleaned_data.get('zooid')
+        imageid = cleaned_data.get('imageid')
+
+        if zooid and imageid:
+            raise forms.ValidationError("Please fill out "
+                                        "only one of the zooid "
+                                        "or gravityspy id fields"
+                                        )
+
+        elif (not zooid) and (not imageid):
+            raise forms.ValidationError("Please fill out "
+                                        "one but not both of the zooid "
+                                        "and gravityspy id fields"
+                                        )
+
+    def clean_zooid(self):
+        zooid = self.cleaned_data['zooid']
+        if not zooid:
+            zooid = False
+
+        return zooid
+
+    def clean_uniqueid(self):
+        imageid = self.cleaned_data['imageid']
+        if not imageid:
+            imageid = False
+
+        return imageid
