@@ -1,11 +1,10 @@
 # -*- coding: utf-8 -*-
 #from __future__ import unicode_literals
 
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 import os
 from django.http import HttpResponse
 from django.http import JsonResponse
-from django.core.exceptions import SuspiciousOperation
 
 from .forms import SearchForm
 from .forms import get_imageid_json
@@ -13,6 +12,7 @@ from .forms import get_zooid_json
 
 from .utils import similarity_search
 from .utils import create_collection
+from login.utils import make_authorization_url
 
 import pandas as pd
 from sqlalchemy.engine import create_engine
@@ -40,8 +40,11 @@ def get_zooids(request):
 
 
 def index(request):
-    form = SearchForm()
-    return render(request, 'form.html', {'form': form})
+    if request.user.is_authenticated():
+        form = SearchForm()
+        return render(request, 'form.html', {'form': form})
+    else:
+        return redirect(make_authorization_url())
 
 
 def do_similarity_search(request):

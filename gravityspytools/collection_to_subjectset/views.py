@@ -1,17 +1,21 @@
 # -*- coding: utf-8 -*-
 #from __future__ import unicode_literals
 
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 
 import panoptes_client
 
 from .forms import SearchForm
 from .utils import retrieve_subjects_from_collection
+from login.utils import make_authorization_url
 
 
 def index(request):
-    form = SearchForm()
-    return render(request, 'subjectset_from_collection_form.html', {'form': form})
+    if request.user.is_authenticated():
+        form = SearchForm()
+        return render(request, 'subjectset_from_collection_form.html', {'form': form})
+    else:
+        return redirect(make_authorization_url())
 
 
 # Create your views here.

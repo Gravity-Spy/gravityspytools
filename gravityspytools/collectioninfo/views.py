@@ -1,8 +1,9 @@
 # -*- coding: utf-8 -*-
 #from __future__ import unicode_literals
 
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 
+from login.utils import make_authorization_url
 from collection_to_subjectset.forms import SearchForm
 from collection_to_subjectset.utils import retrieve_subjects_from_collection
 from gwpy.table import EventTable
@@ -10,8 +11,11 @@ from gwpy.table import EventTable
 # Create your views here.
 
 def index(request):
-    form = SearchForm()
-    return render(request, 'collectioninfo.html', {'form': form})
+    if request.user.is_authenticated():
+        form = SearchForm()
+        return render(request, 'collectioninfo.html', {'form': form})
+    else:
+        return redirect(make_authorization_url())
 
 
 def collectioninfo(request):
