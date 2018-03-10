@@ -2,6 +2,9 @@
 
 {% block content %}
 
+<a class ="embimg" href="/{{imagepath}}" TARGET="_blank" ><img class ="embimg"  src="/{{imagepath}}"  alt="hist" height="300" width="300"/>
+</a>
+
 {% for ientry in results %}
 {% if ientry.uniqueID == ientry.searchedID %}
 <table style="border:3px;border-collapse:collapse;padding:15px;width:75%;" >

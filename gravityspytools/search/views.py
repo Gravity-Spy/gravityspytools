@@ -55,9 +55,9 @@ def do_similarity_search(request):
         form = SearchForm(request.GET)
         # check whether it's valid:
         if form.is_valid():
-            SI_glitches = similarity_search(form)
+            SI_glitches, imagepath = similarity_search(form)
 
-            return render(request, 'searchresults.html', {'results': SI_glitches.to_dict(orient='records')})
+            return render(request, 'searchresults.html', {'results': SI_glitches.to_dict(orient='records'), 'imagepath' : imagepath})
         else:
             return render(request, 'form.html', {'form': form}) 
 
