@@ -55,7 +55,6 @@ def do_similarity_search(request):
         form = SearchForm(request.GET)
         # check whether it's valid:
         if form.is_valid():
-            print form.cleaned_data
             SI_glitches = similarity_search(form)
 
             return render(request, 'searchresults.html', {'results': SI_glitches.to_dict(orient='records')})
@@ -85,12 +84,14 @@ def do_collection_creation(request):
         # check whether it's valid:
         if form.is_valid():
             SI_glitches = similarity_search(form)
-            username = str(form.cleaned_data['username'])
+            #username = str(form.cleaned_data['username'])
             howmany = int(form.cleaned_data['howmany'])
-            collection_url = create_collection(username, SI_glitches)
+            collection_url = create_collection(request, SI_glitches)
 
-            engine = create_engine('postgresql://{0}:{1}@gravityspy.ciera.northwestern.edu:5432/gravityspy'.format(os.environ['GRAVITYSPY_DATABASE_USER'], os.environ['GRAVITYSPY_DATABASE_PASSWD']))
-            searchquery = pd.DataFrame({'search_created_at' : pd.to_datetime('now'), 'uniqueid_searched' : SI_glitches['searchedID'].iloc[0], 'zooid_searched' : int(SI_glitches['searchedzooID'].iloc[0]), 'user': username, 'returned_ids' : ','.join(SI_glitches.links_subjects.apply(str).tolist()), 'howmany': howmany}, index=[0])
-            searchquery.to_sql('searchlog', engine, if_exists='append', index=False)
+            #engine = create_engine('postgresql://{0}:{1}@gravityspy.ciera.northwestern.edu:5432/gravityspy'.format(os.environ['GRAVITYSPY_DATABASE_USER'], os.environ['GRAVITYSPY_DATABASE_PASSWD']))
+            #searchquery = pd.DataFrame({'search_created_at' : pd.to_datetime('now'), 'uniqueid_searched' : SI_glitches['searchedID'].iloc[0], 'zooid_searched' : int(SI_glitches['searchedzooID'].iloc[0]), 'user': username, 'returned_ids' : ','.join(SI_glitches.links_subjects.apply(str).tolist()), 'howmany': howmany}, index=[0])
+            #searchquery.to_sql('searchlog', engine, if_exists='append', index=False)
 
             return render(request, 'createcollection.html', {'urls' : {collection_url}, 'results': SI_glitches.to_dict(orient='records')})
+        else:
+            return render(request, 'form.html', {'form': form})

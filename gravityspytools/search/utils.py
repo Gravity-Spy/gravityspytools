@@ -4,6 +4,7 @@ from sqlalchemy.engine import create_engine
 import pandas as pd
 import os, string, random
 import panoptes_client
+from datetime import datetime, timedelta
 
 
 def similarity_search(form):
@@ -41,7 +42,7 @@ def similarity_search(form):
     return SI_glitches
 
 
-def create_collection(username, SI_glitches):
+def create_collection(request, SI_glitches):
 
     # Verify the links_subjects column before adding them to collection
     SI_glitches = SI_glitches.loc[SI_glitches.links_subjects != 1e20]
@@ -50,10 +51,17 @@ def create_collection(username, SI_glitches):
 
     # merge relevantDBs into one DB
     collection_url = 'https://www.zooniverse.org/projects/zooniverse/gravity-spy/collections/'
+    client = panoptes_client.Panoptes()
+    client.bearer_token = request.session['access_token']
+    client.bearer_expires = (
+        datetime.now()
+        + timedelta(seconds=request.session['expires_in'])
+    )
+    client.logged_in = True
     collection = panoptes_client.Collection()
     collection.links.project = '1104'
     random_hash = id_generator()
-    collection.display_name = 'Collection Similar to {0} Created By User {1} ID {2}'.format(subject_id_requested, username, random_hash)
+    collection.display_name = 'Collection Similar to {0} ID {1}'.format(subject_id_requested, random_hash)
     collection.private = False
     urltmp = collection.save()
     collection_url = collection_url + urltmp['collections'][0]['slug']
