@@ -14,8 +14,15 @@ import panoptes_client
 def similarity_search(form):
 
     # process the data in form.cleaned_data as required
-    uniqueID = str(form.cleaned_data['imageid'])
-    zooID = float(str(form.cleaned_data['zooid']))
+    if form.cleaned_data['imageid']:
+        uniqueID = str(form.cleaned_data['imageid'])
+    else:
+        uniqueID = form.cleaned_data['imageid']
+    if form.cleaned_data['zooid']:
+        zooID = float(str(form.cleaned_data['zooid']))
+    else:
+        zooID = form.cleaned_data['zooid']
+
     howmany = int(form.cleaned_data['howmany'])
 
     engine = create_engine('postgresql://{0}:{1}@gravityspy.ciera.northwestern.edu:5432/gravityspy'.format(os.environ['GRAVITYSPY_DATABASE_USER'], os.environ['GRAVITYSPY_DATABASE_PASSWD']))
@@ -58,7 +65,11 @@ def histogram(uniqueID, zooID):
     # Query Similarity Index to give you the euclidean distance of all
     # Images from thsi image
     SI = pd.read_sql(PostGresEuclideanDistanceQuery, engine)
-    ax = SI.distance.hist(bins=int(sqrt(SI.distance.size)))
+    SI['normeddistance'] = SI.distance / 4621.03100783908
+    ax = SI.normeddistance.hist(bins=int(sqrt(SI.normeddistance.size)), log=True)
+    ax.set_xlim(0, 1)
+    ax.set_xlabel('Normalized Euclidean Distance')
+    ax.set_ylabel('Count')
     fig = ax.get_figure()
 
     ID = id_generator(size=10)

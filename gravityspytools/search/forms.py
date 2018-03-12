@@ -38,7 +38,7 @@ class SearchForm(forms.Form):
 
         return zooid
 
-    def clean_uniqueid(self):
+    def clean_imageid(self):
         imageid = self.cleaned_data['imageid']
         if not imageid:
             imageid = False
