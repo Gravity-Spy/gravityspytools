@@ -70,7 +70,7 @@ def similarity_search_restful_API(request):
         form = SearchForm(request.GET)
         # check whether it's valid:
         if form.is_valid():
-            SI_glitches = similarity_search(form)
+            SI_glitches, imagepath = similarity_search(form)
 
             return JsonResponse(SI_glitches.to_dict(orient='list'))
 
@@ -83,8 +83,7 @@ def do_collection_creation(request):
         form = SearchForm(request.POST)
         # check whether it's valid:
         if form.is_valid():
-            SI_glitches = similarity_search(form)
-            #username = str(form.cleaned_data['username'])
+            SI_glitches, imagepath = similarity_search(form)
             howmany = int(form.cleaned_data['howmany'])
             collection_url = create_collection(request, SI_glitches)
 

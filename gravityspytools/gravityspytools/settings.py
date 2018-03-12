@@ -54,6 +54,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'sslserver',
     'login',
+    'logout',
     'search',
     'home',
     'collection_to_subjectset',

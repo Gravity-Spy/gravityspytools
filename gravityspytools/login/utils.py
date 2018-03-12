@@ -11,9 +11,9 @@ def make_authorization_url(
     params = {"client_id": CLIENT_ID,
         "response_type" : "code",
         "redirect_uri" : REDIRECT_URI,
-        "scope" : 'public',
+        "scope" : 'collection+public',
              }
-    return BASE_URL + '?' + urllib.urlencode(params)
+    return BASE_URL + '?' + urllib.unquote_plus(urllib.urlencode(params))
 
 
 def get_token(code,
@@ -41,5 +41,4 @@ def get_username(access_token):
     response = requests.get("https://panoptes.zooniverse.org/api/me", headers=headers)
     if response.ok:
         me_json = response.json()
-        print me_json
         return me_json['users'][0]['login']
