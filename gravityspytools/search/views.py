@@ -5,6 +5,9 @@ from django.shortcuts import render, redirect
 import os
 from django.http import HttpResponse
 from django.http import JsonResponse
+from matplotlib import use
+use('agg')
+from matplotlib.backends.backend_agg import FigureCanvasAgg as FigureCanvas
 
 from .forms import SearchForm
 from .forms import get_imageid_json
@@ -12,6 +15,7 @@ from .forms import get_zooid_json
 
 from .utils import similarity_search
 from .utils import create_collection
+from .utils import histogram as make_histogram
 from login.utils import make_authorization_url
 
 import pandas as pd
@@ -55,9 +59,10 @@ def do_similarity_search(request):
         form = SearchForm(request.GET)
         # check whether it's valid:
         if form.is_valid():
-            SI_glitches, imagepath = similarity_search(form)
+            SI_glitches = similarity_search(form)
+            histogramurl = request.get_full_path().replace('do_similarity_search', 'histogram')
 
-            return render(request, 'searchresults.html', {'results': SI_glitches.to_dict(orient='records'), 'imagepath' : imagepath})
+            return render(request, 'searchresults.html', {'results': SI_glitches.to_dict(orient='records'), 'histogramurl' : histogramurl})
         else:
             return render(request, 'form.html', {'form': form}) 
 
@@ -70,7 +75,7 @@ def similarity_search_restful_API(request):
         form = SearchForm(request.GET)
         # check whether it's valid:
         if form.is_valid():
-            SI_glitches, imagepath = similarity_search(form)
+            SI_glitches = similarity_search(form)
 
             return JsonResponse(SI_glitches.to_dict(orient='list'))
 
@@ -83,7 +88,7 @@ def do_collection_creation(request):
         form = SearchForm(request.POST)
         # check whether it's valid:
         if form.is_valid():
-            SI_glitches, imagepath = similarity_search(form)
+            SI_glitches = similarity_search(form)
             howmany = int(form.cleaned_data['howmany'])
             collection_url = create_collection(request, SI_glitches)
 
@@ -94,3 +99,26 @@ def do_collection_creation(request):
             return render(request, 'createcollection.html', {'urls' : {collection_url}, 'results': SI_glitches.to_dict(orient='records')})
         else:
             return render(request, 'form.html', {'form': form})
+
+
+def histogram(request):
+    # if this is a POST request we need to process the form data
+    if request.method == 'GET':
+
+        # create a form instance and populate it with data from the request:
+        form = SearchForm(request.GET)
+        # check whether it's valid:
+        if form.is_valid():
+            if form.cleaned_data['imageid']:
+                uniqueID = str(form.cleaned_data['imageid'])
+            else:
+                uniqueID = form.cleaned_data['imageid']
+            if form.cleaned_data['zooid']:
+                zooID = float(str(form.cleaned_data['zooid']))
+            else:
+                zooID = form.cleaned_data['zooid']
+            fig = make_histogram(uniqueID, zooID)
+            canvas = FigureCanvas(fig)
+            response = HttpResponse(content_type='image/png')
+            canvas.print_png(response)
+            return response

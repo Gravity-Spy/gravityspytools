@@ -1,5 +1,5 @@
-from matplotlib import use
-use('agg')
+#from matplotlib import use
+#use('agg')
 from gwpy.table import EventTable
 from .forms import SearchForm
 from sqlalchemy.engine import create_engine
@@ -50,9 +50,7 @@ def similarity_search(form):
     else:
         SI_glitches['searchedzooID'] = zooID
 
-    imagepath = histogram(uniqueID, zooID)
-
-    return SI_glitches, imagepath
+    return SI_glitches
 
 
 def histogram(uniqueID, zooID):
@@ -72,12 +70,13 @@ def histogram(uniqueID, zooID):
     ax.set_ylabel('Count')
     fig = ax.get_figure()
 
-    ID = id_generator(size=10)
-    os.makedirs(os.path.join('static', 'hist', ID, ID))
-    imagepath = os.path.join('static', 'hist', ID, ID, ID + '_hist.png')
-    fig.savefig(imagepath)
+    #ID = id_generator(size=10)
+    #os.makedirs(os.path.join('static', 'hist', ID, ID))
+    #imagepath = os.path.join('static', 'hist', ID, ID, ID + '_hist.png')
+    #fig.savefig(imagepath)
 
-    return imagepath
+    #return imagepath
+    return fig
 
 
 def create_collection(request, SI_glitches):

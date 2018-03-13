@@ -10,4 +10,5 @@ urlpatterns = [
     url(r'^get_zooids/$', views.get_zooids, name='get_zooids'),
     url(r'^do_collection_creation/$', views.do_collection_creation, name='do_collection_creation'),
     url(r'^similarity_search_restful_API/$', views.similarity_search_restful_API, name='similarity_search_restful_API'),
+    url(r'^histogram/$', views.histogram, name='histogram'),
 ]
