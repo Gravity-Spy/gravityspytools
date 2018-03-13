@@ -9,50 +9,42 @@
 <h1> Welcome To Gravity Spy Tools! </h1>
 
 <p>
-This site is a sister site to <a href="https://gravityspy.org/">Gravity Spy</a> which is a Zooniverse project designed to combine the power of machine learning, citizen science to tackle
+This site is a sister site to <a href="https://gravityspy.org/">Gravity Spy</a> which is a Zooniverse project designed to combine the power of machine learning and citizen science to tackle
 big data problem such as the large ever-changing excess noise in LIGO gravitational wave data.
 </p>
 
 <p>
-Here we will show a brief demonstration of how to utilize a similarity search with the Gravity Spy frame work. We hope that
+Here we will show a brief demonstration of how to utilize a similarity search within the Gravity Spy frame work. We hope that
 those who test this website will find it, first of all, useful, and secondly will contribute any and all suggestions for
 more tools they would like to see within this project!
 </p>
 
 <p>
-Please place this queries here: <a href="https://github.com/Gravity-Spy/gravityspytools/issues">Gravity Spy Tools Improvements</a>
+Please place these queries here: <a href="https://github.com/Gravity-Spy/gravityspytools/issues">Gravity Spy Tools Improvements</a>
 </p>
 
 <h2> How-To </h2>
 {% load static %}
 <video controls="controls" width="800" height="600" name="Gravity Spy Tools Tutorial" src="{% static 'img/GravitySpyTools-Tutorial.mp4' %}"></video>
 
-<p>This video should give the user the general idea of how one can utilize the tools on this website. A few things to keep
-in mind!
+<p>This video should give the user the general idea of how one can utilize the tools on this website. A few things to keepin mind!
 </p>
 
 <p>
-First, I would start off keeping queries to at most 150 for now. Keep in mind this is the alpha stage of this interface
+First, I would start off keeping queries to at most 150 for now. Keep in mind this is the beta of this interface
 and I would hate for anything to crash.
 </p>
 
 <p>
-Second, when you prview your collection through using the similarity search first, there are some results taht come up blank
+Second, when you preview your collection through using the similarity search, there are some results that come up blank
 as seen in the video. No worries, nothing is wrong here those are just links to the soon to be available VIRGO images! We
 have procesed almost all of them and are waiting for a few logistical things to happen before commencing the upload. At which
 point they will appear in this search as well as on the website.
 </p>
 
 <p>
-Third, sometimes after filtering your results in the Zooniverse collection interface, it takes a few seconds for those changes
+Finally, sometimes after filtering your results in the Zooniverse collection interface, it takes a few seconds for those changes
 to propogate when you go back and ask for "Collection Metadata".
 </p>
 
-<p>
-Finally, I have as of yet been able to create the ability to automatically link the user who creates the collection to their
-username such that they automatically become collaborators. Therefore, for now you will have to go to the created collection,
-all of which live in sbc538's
-<a href="https://www.zooniverse.org/collections/sbc538">Collection Repo</a>, and ask to be a collobroator on your created collection which I will handle until it is automatically
-done under the hood.
-</p>
 {% endblock %}
