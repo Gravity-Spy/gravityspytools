@@ -40,7 +40,7 @@ except NameError:
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = ['gravityspytools.ciera.northwestern.edu', '127.0.0.1']
+ALLOWED_HOSTS = ['gravityspy.ciera.northwestern.edu', 'gravityspytools.ciera.northwestern.edu', '127.0.0.1']
 
 
 # Application definition
@@ -118,8 +118,12 @@ AUTHENTICATION_BACKENDS = (
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': os.environ['GRAVITYSPYTOOLS_NAME'],
+        'USER': os.environ['GRAVITYSPYTOOLS_USER'],
+        'PASSWORD': os.environ['GRAVITYSPYTOOLS_PASSWORD'],
+        'HOST': os.environ['GRAVITYSPYTOOLS_HOST'],
+        'PORT': os.environ['GRAVITYSPYTOOLS_PORT'],
     }
 }
 
