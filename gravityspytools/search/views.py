@@ -121,4 +121,5 @@ def histogram(request):
             canvas = FigureCanvas(fig)
             response = HttpResponse(content_type='image/png')
             canvas.print_png(response)
+            fig.clear()
             return response
