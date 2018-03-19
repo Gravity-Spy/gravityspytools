@@ -31,6 +31,18 @@ class SearchForm(forms.Form):
                                         "and gravityspy id fields"
                                         )
 
+        if zooid and not imageid:
+            if EventTable.fetch('gravityspy', 'similarityindex WHERE links_subjects = {0}'.format(zooid), columns=['links_subjects']).to_pandas().empty:
+                print "I amde it"
+                raise forms.ValidationError("zooid does not exist"
+                                        )
+
+        if imageid and not zooid:
+            if EventTable.fetch('gravityspy', 'similarityindex WHERE \"uniqueID\" = \'{0}\''.format(imageid), columns=['uniqueID']).to_pandas().empty:
+                raise forms.ValidationError("uniqueid does not exist"
+                                        )
+
+
     def clean_zooid(self):
         zooid = self.cleaned_data['zooid']
         if not zooid:

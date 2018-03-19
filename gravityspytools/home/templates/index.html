@@ -4,7 +4,36 @@
 
 {% block content %}
 
-<a href="{{loginurl}}">Login In To Zooniverse</a>
+{% if not user.is_authenticated %}
+
+<h1> Welcome To Gravity Spy Tools! </h1>
+<p>
+Please <a href="{{loginurl}}">Login In To Zooniverse</a>
+</p>
+
+<p>
+This site is a sister site to <a href="https://gravityspy.org/">Gravity Spy</a> which is a Zooniverse project designed to combine the power of machine learning and citizen science to tackle
+big data problem such as the large ever-changing excess noise in LIGO gravitational wave data.
+</p>
+
+<p>
+Here we will show a brief demonstration of how to utilize a similarity search within the Gravity Spy frame work. We hope that
+those who test this website will find it, first of all, useful, and secondly will contribute any and all suggestions for
+more tools they would like to see within this project!
+</p>
+
+<p>
+Please place these queries here: <a href="https://github.com/Gravity-Spy/gravityspytools/issues">Gravity Spy Tools Improvements</a>
+</p>
+
+<h2> How-To </h2>
+{% load static %}
+<video controls="controls" width="800" height="600" name="Gravity Spy Tools Tutorial" src="{% static 'img/GravitySpyTools-Tutorial.mp4' %}"></video>
+
+<p>This video should give the user the general idea of how one can utilize the tools on this website. A few things to keepin mind!
+</p>
+
+{% elif user.is_authenticated %}
 
 <h1> Welcome To Gravity Spy Tools! </h1>
 
@@ -46,5 +75,6 @@ point they will appear in this search as well as on the website.
 Finally, sometimes after filtering your results in the Zooniverse collection interface, it takes a few seconds for those changes
 to propogate when you go back and ask for "Collection Metadata".
 </p>
+{% endif %}
 
 {% endblock %}
