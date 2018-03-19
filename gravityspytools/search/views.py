@@ -9,9 +9,10 @@ from matplotlib import use
 use('agg')
 from matplotlib.backends.backend_agg import FigureCanvasAgg as FigureCanvas
 
-from .forms import SearchForm
+from .forms import SearchForm, LIGOSearchForm
 from .forms import get_imageid_json
 from .forms import get_zooid_json
+from .forms import get_gpstimes_json
 
 from .utils import similarity_search
 from .utils import create_collection
@@ -43,9 +44,23 @@ def get_zooids(request):
     return HttpResponse(data, mimetype)
 
 
+def get_gpstimes(request):
+    if request.is_ajax():
+        q = request.GET.get('term', '')
+        data = get_gpstimes_json(name=q)
+    else:
+        data = 'fail'
+    mimetype = 'application/json'
+    return HttpResponse(data, mimetype)
+
+
 def index(request):
     if request.user.is_authenticated():
-        form = SearchForm()
+        request.session['auth_user_backend'] = request.session['_auth_user_backend']
+        if request.session['auth_user_backend'] == 'django.contrib.auth.backends.RemoteUserBackend':
+            form = LIGOSearchForm()
+        else:
+            form = SearchForm()
         return render(request, 'form.html', {'form': form})
     else:
         return redirect(make_authorization_url())
@@ -56,7 +71,10 @@ def do_similarity_search(request):
     if request.method == 'GET':
 
         # create a form instance and populate it with data from the request:
-        form = SearchForm(request.GET)
+        if request.session['_auth_user_backend'] == 'django.contrib.auth.backends.RemoteUserBackend':
+            form = LIGOSearchForm(request.GET)
+        else:
+            form = SearchForm(request.GET)
         # check whether it's valid:
         if form.is_valid():
             SI_glitches = similarity_search(form)
