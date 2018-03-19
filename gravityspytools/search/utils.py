@@ -37,7 +37,7 @@ def similarity_search(form):
     # Convert from astropy to pandas for easy manipulation
     SI_glitches = glitches.to_pandas()
 
-    glitches = EventTable.fetch('gravityspy', 'glitches WHERE "uniqueID" IN (\'{0}\')'.format(str("','".join(list(SI['uniqueID'])))), columns = ['uniqueID', 'imgUrl1', 'imgUrl2', 'imgUrl3', 'imgUrl4', 'ifo', 'links_subjects', 'snr', 'peak_frequency', 'Label', 'peakGPS'])
+    glitches = EventTable.fetch('gravityspy', 'glitches WHERE "uniqueID" IN (\'{0}\')'.format(str("','".join(list(SI['uniqueID'])))), columns = ['uniqueID', 'imgUrl1', 'imgUrl2', 'imgUrl3', 'imgUrl4', 'ifo', 'links_subjects', 'snr', 'peak_frequency', 'Label', 'peakGPS', 'Filename1', 'Filename2', 'Filename3', 'Filename4'])
 
     # Convert from astropy to pandas for easy manipulation
     SI_glitches = glitches.to_pandas()
