@@ -11,12 +11,17 @@ import os
 
 from django.core.wsgi import get_wsgi_application
 
-os.environ.setdefault("DJANGO_SETTINGS_MODULE", "gravityspytools.settings")
+os.environ["DJANGO_SETTINGS_MODULE"] = "gravityspytools.settings"
 os.environ['HTTPS'] = "on"
+os.environ['GRAVITYSPYTOOLS_NAME'] = ''
+os.environ['GRAVITYSPYTOOLS_USER'] = ''
+os.environ['GRAVITYSPYTOOLS_PASSWORD'] = ''
+os.environ['GRAVITYSPYTOOLS_HOST'] = ''
+os.environ['GRAVITYSPYTOOLS_PORT'] = ''
 
 _application = get_wsgi_application()
 
-env_variables_to_pass = ['GRAVITYSPY_DATABASE_USER', 'GRAVITYSPY_DATABASE_PASSWD', 'PANOPTES_CLIENT_ID', 'PANOPTES_CLIENT_SECRET', 'PANOPTES_PROJECT', 'REDIRECT_URI', 'GRAVITYSPYTOOLS_NAME', 'GRAVITYSPYTOOLS_USER', 'GRAVITYSPYTOOLS_PASSWORD', 'GRAVITYSPYTOOLS_HOST', 'GRAVITYSPYTOOLS_PORT']
+env_variables_to_pass = ['GRAVITYSPY_DATABASE_USER', 'GRAVITYSPY_DATABASE_PASSWD', 'PANOPTES_CLIENT_ID', 'PANOPTES_CLIENT_SECRET', 'PANOPTES_PROJECT', 'REDIRECT_URI']
 def application(environ, start_response):
     # pass the WSGI environment variables on through to os.environ
     for var in env_variables_to_pass:

@@ -68,6 +68,7 @@ MIDDLEWARE = [
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
+    'django.contrib.auth.middleware.RemoteUserMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
@@ -110,6 +111,7 @@ os.environ['wsgi.url_scheme'] = 'https'
 # https://docs.djangoproject.com/en/2.0/topics/auth/customizing/#writing-an-authentication-backend
 AUTHENTICATION_BACKENDS = (
     'login.authentication.ZooAuthenticationBackend',
+    'django.contrib.auth.backends.RemoteUserBackend',
 )
 
 

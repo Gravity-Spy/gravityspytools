@@ -37,6 +37,16 @@ def similarity_search(form):
     # Convert from astropy to pandas for easy manipulation
     SI_glitches = glitches.to_pandas()
 
+    glitches = EventTable.fetch('gravityspy', 'glitches WHERE "uniqueID" IN (\'{0}\')'.format(str("','".join(list(SI['uniqueID'])))), columns = ['uniqueID', 'imgUrl1', 'imgUrl2', 'imgUrl3', 'imgUrl4', 'ifo', 'links_subjects', 'snr', 'peak_frequency', 'Label', 'peakGPS'])
+
+    # Convert from astropy to pandas for easy manipulation
+    SI_glitches = glitches.to_pandas()
+
+    SI_glitches.loc[SI_glitches.imgUrl1 == '?', 'imgUrl1'] = SI_glitches.loc[SI_glitches.imgUrl1 == '?', ['ifo', 'Filename1']].apply(makelink, axis=1)
+    SI_glitches.loc[SI_glitches.imgUrl2 == '?', 'imgUrl2'] = SI_glitches.loc[SI_glitches.imgUrl2 == '?', ['ifo', 'Filename2']].apply(makelink, axis=1)
+    SI_glitches.loc[SI_glitches.imgUrl3 == '?', 'imgUrl3'] = SI_glitches.loc[SI_glitches.imgUrl3 == '?', ['ifo', 'Filename3']].apply(makelink, axis=1)
+    SI_glitches.loc[SI_glitches.imgUrl4 == '?', 'imgUrl4'] = SI_glitches.loc[SI_glitches.imgUrl4 == '?', ['ifo', 'Filename4']].apply(makelink, axis=1)
+
     if zooID:
         SI_glitches['searchedID'] = SI_glitches.loc[SI_glitches.links_subjects == zooID, 'uniqueID'].iloc[0]
     else:
@@ -104,3 +114,15 @@ def create_collection(request, SI_glitches):
 
 def id_generator(size=5, chars=string.ascii_uppercase + string.digits +string.ascii_lowercase):
     return ''.join(random.SystemRandom().choice(chars) for _ in range(size))
+
+
+def makelink(x):
+    # This horrendous thing obtains the public html path for image
+    interMediatePath = '/'.join(filter(None,str(x.iloc[1]).replace('public_html', '').split('/'))[1:-1])
+    imagename = filter(None,str(x.iloc[1]).split('/'))[-1]
+    if x.iloc[0] == 'L1':
+        return 'https://ldas-jobs.ligo-la.caltech.edu/~{0}/{1}'.format(interMediatePath, imagename)
+    elif x.iloc[0] == 'V1':
+        return 'https://ldas-jobs.ligo.caltech.edu/~{0}/{1}'.format(interMediatePath, imagename)
+    else:
+        return 'https://ldas-jobs.ligo-wa.caltech.edu/~{0}/{1}'.format(interMediatePath, imagename)
