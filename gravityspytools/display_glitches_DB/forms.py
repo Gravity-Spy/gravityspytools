@@ -1,6 +1,9 @@
 from django import forms
 
+STATUS_CHOICES = (
+    ("Blip", "Blip"), ("Whistle", "Whistle"), ("1080Lines", "1080Lines"), ("Wandering_Line", "Wandering_Line"),
+    ("1400Ripples", "1400Ripples")
+)
 
 class SearchDBForm(forms.Form):
-    zooid = forms.CharField(label = 'This is the Zooniverse assigned random ID of the image (an integer value)', required=False)
-    imageid = forms.CharField(label='The GravitySpy uniqueid (this is the 10 character hash that uniquely identifies all gravity spy images)', required=False)
+    glitchclass = forms.ChoiceField(choices=STATUS_CHOICES, label = 'The class') 

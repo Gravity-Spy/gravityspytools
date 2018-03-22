@@ -1,26 +1,18 @@
 from gwpy.table import EventTable
+from search.utils import makelink
 
 
 def searchDB(form):
 
     # process the data in form.cleaned_data as required
-    if len(str(form.cleaned_data['imageid'])) > 6:
-        uniqueID = str(form.cleaned_data['imageid']).split(',')
-    else:
-        uniqueID = None
-
-
     # process the data in form.cleaned_data as required
-    if len(str(form.cleaned_data['zooid'])) > 6:
-        zooID = str(form.cleaned_data['zooid']).split(',')
-    else:
-        zooID = None
+    glitchclass = str(form.cleaned_data['glitchclass'])
 
-    if uniqueID:
-        SI_glitches = EventTable.fetch('gravityspy', 'glitches WHERE "uniqueID" IN (\'{0}\')'.format(str("','".join(uniqueID))), columns = ['uniqueID', 'imgUrl1', 'imgUrl2', 'imgUrl3', 'imgUrl4', 'ifo', 'links_subjects', 'snr', 'peak_frequency', 'Label']).to_pandas()
-    elif zooID:
-        SI_glitches = EventTable.fetch('gravityspy', 'glitches WHERE CAST(links_subjects AS TEXT) IN (\'{0}\')'.format(str("','".join(zooID))), columns = ['uniqueID', 'imgUrl1', 'imgUrl2', 'imgUrl3', 'imgUrl4', 'ifo', 'links_subjects', 'snr', 'peak_frequency', 'Label']).to_pandas()
-    else:
-        SI_glitches = EventTable.fetch('gravityspy', 'glitches', columns = ['uniqueID', 'imgUrl1', 'imgUrl2', 'imgUrl3', 'imgUrl4', 'ifo', 'links_subjects', 'snr', 'peak_frequency', 'Label']).to_pandas()
+    SI_glitches = EventTable.fetch('gravityspy', 'trainingset WHERE \"Label\" = \'{0}\''.format(glitchclass), columns = ['uniqueID', 'Filename1', 'Filename2', 'Filename3', 'Filename4', 'ifo', 'snr', 'peak_frequency', 'Label']).to_pandas()
+
+    SI_glitches['imgUrl1'] = SI_glitches[['ifo', 'Filename1']].apply(makelink, axis=1)
+    SI_glitches['imgUrl2'] = SI_glitches[['ifo', 'Filename2']].apply(makelink, axis=1)
+    SI_glitches['imgUrl3'] = SI_glitches[['ifo', 'Filename3']].apply(makelink, axis=1)
+    SI_glitches['imgUrl4'] = SI_glitches[['ifo', 'Filename4']].apply(makelink, axis=1)
 
     return SI_glitches
