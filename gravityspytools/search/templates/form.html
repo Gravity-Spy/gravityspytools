@@ -39,10 +39,10 @@
     </fieldset>
 
     <input type="submit" value="Execute Similarity Search" formaction="/search/do_similarity_search/" formmethod="get"/>
+    <button type="submit">Create Zoo Collection</button>
     {% if request.session.auth_user_backend == 'django.contrib.auth.backends.RemoteUserBackend' %}
         <input type="submit" value="Run Hveto" formaction="/search/runhveto/" formmethod="post"/>
     {% endif %}
-    <button type="submit">Create Zoo Collection</button>
   </form>
 </div>
 

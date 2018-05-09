@@ -3,6 +3,7 @@
 
 from django.shortcuts import render, redirect
 import os
+import subprocess
 from django.http import HttpResponse
 from django.http import JsonResponse
 from matplotlib import use
@@ -141,3 +142,22 @@ def histogram(request):
             canvas.print_png(response)
             fig.clear()
             return response
+
+
+def runhveto(request):
+    import os, string, random
+
+    def id_generator(size=5, chars=string.ascii_uppercase + string.digits +string.ascii_lowercase):
+        return ''.join(random.SystemRandom().choice(chars) for _ in range(size))
+
+    ID = id_generator(size=10)
+    os.makedirs(os.path.join('static', 'hveto', ID))
+    imagepath = os.path.join('static', 'hveto', ID, ID + '.log')
+    proc = subprocess.Popen(
+        ["ligo-proxy-init --help"],
+        #["gsissh ldas-pcdev2.ligo.caltech.edu '. /home/scoughlin/Project/opt/GravitySpy-py27/bin/activate; hveto 1131580817 1131667217 --ifo L1 --config-file /home/scoughlin/hveto/h1l1-hveto-daily-o2.ini -p /home/scoughlin/hveto/cache.lcf -o ~/public_html/HVeto/L1/Blip/1131580817-1131667217 --nproc 10 -a /home/scoughlin/hveto/l1-01.lcf'"],             #call something with a lot of output so we can see it
+        stdout=open(imagepath, 'a+'),
+        stderr=open(imagepath, 'a+'),
+    )
+
+    return redirec('https://ldas-jobs.ligo.caltech.edu/~scoughlin/HVeto/L1/Blip/1131580817-1131667217/')
