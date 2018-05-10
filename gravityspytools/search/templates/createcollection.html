@@ -78,9 +78,32 @@
         </div>
 </div>
 {% endfor %}
+
+<p:column headerText="Options">
+        <p:rowEditor />
+        <p:commandLink
+                action="#{mBean.action}"
+                value=" " styleClass="ui-icon ui-icon-trash"
+                update="@this" ajax="true">
+                <f:setPropertyActionListener
+                        target="#{tabelaOutrasDespesasMBeanForm.selectedItem}"
+                        value="#searchresults" />
+        </p:commandLink>
+</p:column>
+
 <script>
 $(document).ready(function() {
-  $('searchresults').dataTable();
+  $('#searchresults').DataTable( {
+    dom: 'Bfrtip',
+    buttons: [
+        'copy', 'csv', 'excel', 'pdf', 'print'
+    ]
+  } );
+} );
+</script>
+<script>
+$(document).ready(function() {
+  $('#searchresults').dataTable();
 } );
 </script>
 {% endblock %}

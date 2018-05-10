@@ -4,6 +4,7 @@
 from django.shortcuts import render, redirect
 
 import panoptes_client
+import os
 
 from .forms import SearchForm
 from .utils import retrieve_subjects_from_collection
@@ -32,11 +33,13 @@ def make_subjectset_from_collection(request):
             collection_display_name = str(form.cleaned_data['collection_display_name'])
             workflow_name = str(form.cleaned_data['workflow_name'])
 
+            client = panoptes_client.Panoptes()
+            client.connect(username=os.environ.get('PANOPTES_USERNAME'), password=os.environ.get('PANOPTES_PASSWORD'))
+
             subjects_in_collection, collection_display_url = retrieve_subjects_from_collection(username, collection_display_name)
-            project = panoptes_client.Project.find(6040)
             subject_set = panoptes_client.SubjectSet()
 
-            subject_set.links.project = project
+            subject_set.links.project = '6040'
             subject_set.display_name = '{0}'.format(collection_display_name)
 
             subject_set.save()
@@ -44,7 +47,7 @@ def make_subjectset_from_collection(request):
 
             workflow = panoptes_client.Workflow()
             workflow.display_name = '{0}'.format(workflow_name)
-            workflow.links.project = project
+            workflow.links.project = '6040'
             workflow.primary_language ='en'
             image_location_str = "![Example Alt Text]({0} =400x275)".format(collection_display_url)
             workflow.tasks = {u'T0': {u'answers': [{u'label': u'Yes'}, {u'label': u'No'}],

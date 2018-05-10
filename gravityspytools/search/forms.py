@@ -36,12 +36,22 @@ class SearchForm(forms.Form):
                                         )
 
         if zooid and not imageid:
+            if not EventTable.fetch('gravityspy', 'nonanalysisreadyids WHERE links_subjects = {0}'.format(zooid)).to_pandas().empty:
+                raise forms.ValidationError("This zooID is one of a handful of glitches that were mistakenly uploaded, despite being glitches"
+                                            "occuring while the detector was not in a state to be taking quality data "
+                                            "(i.e. people may have been working on the instrument at the time."
+                                        )
             if EventTable.fetch('gravityspy', 'similarityindex WHERE links_subjects = {0}'.format(zooid), columns=['links_subjects']).to_pandas().empty:
                 raise forms.ValidationError("zooid does not exist"
                                         )
 
         if imageid and not zooid:
-            if EventTable.fetch('gravityspy', 'similarityindex WHERE \"uniqueID\" = \'{0}\''.format(imageid), columns=['uniqueID']).to_pandas().empty:
+            if not EventTable.fetch('gravityspy', 'nonanalysisreadyids WHERE \"uniqueID\" = \'{0}\''.format(imageid)).to_pandas().empty:
+                raise forms.ValidationError("This uniqueID is one of a handful of glitches that were mistakenly uploaded, despite being glitches"
+                                            "occuring while the detector was not in a state to be taking quality data "
+                                            "(i.e. people may have been working on the instrument at the time."
+                                        )
+            elif EventTable.fetch('gravityspy', 'similarityindex WHERE \"uniqueID\" = \'{0}\''.format(imageid), columns=['uniqueID']).to_pandas().empty:
                 raise forms.ValidationError("uniqueid does not exist"
                                         )
 

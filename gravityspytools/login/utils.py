@@ -2,6 +2,7 @@ import os
 import requests
 import requests.auth
 import urllib
+from datetime import datetime
 
 def make_authorization_url(
     REDIRECT_URI=os.environ['REDIRECT_URI'],
@@ -31,7 +32,27 @@ def get_token(code,
     response = requests.post("https://panoptes.zooniverse.org/oauth/token",
                              data=post_data)
     token_json = response.json()
-    return token_json["access_token"], token_json["expires_in"]
+    token_json['token_start_time'] = (datetime.now()-datetime(1970,1,1)).total_seconds()
+    return token_json["access_token"], token_json["expires_in"], token_json['refresh_token'], token_json['token_start_time']
+
+
+def get_token_refresh(refresh_token,
+    REDIRECT_URI=os.environ['REDIRECT_URI'],
+    CLIENT_ID=os.environ['PANOPTES_CLIENT_ID'],
+    CLIENT_SECRET=os.environ['PANOPTES_CLIENT_SECRET']):
+
+    post_data = {"grant_type": "refresh_token",
+                 "refresh_token": refresh_token,
+                 "redirect_uri": REDIRECT_URI,
+                 "client_id" : CLIENT_ID,
+                 "client_secret" : CLIENT_SECRET,
+                 }
+    response = requests.post("https://panoptes.zooniverse.org/oauth/token",
+                             data=post_data)
+    token_json = response.json()
+    token_json['token_start_time'] = (datetime.now()-datetime(1970,1,1)).total_seconds()
+    
+    return token_json["access_token"], token_json["expires_in"], token_json['refresh_token'], token_json['token_start_time']
 
 
 def get_username(access_token):

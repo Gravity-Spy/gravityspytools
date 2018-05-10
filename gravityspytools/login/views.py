@@ -14,13 +14,15 @@ def login(request):
         if request.GET.get('error', ''):
             return HttpResponse(request.GET.get('error'))
         code = request.GET.get('code')
-        access_token, expires_in = get_token(code)
+        access_token, expires_in, refresh_token, token_start_time = get_token(code)
         user = authenticate(request,
                             token=access_token)
         if user is not None:
             auth_login(request, user)
             request.session["access_token"] = access_token
             request.session["expires_in"] = expires_in
+            request.session["refresh_token"] = refresh_token
+            request.session["token_start_time"] = token_start_time
             return redirect('/')
         else:
             return HttpResponse("Logging in Failed")
