@@ -4,6 +4,22 @@
 
 <h1>Display Your Collection With Metadata Info</h1>
 <form action="/collection-info/collection-info/" method="get" style="display: inline;">
+
+    {% if form.errors %}
+        {% for field in form %}
+            {% for error in field.errors %}
+                <div class="alert alert-danger">
+                    <strong>{{ error|escape }}</strong>
+                </div>
+            {% endfor %}
+        {% endfor %}
+        {% for error in form.non_field_errors %}
+            <div class="alert alert-danger">
+                <strong>{{ error|escape }}</strong>
+            </div>
+        {% endfor %}
+    {% endif %}
+
     <fieldset>
     {% for field in form.visible_fields %}
         <label>

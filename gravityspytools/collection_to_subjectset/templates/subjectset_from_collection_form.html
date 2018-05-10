@@ -5,6 +5,21 @@
 <h1>Collection to Subject Set</h1>
 <strong>UNDER CONSTRUCTION: DOES NOT WORK</strong>
 <form action="/collection-to-subject-set/make-subjectset-from-collection/" method="post" style="display: inline;">
+    {% if form.errors %}
+        {% for field in form %}
+            {% for error in field.errors %}
+                <div class="alert alert-danger">
+                    <strong>{{ error|escape }}</strong>
+                </div>
+            {% endfor %}
+        {% endfor %}
+        {% for error in form.non_field_errors %}
+            <div class="alert alert-danger">
+                <strong>{{ error|escape }}</strong>
+            </div>
+        {% endfor %}
+    {% endif %}
+
     {% csrf_token %}
 
     <fieldset>

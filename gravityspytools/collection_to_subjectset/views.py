@@ -62,3 +62,5 @@ def make_subjectset_from_collection(request):
             workflow.add_subject_sets(subject_set)
 
             return redirect("https://www.zooniverse.org/projects/sbc538/vet-new-classes") 
+        else:
+            return render(request, 'subjectset_from_collection_form.html', {'form': form})

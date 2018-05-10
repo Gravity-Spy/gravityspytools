@@ -139,8 +139,8 @@ def check_token(request):
     if (datetime.now()-datetime(1970,1,1)).total_seconds() > (request.session['token_start_time'] +
                          request.session['expires_in']):
         access_token, expires_in, refresh_token, token_start_time = get_token_refresh(code)
-    request.session["access_token"] = access_token
-    request.session["expires_in"] = expires_in
-    request.session["refresh_token"] = refresh_token
-    request.session["token_start_time"] = token_start_time
+        request.session["access_token"] = access_token
+        request.session["expires_in"] = expires_in
+        request.session["refresh_token"] = refresh_token
+        request.session["token_start_time"] = token_start_time
     return request

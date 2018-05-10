@@ -34,3 +34,5 @@ def collectioninfo(request):
             SI_glitches = EventTable.fetch('gravityspy', 'glitches WHERE CAST(links_subjects AS FLOAT) IN ({0})'.format(str(",".join(subjects_in_collection)))).to_pandas() 
 
             return render(request, 'searchresults.html', {'results': SI_glitches.to_dict(orient='records')})
+        else:
+            return render(request, 'collectioninfo.html', {'form': form})
