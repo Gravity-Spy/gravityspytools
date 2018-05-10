@@ -4,7 +4,7 @@
 from django.shortcuts import render, redirect
 
 from login.utils import make_authorization_url
-from collection_to_subjectset.forms import SearchForm
+from .forms import SearchForm
 from collection_to_subjectset.utils import retrieve_subjects_from_collection
 from gwpy.table import EventTable
 
@@ -29,7 +29,7 @@ def collectioninfo(request):
             username = str(form.cleaned_data['username'])
             collection_display_name = str(form.cleaned_data['collection_display_name'])
 
-            subjects_in_collection = retrieve_subjects_from_collection(username, collection_display_name)
+            subjects_in_collection, tmp = retrieve_subjects_from_collection(username, collection_display_name)
             subjects_in_collection = [str(isubject) for isubject in subjects_in_collection]
             SI_glitches = EventTable.fetch('gravityspy', 'glitches WHERE CAST(links_subjects AS FLOAT) IN ({0})'.format(str(",".join(subjects_in_collection)))).to_pandas() 
 
