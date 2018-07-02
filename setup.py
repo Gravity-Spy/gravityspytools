@@ -42,7 +42,8 @@ setup_requires = [
 install_requires = [
     'django',
     'gwpy',
-    'psycopg2',
+    'django-sslserver',
+    'psycopg2-binary',
     'sqlalchemy',
     'pandas',
 ]

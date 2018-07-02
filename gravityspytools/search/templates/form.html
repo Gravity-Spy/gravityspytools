@@ -7,11 +7,26 @@
 
 <div>
   <form action="/search/do_collection_creation/" method="post" style="display: inline;">
-     {% csrf_token %}
+    {% if form.errors %}
+        {% for field in form %}
+            {% for error in field.errors %}
+                <div class="alert alert-danger">
+                    <strong>{{ error|escape }}</strong>
+                </div>
+            {% endfor %}
+        {% endfor %}
+        {% for error in form.non_field_errors %}
+            <div class="alert alert-danger">
+                <strong>{{ error|escape }}</strong>
+            </div>
+        {% endfor %}
+    {% endif %}
+
+    {% csrf_token %}
 
     <fieldset>
     {% for field in form.visible_fields %}
-        {% if field.id_for_label == 'id_imageid' or field.id_for_label == 'id_zooid' %}
+        {% if field.id_for_label == 'id_imageid' or field.id_for_label == 'id_zooid' or field.id_for_label == 'id_gpstime' %}
           <label class="ui-widget">
             {{ field.label }} : {{ field }}
           </label>
@@ -24,6 +39,9 @@
     </fieldset>
 
     <input type="submit" value="Execute Similarity Search" formaction="/search/do_similarity_search/" formmethod="get"/>
+    {% if request.session.auth_user_backend == 'django.contrib.auth.backends.RemoteUserBackend' %}
+        <input type="submit" value="Run Hveto" formaction="/search/runhveto/" formmethod="post"/>
+    {% endif %}
     <button type="submit">Create Zoo Collection</button>
   </form>
 </div>
@@ -50,6 +68,23 @@
         var location_input1=$('input[id="id_zooid"]');
         location_input1.autocomplete({
           source: "/search/get_zooids/",
+          minLength: 2
+        });
+      } );
+
+    //   keeps same width as box
+      jQuery.ui.autocomplete.prototype._resizeMenu = function () {
+          var ul = this.menu.element;
+          ul.outerWidth(this.element.outerWidth());
+        }
+</script>
+
+
+<script type="text/javascript">
+    $(document).ready(function(){
+        var location_input1=$('input[id="id_gpstime"]');
+        location_input1.autocomplete({
+          source: "/search/get_gpstimes/",
           minLength: 2
         });
       } );

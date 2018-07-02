@@ -40,7 +40,7 @@ except NameError:
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = ['gravityspytools.ciera.northwestern.edu', '127.0.0.1']
+ALLOWED_HOSTS = ['gravityspy.ciera.northwestern.edu', 'gravityspytools.ciera.northwestern.edu', '127.0.0.1']
 
 
 # Application definition
@@ -52,6 +52,9 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'sslserver',
+    'login',
+    'logout',
     'search',
     'home',
     'collection_to_subjectset',
@@ -65,6 +68,7 @@ MIDDLEWARE = [
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
+    'django.contrib.auth.middleware.RemoteUserMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
@@ -89,10 +93,13 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'gravityspytools.wsgi.application'
 
+# Set session type
+SESSION_ENGINE = "django.contrib.sessions.backends.signed_cookies"
 # secure proxy SSL header and secure cookies
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 SESSION_COOKIE_SECURE = True
-CSRF_COOKIE_SECURE = False
+SESSION_COOKIE_HTTPONLY = True 
+CSRF_COOKIE_SECURE = True
 
 # session expire at browser close
 SESSION_EXPIRE_AT_BROWSER_CLOSE = True
@@ -100,16 +107,27 @@ SESSION_EXPIRE_AT_BROWSER_CLOSE = True
 # wsgi scheme
 os.environ['wsgi.url_scheme'] = 'https'
 
+# Authentication backends for more info
+# https://docs.djangoproject.com/en/2.0/topics/auth/customizing/#writing-an-authentication-backend
+AUTHENTICATION_BACKENDS = (
+    'login.authentication.ZooAuthenticationBackend',
+    'django.contrib.auth.backends.RemoteUserBackend',
+)
+
+
 # Database
 # https://docs.djangoproject.com/en/1.11/ref/settings/#databases
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': os.environ['GRAVITYSPYTOOLS_NAME'],
+        'USER': os.environ['GRAVITYSPYTOOLS_USER'],
+        'PASSWORD': os.environ['GRAVITYSPYTOOLS_PASSWORD'],
+        'HOST': os.environ['GRAVITYSPYTOOLS_HOST'],
+        'PORT': os.environ['GRAVITYSPYTOOLS_PORT'],
     }
 }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/1.11/ref/settings/#auth-password-validators

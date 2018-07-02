@@ -2,7 +2,8 @@
 from __future__ import unicode_literals
 
 from django.shortcuts import render
+from login.utils import make_authorization_url
 
 # Create your views here.
 def index(request):
-    return render(request, 'index.html', context={'apps': {('search', 'Similarity Search'), ('collection_to_subjectset', 'Create a Workflow to Vet a Collection'), ('collectioninfo', 'Display Your Collection With Metadata Info')}})
+    return render(request, 'index.html', context={'loginurl': make_authorization_url()})

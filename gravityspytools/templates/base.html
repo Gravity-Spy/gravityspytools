@@ -49,7 +49,11 @@
     <li><a {% if app_name == 'collectioninfo' %}class="active"{% endif %} href="/collection-info">Display Your Collection With Metadata Info</a></li>
     <li><a {% if app_name == 'collection_to_subjectset' %}class="active"{% endif %} href="/collection-to-subject-set">Create a Workflow to Vet a Collection</a></li>
     <li><a {% if app_name == 'display_glitches_DB' %}class="active"{% endif %} href="/display-glitches-db">Search Glitch DB (not Similarity DB) for Metadata</a></li>
-     {% endwith %}
+    {% if user.is_authenticated %}
+        <li>{{ user.get_username }}</li>
+        <li><a {% if app_name == 'logout' %}class="active"{% endif %} href="/logout">Logout</a></li>
+    {% endif %}
+    {% endwith %}
   </nav>
 </header>
 {% endblock %}
@@ -57,6 +61,8 @@
 <main>
 {% block content %}{% endblock %}
 </main>
+<script>
+</script>
 
 </body>
 </html>

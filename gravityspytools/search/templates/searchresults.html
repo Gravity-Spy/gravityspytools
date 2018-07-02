@@ -2,6 +2,10 @@
 
 {% block content %}
 
+<a class ="embimg" href="{{histogramurl}}" TARGET="_blank" >
+<img src="{{histogramurl}}">
+</a>
+
 {% for ientry in results %}
 {% if ientry.uniqueID == ientry.searchedID %}
 <table style="border:3px;border-collapse:collapse;padding:15px;width:75%;" >
@@ -22,6 +26,24 @@
       {{ientry.links_subjects}}
     </td >
   </tr>
+  <tr class ="noborder" >
+    <td class ="noborder" >
+      ifo
+    </td >
+    <td class ="noborder" >
+      {{ientry.ifo}}
+    </td >
+  </tr>
+  {% if request.session.auth_user_backend == 'django.contrib.auth.backends.RemoteUserBackend' %}
+  <tr class ="noborder" >
+    <td class ="noborder" >
+      gps time
+    </td >
+    <td class ="noborder" >
+      {{ientry.peakGPS}}
+    </td >
+  </tr>
+  {% endif %}
  </tbody></table>
 
     <td class ="noborder" style="padding:15px;" >
@@ -51,6 +73,10 @@
             <th>zooID</th>
             <th>SNR</th>
             <th>Peak Frequency</th>
+            <th>ifo</th>
+            {% if request.session.auth_user_backend == 'django.contrib.auth.backends.RemoteUserBackend' %}
+                <th>gps time</th>
+            {% endif %}
          </tr>
        </thead>
         {% for ientry in results %}
@@ -69,6 +95,10 @@
                 <td> {{ientry.links_subjects}} </td>
                 <td> {{ientry.snr}} </td>
                 <td> {{ientry.peak_frequency}} </td>
+                <td> {{ientry.ifo}} </td>
+                {% if request.session.auth_user_backend == 'django.contrib.auth.backends.RemoteUserBackend' %}
+                    <td>{{ientry.peakGPS}}</td>
+                {% endif %}
             </tr>
         {% endfor %}
         </table>
@@ -82,6 +112,11 @@ $(document).ready(function() {
         'copy', 'csv', 'excel', 'pdf', 'print'
     ]
   } );
+} );
+</script>
+<script>
+$(document).ready(function() {
+  $('#searchresults').dataTable();
 } );
 </script>
 </body>
