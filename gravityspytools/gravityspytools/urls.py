@@ -22,6 +22,7 @@ urlpatterns = [
     url(r'^$', views.index, name='home'),
     url(r'^login/', include('login.urls'), name='login'),
     url(r'^logout/', include('logout.urls'), name='logout'),
+    url(r'^label/', include('label.urls'), name='label'),
     url(r'^search/', include('search.urls'), name='search'),
     url(r'^display-glitches-db/', include('display_glitches_DB.urls'), name='display_glitches_DB'),
     url(r'^collection-info/', include('collectioninfo.urls'), name='collectioninfo'),

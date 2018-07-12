@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+  
+{% block content %}
+
+<a class ="embimg" href="{{url1}}" TARGET="_blank" ><img class ="embimg"  src="{{url1}}"  alt="Gravity spy image" height="200" width="200"/>
+</a>
+<a class ="embimg" href="{{url2}}" TARGET="_blank" ><img class ="embimg"  src="{{url2}}"  alt="Gravity spy image" height="200" width="200"/>
+</a>
+<a class ="embimg" href="{{url3}}" TARGET="_blank" ><img class ="embimg"  src="{{url3}}"  alt="Gravity spy image" height="200" width="200"/>
+</a>
+<a class ="embimg" href="{{url4}}" TARGET="_blank" ><img class ="embimg"  src="{{url4}}"  alt="Gravity spy image" height="200" width="200"/>
+</a>
+
+<h1>Supply a Label for This Image</h1>
+<form action="/label/" method="post" style="display: inline;">
+    {% csrf_token %}
+
+    {% if form.errors %}
+        {% for field in form %}
+            {% for error in field.errors %}
+                <div class="alert alert-danger">
+                    <strong>{{ error|escape }}</strong>
+                </div>
+            {% endfor %}
+        {% endfor %}
+        {% for error in form.non_field_errors %}
+            <div class="alert alert-danger">
+                <strong>{{ error|escape }}</strong>
+            </div>
+        {% endfor %}
+    {% endif %}
+
+    <fieldset>
+    {% for field in form.visible_fields %}
+        <label>
+        {{ field.label }} : {{ field }}
+        </label>
+    {% endfor %}
+    </fieldset>
+
+    <input type="submit" value="Label Images" />
+</form>
+
+{% endblock %}
