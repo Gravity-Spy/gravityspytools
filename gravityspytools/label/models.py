@@ -53,6 +53,15 @@ class Label(models.Model):
         (WHISTLE, 'Whistle'),
     )
 
+    AGREE = 'AGREE'
+    DISAGREE = 'DISAGREE'
+
+    AGREEMENT_CHOICES = (
+        (AGREE, 'Agree'),
+        (DISAGREE, 'Disagree'),
+    )
+
     label = models.CharField(max_length=30, choices=LABEL_CHOICES,)
     uniqueID = models.CharField(max_length=10)
     user = models.ForeignKey(User)
+    agreed = models.CharField(max_length=8, choices=AGREEMENT_CHOICES,)
