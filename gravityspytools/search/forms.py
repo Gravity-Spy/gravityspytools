@@ -120,12 +120,37 @@ class LIGOSearchForm(forms.Form):
         (MULTIVIEW, 'Multiview Model'),
     )
 
+    H1 = "\'H1\'"
+    H1L1 = "\'H1\', \'L1\'"
+    H1L1V1 = "\'H1\', \'L1\', \'V1\'"
+    L1 = "\'L1\'"
+    L1V1 = "\'L1\', \'V1\'"
+    V1 = "\'V1\'"
+
+    IFO_CHOICES = (
+        (H1L1, 'H1 L1'),
+        (H1, 'H1'),
+        (H1L1V1, 'H1 L1 V1'),
+        (L1, 'L1'),
+        (L1V1, 'L1 V1'),
+        (V1, 'V1'),
+    )
+
+    ifo = forms.ChoiceField(choices=IFO_CHOICES,)
     database = forms.ChoiceField(choices=DATABASE_CHOICES,)
     def clean(self):
         cleaned_data = super(LIGOSearchForm, self).clean()
         zooid = cleaned_data.get('zooid')
         imageid = cleaned_data.get('imageid')
         gpstime = cleaned_data.get('gpstime')
+        ifos = cleaned_data.get('ifo')
+        database = cleaned_data.get('database')
+
+        if (('H1' in ifos) or ('V1' in ifos)) and database == 'updated_similarity_index':
+            raise forms.ValidationError("Sorry only L1 "
+                                        "images available with new "
+                                        "multiview model"
+                                        )
 
         if (zooid and imageid and gpstime) or (zooid and imageid) or \
                (zooid and gpstime) or (gpstime and imageid):
