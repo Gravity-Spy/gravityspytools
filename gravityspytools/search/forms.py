@@ -24,14 +24,40 @@ class SearchForm(forms.Form):
         (MULTIVIEW, 'Multiview Model'),
     )
 
+    H1 = "\'H1\'"
+    H1L1 = "\'H1\', \'L1\'"
+    H1L1V1 = "\'H1\', \'L1\', \'V1\'"
+    L1 = "\'L1\'"
+    L1V1 = "\'L1\', \'V1\'"
+    V1 = "\'V1\'"
+
+    IFO_CHOICES = (
+        (H1L1, 'H1 L1'),
+        (H1, 'H1'),
+        (H1L1V1, 'H1 L1 V1'),
+        (L1, 'L1'),
+        (L1V1, 'L1 V1'),
+        (V1, 'V1'),
+    )
+
     database = forms.ChoiceField(choices=DATABASE_CHOICES,)
     howmany = forms.IntegerField(label='How many similar images would you like to return', max_value=200, min_value=1)
     zooid = forms.CharField(label = 'This is the Zooniverse assigned random ID of the image (an integer value)', max_length=10, required=False)
     imageid = forms.CharField(label='The GravitySpy uniqueid (this is the 10 character hash that uniquely identifies all gravity spy images)', max_length=10, required=False)
+    ifo = forms.ChoiceField(choices=IFO_CHOICES,)
+
     def clean(self):
         cleaned_data = super(SearchForm, self).clean()
         zooid = cleaned_data.get('zooid')
         imageid = cleaned_data.get('imageid')
+        ifos = cleaned_data.get('ifo')
+        database = cleaned_data.get('database')
+ 
+        if (('H1' in ifos) or ('V1' in ifos)) and database == 'updated_similarity_index':
+            raise forms.ValidationError("Sorry only L1 "
+                                        "images available with new "
+                                        "multiview model"
+                                        )
 
         if zooid and imageid:
             raise forms.ValidationError("Please fill out "
