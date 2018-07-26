@@ -15,6 +15,16 @@ def get_gpstimes_json(name=''):
 
 
 class SearchForm(forms.Form):
+
+    SINGLEVIEW = 'similarityindex'
+    MULTIVIEW = 'updated_similarity_index'
+
+    DATABASE_CHOICES = (
+        (SINGLEVIEW, 'Single View Model'),
+        (MULTIVIEW, 'Multiview Model'),
+    )
+
+    database = forms.ChoiceField(choices=DATABASE_CHOICES,)
     howmany = forms.IntegerField(label='How many similar images would you like to return', max_value=200, min_value=1)
     zooid = forms.CharField(label = 'This is the Zooniverse assigned random ID of the image (an integer value)', max_length=10, required=False)
     imageid = forms.CharField(label='The GravitySpy uniqueid (this is the 10 character hash that uniquely identifies all gravity spy images)', max_length=10, required=False)
@@ -76,6 +86,15 @@ class LIGOSearchForm(forms.Form):
     zooid = forms.CharField(label = 'This is the Zooniverse assigned random ID of the image (an integer value)', max_length=10, required=False)
     imageid = forms.CharField(label='The GravitySpy uniqueid (this is the 10 character hash that uniquely identifies all gravity spy images)', max_length=10, required=False)
     gpstime = forms.CharField(label = 'Supply a gps time of an excess noise feature', required=False) 
+    SINGLEVIEW = 'similarityindex'
+    MULTIVIEW = 'updated_similarity_index'
+
+    DATABASE_CHOICES = (
+        (SINGLEVIEW, 'Single View Model'),
+        (MULTIVIEW, 'Multiview Model'),
+    )
+
+    database = forms.ChoiceField(choices=DATABASE_CHOICES,)
     def clean(self):
         cleaned_data = super(LIGOSearchForm, self).clean()
         zooid = cleaned_data.get('zooid')

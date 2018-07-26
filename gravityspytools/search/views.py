@@ -137,7 +137,8 @@ def histogram(request):
                 zooID = float(str(form.cleaned_data['zooid']))
             else:
                 zooID = form.cleaned_data['zooid']
-            fig = make_histogram(uniqueID, zooID)
+            database = str(form.cleaned_data['database'])
+            fig = make_histogram(uniqueID, zooID, database)
             canvas = FigureCanvas(fig)
             response = HttpResponse(content_type='image/png')
             canvas.print_png(response)
