@@ -1,9 +1,11 @@
 import datetime
 
+
 # Define GPS leap seconds
 def getleaps():
-        leaps = [46828800, 78364801, 109900802, 173059203, 252028804, 315187205,
-                 346723206, 393984007, 425520008, 457056009, 504489610, 551750411, 599184012, 820108813, 914803214, 1025136015, 1119744016, 1167264017]
+        leaps = [46828800, 78364801, 109900802, 173059203, 252028804, 
+                 315187205, 346723206, 393984007, 425520008, 457056009, 504489610,
+                 551750411, 599184012, 820108813, 914803214, 1025136015, 1119744016, 1167264017]
         return leaps
 
 
@@ -31,7 +33,7 @@ def countleaps(gpsTime, dirFlag):
             if (gpsTime >= leaps[i]):
                 nleaps += 1
         else:
-            print('ERROR Invalid Flag!')                                                
+            print('ERROR Invalid Flag!')
     return nleaps
 
 
@@ -47,4 +49,5 @@ def gps2unix(gpsTime):
 
 
 def gps2ppl(gpsTime):
-    return datetime.datetime.fromtimestamp(int(gps2unix(gpsTime))).strftime('%Y-%m-%d %H:%M')
+    return datetime.datetime.fromtimestamp(int(gps2unix(gpsTime)))\
+           .strftime('%Y-%m-%d %H:%M')
