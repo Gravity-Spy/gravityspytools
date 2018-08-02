@@ -5,4 +5,4 @@ from .models import Label
 class LabelForm(forms.ModelForm):
     class Meta:
         model = Label
-        fields = ['agreed', 'label']
+        fields = ['agreed', 'label', 'uniqueID']

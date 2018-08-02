@@ -67,6 +67,7 @@ def index(request):
                 if form.is_valid():
                     label = str(form.cleaned_data['label'])
                     agreed = str(form.cleaned_data['agreed'])
+                    uniqueID = str(form.cleaned_data['uniqueID'])
                     classification, created = Label.objects.get_or_create(label=label,
                                                                  agreed=agreed,
                                                                  uniqueID = uniqueID,
@@ -74,7 +75,7 @@ def index(request):
                     classification.save()
                     return redirect('/label/')
             else:
-                form = LabelForm(initial={'label': retired_label, 'agreed' : 'AGREE'})
+                form = LabelForm(initial={'label': retired_label, 'agreed' : 'AGREE', 'uniqueID' : uniqueID})
 
         return render(request, 'home.html', {'form': form,
                                              'url1' : list(url1)[0],
