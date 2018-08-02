@@ -6,6 +6,7 @@ from login.utils import make_authorization_url
 from .forms import LabelForm
 from .models import Label
 from gwpy.table import EventTable
+import os
 
 # Create your views here.
 convert_string_labels = {'1080Lines': '1080LINE',
@@ -34,8 +35,12 @@ convert_string_labels = {'1080Lines': '1080LINE',
 
 def index(request):
     if request.user.is_authenticated():
+        images_already_seen = EventTable.fetch('gravityspy',
+                                               'label_label WHERE user_id = {0}'.format(request.user.id),
+                                                columns=["uniqueID"],
+                                                db='gravityspytools', passwd=os.getenv('GRAVITYSPYTOOLS_DATABASE_PASSWD'), user=os.getenv('GRAVITYSPYTOOLS_DATABASE_USER'))
         image_to_be_displayed = EventTable.fetch('gravityspy',
-                                                 'retired_images_for_testing ORDER BY RANDOM() LIMIT 1',
+                                                 'retired_images_for_testing WHERE \"uniqueID\" NOT IN (\'{0}\') ORDER BY RANDOM() LIMIT 1'.format(str("','".join(list(images_already_seen['uniqueID'])))),
                                                  columns=['imgUrl1', 'imgUrl2', 'imgUrl3', 'imgUrl4', 'uniqueID', 'Label'])
         url1=image_to_be_displayed['imgUrl1']
         url2=image_to_be_displayed['imgUrl2']
