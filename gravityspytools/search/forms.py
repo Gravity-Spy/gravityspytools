@@ -3,15 +3,15 @@ from gwpy.table import EventTable
 
 
 def get_imageid_json(name=''):
-    return EventTable.fetch('gravityspy', 'similarityindex WHERE \"uniqueID\" ~ \'{0}\' LIMIT 20'.format(name), columns=["uniqueID"]).to_pandas().rename(columns={'uniqueID': 'value'}).to_json(orient='records')
+    return EventTable.fetch('gravityspy', 'updated_similarity_index WHERE \"uniqueID\" ~ \'{0}\' LIMIT 20'.format(name), columns=["uniqueID"]).to_pandas().rename(columns={'uniqueID': 'value'}).to_json(orient='records')
 
 
 def get_zooid_json(name=''):
-    return EventTable.fetch('gravityspy', 'similarityindex WHERE CAST(links_subjects AS TEXT) ~ \'{0}\' LIMIT 20'.format(name), columns=["links_subjects"]).to_pandas().astype(str).rename(columns={'links_subjects': 'value'}).to_json(orient='records')
+    return EventTable.fetch('gravityspy', 'updated_similarity_index WHERE CAST(links_subjects AS TEXT) ~ \'{0}\' LIMIT 20'.format(name), columns=["links_subjects"]).to_pandas().astype(str).rename(columns={'links_subjects': 'value'}).to_json(orient='records')
 
 
 def get_gpstimes_json(name=''):
-    return EventTable.fetch('gravityspy', 'similarityindex WHERE CAST(\"peakGPS\" AS TEXT) ~ \'{0}\' LIMIT 20'.format(name), columns=["peakGPS"]).to_pandas().astype(str).rename(columns={'peakGPS': 'value'}).to_json(orient='records')
+    return EventTable.fetch('gravityspy', 'updated_similarity_index WHERE CAST(\"peakGPS\" AS TEXT) ~ \'{0}\' LIMIT 20'.format(name), columns=["peakGPS"]).to_pandas().astype(str).rename(columns={'peakGPS': 'value'}).to_json(orient='records')
 
 
 class SearchForm(forms.Form):
@@ -20,8 +20,8 @@ class SearchForm(forms.Form):
     MULTIVIEW = 'updated_similarity_index'
 
     DATABASE_CHOICES = (
-        (SINGLEVIEW, 'Single View Model'),
         (MULTIVIEW, 'Multiview Model'),
+        (SINGLEVIEW, 'Single View Model'),
     )
 
     H1 = "\'H1\'"
@@ -53,9 +53,9 @@ class SearchForm(forms.Form):
         ifos = cleaned_data.get('ifo')
         database = cleaned_data.get('database')
  
-        if (('H1' in ifos) or ('V1' in ifos)) and database == 'updated_similarity_index':
-            raise forms.ValidationError("Sorry only L1 "
-                                        "images available with new "
+        if ('V1' in ifos) and database == 'updated_similarity_index':
+            raise forms.ValidationError("Sorry V1 is not "
+                                        "available with new "
                                         "multiview model"
                                         )
 
@@ -116,8 +116,8 @@ class LIGOSearchForm(forms.Form):
     MULTIVIEW = 'updated_similarity_index'
 
     DATABASE_CHOICES = (
-        (SINGLEVIEW, 'Single View Model'),
         (MULTIVIEW, 'Multiview Model'),
+        (SINGLEVIEW, 'Single View Model'),
     )
 
     H1 = "\'H1\'"
@@ -146,8 +146,8 @@ class LIGOSearchForm(forms.Form):
         ifos = cleaned_data.get('ifo')
         database = cleaned_data.get('database')
 
-        if (('H1' in ifos) or ('V1' in ifos)) and database == 'updated_similarity_index':
-            raise forms.ValidationError("Sorry only L1 "
+        if ('V1' in ifos) and database == 'updated_similarity_index':
+            raise forms.ValidationError("Sorry no V1 "
                                         "images available with new "
                                         "multiview model"
                                         )
