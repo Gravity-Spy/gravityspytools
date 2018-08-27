@@ -91,7 +91,7 @@ def create_collection(request, SI_glitches):
     collection.links.project = '1104'
     random_hash = id_generator()
     collection.display_name = 'Collection Similar to {0} ID {1}'.format(subject_id_requested, random_hash)
-    collection.private = False
+    collection.private = True
     urltmp = collection.save()
     collection_url = collection_url + urltmp['collections'][0]['slug']
     collection.add(SI_glitches.links_subjects.tolist())

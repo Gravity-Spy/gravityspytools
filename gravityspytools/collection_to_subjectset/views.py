@@ -58,9 +58,13 @@ def make_subjectset_from_collection(request):
             }
             workflow.first_task = "T0"
             workflow.save()
+            workflow.mobile_friendly = True
+            workflow.retirement = {u'criteria': u'classification_count',
+                                   u'options': {u'count': 5}}
+            workflow.save()
 
             workflow.add_subject_sets(subject_set)
 
-            return redirect("https://www.zooniverse.org/projects/sbc538/vet-new-classes") 
+            return redirect("https://www.zooniverse.org/projects/sbc538/vet-new-classes/")
         else:
             return render(request, 'subjectset_from_collection_form.html', {'form': form})
