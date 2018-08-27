@@ -53,12 +53,6 @@ class SearchForm(forms.Form):
         ifos = cleaned_data.get('ifo')
         database = cleaned_data.get('database')
  
-        if ('V1' in ifos) and database == 'updated_similarity_index':
-            raise forms.ValidationError("Sorry V1 is not "
-                                        "available with new "
-                                        "multiview model"
-                                        )
-
         if zooid and imageid:
             raise forms.ValidationError("Please fill out "
                                         "only one of the zooid "
@@ -77,7 +71,7 @@ class SearchForm(forms.Form):
                                             "occuring while the detector was not in a state to be taking quality data "
                                             "(i.e. people may have been working on the instrument at the time."
                                         )
-            if EventTable.fetch('gravityspy', 'similarityindex WHERE links_subjects = {0}'.format(zooid), columns=['links_subjects']).to_pandas().empty:
+            if EventTable.fetch('gravityspy', '{0} WHERE links_subjects = {1}'.format(database, zooid), columns=['links_subjects']).to_pandas().empty:
                 raise forms.ValidationError("zooid does not exist"
                                         )
 
@@ -87,7 +81,7 @@ class SearchForm(forms.Form):
                                             "occuring while the detector was not in a state to be taking quality data "
                                             "(i.e. people may have been working on the instrument at the time."
                                         )
-            elif EventTable.fetch('gravityspy', 'similarityindex WHERE \"uniqueID\" = \'{0}\''.format(imageid), columns=['uniqueID']).to_pandas().empty:
+            elif EventTable.fetch('gravityspy', '{0} WHERE \"uniqueID\" = \'{1}\''.format(database, imageid), columns=['uniqueID']).to_pandas().empty:
                 raise forms.ValidationError("uniqueid does not exist"
                                         )
 
@@ -146,12 +140,6 @@ class LIGOSearchForm(forms.Form):
         ifos = cleaned_data.get('ifo')
         database = cleaned_data.get('database')
 
-        if ('V1' in ifos) and database == 'updated_similarity_index':
-            raise forms.ValidationError("Sorry no V1 "
-                                        "images available with new "
-                                        "multiview model"
-                                        )
-
         if (zooid and imageid and gpstime) or (zooid and imageid) or \
                (zooid and gpstime) or (gpstime and imageid):
             raise forms.ValidationError("Please fill out "
@@ -166,12 +154,12 @@ class LIGOSearchForm(forms.Form):
                                         )
 
         if zooid and not imageid and not gpstime:
-            if EventTable.fetch('gravityspy', 'similarityindex WHERE links_subjects = {0}'.format(zooid), columns=['links_subjects']).to_pandas().empty:
+            if EventTable.fetch('gravityspy', '{0} WHERE links_subjects = {1}'.format(database, zooid), columns=['links_subjects']).to_pandas().empty:
                 raise forms.ValidationError("zooid does not exist"
                                         )
 
         if imageid and not zooid and not gpstime:
-            if EventTable.fetch('gravityspy', 'similarityindex WHERE \"uniqueID\" = \'{0}\''.format(imageid), columns=['uniqueID']).to_pandas().empty:
+            if EventTable.fetch('gravityspy', '{0} WHERE \"uniqueID\" = \'{1}\''.format(database, imageid), columns=['uniqueID']).to_pandas().empty:
                 raise forms.ValidationError("uniqueid does not exist"
                                         )
 

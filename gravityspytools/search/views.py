@@ -17,7 +17,7 @@ from .forms import get_gpstimes_json
 
 from .utils import similarity_search
 from .utils import create_collection
-from .utils import histogram as make_histogram
+from collectioninfo.utils import obtain_figure
 from login.utils import make_authorization_url
 
 import pandas as pd
@@ -79,9 +79,9 @@ def do_similarity_search(request):
         # check whether it's valid:
         if form.is_valid():
             SI_glitches = similarity_search(form)
-            histogramurl = request.get_full_path().replace('do_similarity_search', 'histogram')
+            daterangeurl = request.get_full_path().replace('do_similarity_search', 'daterange')
 
-            return render(request, 'searchresults.html', {'results': SI_glitches.to_dict(orient='records'), 'histogramurl' : histogramurl})
+            return render(request, 'searchresults.html', {'results': SI_glitches.to_dict(orient='records'), 'daterangeurl' : daterangeurl})
         else:
             return render(request, 'form.html', {'form': form}) 
 
@@ -121,7 +121,7 @@ def do_collection_creation(request):
             return render(request, 'form.html', {'form': form})
 
 
-def histogram(request):
+def daterange(request):
     # if this is a POST request we need to process the form data
     if request.method == 'GET':
 
@@ -129,16 +129,8 @@ def histogram(request):
         form = SearchForm(request.GET)
         # check whether it's valid:
         if form.is_valid():
-            if form.cleaned_data['imageid']:
-                uniqueID = str(form.cleaned_data['imageid'])
-            else:
-                uniqueID = form.cleaned_data['imageid']
-            if form.cleaned_data['zooid']:
-                zooID = float(str(form.cleaned_data['zooid']))
-            else:
-                zooID = form.cleaned_data['zooid']
-            database = str(form.cleaned_data['database'])
-            fig = make_histogram(uniqueID, zooID, database)
+            SI_glitches = similarity_search(form)
+            fig = obtain_figure(SI_glitches)
             canvas = FigureCanvas(fig)
             response = HttpResponse(content_type='image/png')
             canvas.print_png(response)
