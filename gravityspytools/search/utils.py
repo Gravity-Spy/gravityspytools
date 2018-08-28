@@ -77,25 +77,25 @@ def create_collection(request, SI_glitches):
     # merge relevantDBs into one DB
     collection_url = 'https://www.zooniverse.org/projects/zooniverse/gravity-spy/collections/'
 
-    client = panoptes_client.Panoptes()
     request = check_token(request)
-        
-    client.bearer_token = request.session['access_token']
-    client.bearer_expires = (
-        datetime.now()
-        + timedelta(seconds=request.session['expires_in'])
-    )
-    client.logged_in = True
 
-    collection = panoptes_client.Collection()
-    collection.links.project = '1104'
-    random_hash = id_generator()
-    collection.display_name = 'Collection Similar to {0} ID {1}'.format(subject_id_requested, random_hash)
-    collection.private = True
-    urltmp = collection.save()
-    collection_url = collection_url + urltmp['collections'][0]['slug']
-    collection.add(SI_glitches.links_subjects.tolist())
-    collection.set_default_subject(subject_id_requested)
+    with panoptes_client.Panoptes() as client:
+        client.bearer_token = request.session['access_token']
+        client.bearer_expires = (
+            datetime.now()
+            + timedelta(seconds=request.session['expires_in'])
+        )
+        client.logged_in = True
+        
+        collection = panoptes_client.Collection()
+        collection.links.project = '1104'
+        random_hash = id_generator()
+        collection.display_name = 'Collection Similar to {0} ID {1}'.format(subject_id_requested, random_hash)
+        collection.private = True
+        urltmp = collection.save()
+        collection_url = collection_url + urltmp['collections'][0]['slug']
+        collection.add(SI_glitches.links_subjects.tolist())
+        collection.set_default_subject(subject_id_requested)
 
     return collection_url
 

@@ -50,7 +50,7 @@ class SearchForm(forms.Form):
         cleaned_data = super(SearchForm, self).clean()
         zooid = cleaned_data.get('zooid')
         imageid = cleaned_data.get('imageid')
-        ifos = cleaned_data.get('ifo')
+        ifos = str(cleaned_data.get('ifo'))
         database = cleaned_data.get('database')
  
         if zooid and imageid:
@@ -75,6 +75,10 @@ class SearchForm(forms.Form):
                 raise forms.ValidationError("zooid does not exist"
                                         )
 
+            elif EventTable.fetch('gravityspy', '{0} WHERE links_subjects = {1} AND ifo IN ({2})'.format(database, zooid, ifos), columns=['links_subjects']).to_pandas().empty:
+                raise forms.ValidationError("This image is not from one of the interferometers you selected"
+                                        )
+
         if imageid and not zooid:
             if not EventTable.fetch('gravityspy', 'nonanalysisreadyids WHERE \"uniqueID\" = \'{0}\''.format(imageid)).to_pandas().empty:
                 raise forms.ValidationError("This uniqueID is one of a handful of glitches that were mistakenly uploaded, despite being glitches"
@@ -83,6 +87,9 @@ class SearchForm(forms.Form):
                                         )
             elif EventTable.fetch('gravityspy', '{0} WHERE \"uniqueID\" = \'{1}\''.format(database, imageid), columns=['uniqueID']).to_pandas().empty:
                 raise forms.ValidationError("uniqueid does not exist"
+                                        )
+            elif EventTable.fetch('gravityspy', '{0} WHERE \"uniqueID\" = \'{1}\' AND ifo IN ({2})'.format(database, imageid, ifos), columns=['uniqueID']).to_pandas().empty:
+                raise forms.ValidationError("This image is not from one of the interferometers you selected"
                                         )
 
 
