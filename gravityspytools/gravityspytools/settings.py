@@ -57,6 +57,7 @@ INSTALLED_APPS = [
     'login',
     'logout',
     'search',
+    'retrain_model',
     'home',
     'collection_to_subjectset',
     'collectioninfo',

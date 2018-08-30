@@ -19,8 +19,13 @@ class ZooAuthenticationBackend:
             # Check if the assertion was valid
             if verification_data['users'][0]['login']:
                 zooniverse_username = verification_data['users'][0]['login']
+                email = verification_data['users'][0]['email']
                 user, created  = User.objects.get_or_create(username=zooniverse_username)
                 if created:
+                    user.email = email
+                    user.save()
+                else:
+                    user.email = email
                     user.save()
                 return user
             else:
