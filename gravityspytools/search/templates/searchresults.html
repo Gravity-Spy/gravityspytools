@@ -2,10 +2,58 @@
 
 {% block content %}
 
+<h1>Time Distribution of Glitches</h1>
+
 <a class ="embimg" href="{{daterangeurl}}" TARGET="_blank" >
 <img src="{{daterangeurl}}">
 </a>
 
+<br>
+<br>
+
+<h1>Search Form</h1>
+<div>
+  <form action="/search/do_collection_creation/" method="post" style="display: inline;">
+    {% if form.errors %}
+        {% for field in form %}
+            {% for error in field.errors %}
+                <div class="alert alert-danger">
+                    <strong>{{ error|escape }}</strong>
+                </div>
+            {% endfor %}
+        {% endfor %}
+        {% for error in form.non_field_errors %}
+            <div class="alert alert-danger">
+                <strong>{{ error|escape }}</strong>
+            </div>
+        {% endfor %}
+    {% endif %}
+
+    {% csrf_token %}
+
+    <fieldset>
+    {% for field in form.visible_fields %}
+        {% if field.id_for_label == 'id_imageid' or field.id_for_label == 'id_zooid' or field.id_for_label == 'id_gpstime' %}
+          <label class="ui-widget">
+            {{ field.label }} : {{ field }}
+          </label>
+        {% else %}
+          <label>
+            {{ field.label }} : {{ field }}
+          </label>
+        {% endif %}
+    {% endfor %}
+    </fieldset>
+
+    <button type="submit">Create Zoo Collection</button>
+  </form>
+</div>
+
+<br>
+<br>
+<br>
+
+<h1>Search Results</h1>
 {% for ientry in results %}
 {% if ientry.uniqueID == ientry.searchedID %}
 <table style="border:3px;border-collapse:collapse;padding:15px;width:75%;" >

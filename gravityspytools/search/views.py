@@ -81,7 +81,7 @@ def do_similarity_search(request):
             SI_glitches = similarity_search(form)
             daterangeurl = request.get_full_path().replace('do_similarity_search', 'daterange')
 
-            return render(request, 'searchresults.html', {'results': SI_glitches.to_dict(orient='records'), 'daterangeurl' : daterangeurl})
+            return render(request, 'searchresults.html', {'results': SI_glitches.to_dict(orient='records'), 'daterangeurl' : daterangeurl, 'form': form})
         else:
             return render(request, 'form.html', {'form': form}) 
 
