@@ -13,6 +13,8 @@ def obtain_figure(SI_glitches):
     oldestGPS = SI_glitches['date'].min()
 
     bins = (newestGPS - oldestGPS).days/7
+    if bins == 0:
+        bins = 1
 
     ax = SI_glitches['date'].hist(bins=bins, xrot=45)
     fig = ax.get_figure()
