@@ -2,8 +2,6 @@ from matplotlib import use
 use('agg')
 from matplotlib import pyplot
 
-import timeconvert
-import datetime
 from gwpy.time import from_gps
 
 def obtain_figure(SI_glitches):
