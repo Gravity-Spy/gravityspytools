@@ -106,8 +106,8 @@ def id_generator(size=5, chars=string.ascii_uppercase + string.digits +string.as
 
 def makelink(x):
     # This horrendous thing obtains the public html path for image
-    interMediatePath = '/'.join(filter(None,str(x.iloc[1]).replace('public_html', '').split('/'))[1:-1])
-    imagename = filter(None,str(x.iloc[1]).split('/'))[-1]
+    interMediatePath = '/'.join([x for x in str(x.iloc[1]).replace('public_html', '').split('/') if x][1:-1])
+    imagename = str(x.iloc[1]).split('/')[-1]
     if x.iloc[0] == 'L1':
         return 'https://ldas-jobs.ligo-la.caltech.edu/~{0}/{1}'.format(interMediatePath, imagename)
     elif x.iloc[0] == 'V1':
@@ -119,7 +119,7 @@ def makelink(x):
 def check_token(request):
     if (datetime.now()-datetime(1970,1,1)).total_seconds() > (request.session['token_start_time'] +
                          request.session['expires_in']):
-        access_token, expires_in, refresh_token, token_start_time = get_token_refresh(code)
+        access_token, expires_in, refresh_token, token_start_time = get_token_refresh(request.session['refresh_token'])
         request.session["access_token"] = access_token
         request.session["expires_in"] = expires_in
         request.session["refresh_token"] = refresh_token
