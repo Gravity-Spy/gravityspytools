@@ -1,6 +1,8 @@
 django
+requests
 gwpy
 django-sslserver
 psycopg2-binary
 sqlalchemy
 pandas
+git+https://github.com/zooniverse/panoptes-python-client.git

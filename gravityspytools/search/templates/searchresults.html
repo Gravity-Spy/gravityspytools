@@ -82,6 +82,14 @@
       {{ientry.ifo}}
     </td >
   </tr>
+  <tr class ="noborder" >
+    <td class ="noborder" >
+      Similarity Score
+    </td >
+    <td class ="noborder" >
+      {{ientry.distances}}
+    </td >
+  </tr>
   {% if request.session.auth_user_backend == 'django.contrib.auth.backends.RemoteUserBackend' %}
   <tr class ="noborder" >
     <td class ="noborder" >
@@ -122,6 +130,7 @@
             <th>SNR</th>
             <th>Peak Frequency</th>
             <th>ifo</th>
+            <th>Similarity Score</th>
             {% if request.session.auth_user_backend == 'django.contrib.auth.backends.RemoteUserBackend' %}
                 <th>gps time</th>
             {% endif %}
@@ -144,6 +153,7 @@
                 <td> {{ientry.snr}} </td>
                 <td> {{ientry.peak_frequency}} </td>
                 <td> {{ientry.ifo}} </td>
+                <td> {{ientry.distances}} </td>
                 {% if request.session.auth_user_backend == 'django.contrib.auth.backends.RemoteUserBackend' %}
                     <td>{{ientry.peakGPS}}</td>
                 {% endif %}

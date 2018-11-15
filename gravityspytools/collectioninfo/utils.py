@@ -10,7 +10,7 @@ def obtain_figure(SI_glitches):
     newestGPS = SI_glitches['date'].max() 
     oldestGPS = SI_glitches['date'].min()
 
-    bins = (newestGPS - oldestGPS).days/7
+    bins = int((newestGPS - oldestGPS).days/7)
     if bins == 0:
         bins = 1
 

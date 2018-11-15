@@ -14,7 +14,7 @@ def make_authorization_url(
         "redirect_uri" : REDIRECT_URI,
         "scope" : 'collection+public',
              }
-    return BASE_URL + '?' + urllib.unquote_plus(urllib.urlencode(params))
+    return BASE_URL + '?' + urllib.parse.unquote_plus(urllib.parse.urlencode(params))
 
 
 def get_token(code,

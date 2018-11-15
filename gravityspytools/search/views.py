@@ -3,6 +3,7 @@
 
 from django.shortcuts import render, redirect
 import os
+import io
 import subprocess
 from django.http import HttpResponse
 from django.http import JsonResponse
@@ -132,8 +133,9 @@ def daterange(request):
             SI_glitches = similarity_search(form)
             fig = obtain_figure(SI_glitches)
             canvas = FigureCanvas(fig)
-            response = HttpResponse(content_type='image/png')
-            canvas.print_png(response)
+            buf = io.BytesIO()
+            canvas.print_png(buf)
+            response=HttpResponse(buf.getvalue(),content_type='image/png')
             fig.clear()
             return response
 
