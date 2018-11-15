@@ -1,8 +1,8 @@
-django
+django >= 2.1.0
 requests
-gwpy
+gwpy >= 0.12.0
 django-sslserver
 psycopg2-binary
 sqlalchemy
-pandas
+pandas == 0.22
 git+https://github.com/zooniverse/panoptes-python-client.git
