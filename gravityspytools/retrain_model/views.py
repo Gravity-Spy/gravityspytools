@@ -12,7 +12,7 @@ from .models import NewClass
 from gwpy.table import EventTable
 
 def index(request):
-    if request.user.is_authenticated():
+    if request.user.is_authenticated:
         form = NewClassForm()
         return render(request, 'retrain-model-form.html', {'form': form})
     else:

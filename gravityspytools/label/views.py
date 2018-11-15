@@ -34,7 +34,7 @@ convert_string_labels = {'1080Lines': '1080LINE',
 }
 
 def index(request):
-    if request.user.is_authenticated():
+    if request.user.is_authenticated:
         images_already_seen = EventTable.fetch('gravityspy',
                                                'label_label WHERE user_id = {0}'.format(request.user.id),
                                                 columns=["uniqueID"],

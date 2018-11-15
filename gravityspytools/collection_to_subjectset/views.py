@@ -13,7 +13,7 @@ from django.http import HttpResponse
 
 
 def index(request):
-    if request.user.is_authenticated():
+    if request.user.is_authenticated:
         form = SearchForm()
         return render(request, 'subjectset_from_collection_form.html', {'form': form})
     else:

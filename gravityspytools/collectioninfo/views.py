@@ -16,7 +16,7 @@ from .utils import obtain_figure
 # Create your views here.
 
 def index(request):
-    if request.user.is_authenticated():
+    if request.user.is_authenticated:
         form = SearchForm()
         return render(request, 'collectioninfo.html', {'form': form})
     else:

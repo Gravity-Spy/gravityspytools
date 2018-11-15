@@ -13,7 +13,7 @@ class NewClass(models.Model):
     collection_name = models.CharField(max_length=100,)
     new_class_name = models.CharField(max_length=30,)
 
-    user = models.ForeignKey(User)
+    user = models.ForeignKey(User, on_delete=models.DO_NOTHING,)
     new_subjects = ArrayField(models.CharField(max_length=10), blank=True)
 
     created_at = models.DateTimeField(auto_now_add=True)

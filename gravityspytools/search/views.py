@@ -57,7 +57,7 @@ def get_gpstimes(request):
 
 
 def index(request):
-    if request.user.is_authenticated():
+    if request.user.is_authenticated:
         request.session['auth_user_backend'] = request.session['_auth_user_backend']
         if request.session['auth_user_backend'] == 'django.contrib.auth.backends.RemoteUserBackend':
             form = LIGOSearchForm()

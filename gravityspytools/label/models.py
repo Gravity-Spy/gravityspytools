@@ -63,5 +63,5 @@ class Label(models.Model):
 
     label = models.CharField(max_length=30, choices=LABEL_CHOICES,)
     uniqueID = models.CharField(max_length=10)
-    user = models.ForeignKey(User)
+    user = models.ForeignKey(User, on_delete=models.DO_NOTHING,)
     agreed = models.CharField(max_length=8, choices=AGREEMENT_CHOICES,)
