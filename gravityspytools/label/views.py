@@ -35,8 +35,14 @@ convert_string_labels = {'1080Lines': '1080LINE',
 
 def index(request):
     if request.user.is_authenticated:
+        if request.user.id == 3:
+            other_id = 37
+        elif request.user.id == 37:
+            other_id = 3
+        else:
+            other_id = -1
         images_already_seen = EventTable.fetch('gravityspy',
-                                               'label_label WHERE user_id = {0}'.format(request.user.id),
+                                               'label_label WHERE user_id IN (40, {0}, {1})'.format(other_id, request.user.id),
                                                 columns=["uniqueID"],
                                                 db='gravityspytools', passwd=os.getenv('GRAVITYSPYTOOLS_DATABASE_PASSWD'), user=os.getenv('GRAVITYSPYTOOLS_DATABASE_USER'))
         image_to_be_displayed = EventTable.fetch('gravityspy',
