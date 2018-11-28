@@ -41,13 +41,10 @@ def index(request):
             other_id = 3
         else:
             other_id = -1
-        images_already_seen = EventTable.fetch('gravityspy',
-                                               'label_label WHERE user_id IN (40, {0}, {1})'.format(other_id, request.user.id),
-                                                columns=["uniqueID"],
-                                                db='gravityspytools', passwd=os.getenv('GRAVITYSPYTOOLS_DATABASE_PASSWD'), user=os.getenv('GRAVITYSPYTOOLS_DATABASE_USER'))
+
         image_to_be_displayed = EventTable.fetch('gravityspy',
-                                                 'retired_images_for_testing WHERE \"uniqueID\" NOT IN (\'{0}\') ORDER BY RANDOM() LIMIT 1'.format(str("','".join(list(images_already_seen['uniqueID'])))),
-                                                 columns=['imgUrl1', 'imgUrl2', 'imgUrl3', 'imgUrl4', 'uniqueID', 'Label'])
+                                                 'retired_images_for_testing WHERE \"uniqueID\" NOT IN (SELECT \"uniqueID\" FROM label_label WHERE user_id IN (40, {0}, {1})) ORDER BY RANDOM() LIMIT 1'.format(other_id, request.user.id),
+                                                 columns=['imgUrl1', 'imgUrl2', 'imgUrl3', 'imgUrl4', 'uniqueID', 'Label'], db='gravityspytools', passwd=os.getenv('GRAVITYSPYTOOLS_DATABASE_PASSWD'), user=os.getenv('GRAVITYSPYTOOLS_DATABASE_USER'))
         url1=image_to_be_displayed['imgUrl1']
         url2=image_to_be_displayed['imgUrl2']
         url3=image_to_be_displayed['imgUrl3']
