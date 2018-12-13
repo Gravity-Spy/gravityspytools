@@ -44,13 +44,13 @@ def index(request):
 
         image_to_be_displayed = EventTable.fetch('gravityspy',
                                                  'retired_images_for_testing WHERE \"gravityspy_id\" NOT IN (SELECT \"gravityspy_id\" FROM label_label WHERE user_id IN (40, {0}, {1})) ORDER BY RANDOM() LIMIT 1'.format(other_id, request.user.id),
-                                                 columns=['url1', 'url2', 'url3', 'url4', 'gravityspy_id', 'Label'], db='gravityspytools', passwd=os.getenv('GRAVITYSPYTOOLS_DATABASE_PASSWD'), user=os.getenv('GRAVITYSPYTOOLS_DATABASE_USER'))
+                                                 columns=['url1', 'url2', 'url3', 'url4', 'gravityspy_id', 'ml_label'], db='gravityspytools', passwd=os.getenv('GRAVITYSPYTOOLS_DATABASE_PASSWD'), user=os.getenv('GRAVITYSPYTOOLS_DATABASE_USER'))
         url1=image_to_be_displayed['url1']
         url2=image_to_be_displayed['url2']
         url3=image_to_be_displayed['url3']
         url4=image_to_be_displayed['url4']
         gravityspy_id = list(image_to_be_displayed['gravityspy_id'])[0]
-        retired_label = str(list(image_to_be_displayed['Label'])[0])
+        retired_label = str(list(image_to_be_displayed['ml_label'])[0])
         retired_label = convert_string_labels[retired_label]
 
         # Check if this image has already been seen by this user
