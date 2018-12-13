@@ -96,7 +96,7 @@ def similarity_search_restful_API(request):
         # check whether it's valid:
         if form.is_valid():
             SI_glitches = similarity_search(form)
-            SI_glitches = SI_glitches[['ifo', 'peak_frequency', 'links_subjects', 'Label', 'searchedID', 'snr', 'uniqueID', 'searchedzooID', 'imgUrl4', 'imgUrl3', 'imgUrl2', 'imgUrl1']]
+            SI_glitches = SI_glitches[['ifo', 'peak_frequency', 'links_subjects', 'ml_label', 'searchedID', 'snr', 'gravityspy_id', 'searchedzooID', 'url4', 'url3', 'url2', 'url1']]
 
             return JsonResponse(SI_glitches.to_dict(orient='list'))
 

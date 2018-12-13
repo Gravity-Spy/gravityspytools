@@ -7,15 +7,15 @@
 {% endfor %}
 
 {% for ientry in results %}
-{% if ientry.uniqueID == ientry.searchedID %}
+{% if ientry.gravityspy_id == ientry.searchedID %}
 <table style="border:3px;border-collapse:collapse;padding:15px;width:75%;" >
  <tbody>
   <tr class ="noborder" >
     <td class ="noborder" >
-      uniqueID
+      gravityspy_id
     </td >
     <td class ="noborder" >
-      {{ientry.uniqueID}}
+      {{ientry.gravityspy_id}}
     </td >
   </tr>
   <tr class ="noborder" >
@@ -29,13 +29,13 @@
  </tbody></table>
 
     <td class ="noborder" style="padding:15px;" >
-      <a class ="embimg" href="{{ientry.imgUrl1}}" TARGET="_blank" ><img class ="embimg"  src="{{ientry.imgUrl1}}"  alt="Gravity spy image" height="150" width="150"/>
+      <a class ="embimg" href="{{ientry.url1}}" TARGET="_blank" ><img class ="embimg"  src="{{ientry.url1}}"  alt="Gravity spy image" height="150" width="150"/>
 </a>
-      <a class ="embimg" href="{{ientry.imgUrl2}}" TARGET="_blank" ><img class ="embimg"  src="{{ientry.imgUrl2}}"  alt="Gravity spy image" height="150" width="150"/>
+      <a class ="embimg" href="{{ientry.url2}}" TARGET="_blank" ><img class ="embimg"  src="{{ientry.url2}}"  alt="Gravity spy image" height="150" width="150"/>
 </a>
-      <a class ="embimg" href="{{ientry.imgUrl3}}" TARGET="_blank" ><img class ="embimg"  src="{{ientry.imgUrl3}}"  alt="Gravity spy image" height="150" width="150"/>
+      <a class ="embimg" href="{{ientry.url3}}" TARGET="_blank" ><img class ="embimg"  src="{{ientry.url3}}"  alt="Gravity spy image" height="150" width="150"/>
 </a>
-      <a class ="embimg" href="{{ientry.imgUrl4}}" TARGET="_blank" ><img class ="embimg"  src="{{ientry.imgUrl4}}"  alt="Gravity spy image" height="150" width="150"/>
+      <a class ="embimg" href="{{ientry.url4}}" TARGET="_blank" ><img class ="embimg"  src="{{ientry.url4}}"  alt="Gravity spy image" height="150" width="150"/>
 </a>
     </td >
 </table>
@@ -52,7 +52,7 @@
            <thead>
               <tr>
                 <th>image</th>
-                <th>uniqueID</th>
+                <th>gravityspy_id</th>
                 <th>zooID</th>
                 <th>SNR</th>
                 <th>Peak Frequency</th>
@@ -61,16 +61,16 @@
            </thead>
                 <tr>
                     <td class ="noborder" style="padding:15px;" >
-                      <a class ="embimg" href="{{ientry.imgUrl1}}" TARGET="_blank" ><img class ="embimg"  src="{{ientry.imgUrl1}}"  alt="Gravity spy image" height="150" width="150"/>
+                      <a class ="embimg" href="{{ientry.url1}}" TARGET="_blank" ><img class ="embimg"  src="{{ientry.url1}}"  alt="Gravity spy image" height="150" width="150"/>
                 </a>
-                      <a class ="embimg" href="{{ientry.imgUrl2}}" TARGET="_blank" ><img class ="embimg"  src="{{ientry.imgUrl2}}"  alt="Gravity spy image" height="150" width="150"/>
+                      <a class ="embimg" href="{{ientry.url2}}" TARGET="_blank" ><img class ="embimg"  src="{{ientry.url2}}"  alt="Gravity spy image" height="150" width="150"/>
                 </a>
-                      <a class ="embimg" href="{{ientry.imgUrl3}}" TARGET="_blank" ><img class ="embimg"  src="{{ientry.imgUrl3}}"  alt="Gravity spy image" height="150" width="150"/>
+                      <a class ="embimg" href="{{ientry.url3}}" TARGET="_blank" ><img class ="embimg"  src="{{ientry.url3}}"  alt="Gravity spy image" height="150" width="150"/>
                 </a>
-                      <a class ="embimg" href="{{ientry.imgUrl4}}" TARGET="_blank" ><img class ="embimg"  src="{{ientry.imgUrl4}}"  alt="Gravity spy image" height="150" width="150"/>
+                      <a class ="embimg" href="{{ientry.url4}}" TARGET="_blank" ><img class ="embimg"  src="{{ientry.url4}}"  alt="Gravity spy image" height="150" width="150"/>
                 </a>
                     </td >
-                    <td> {{ientry.uniqueID}} </td>
+                    <td> {{ientry.gravityspy_id}} </td>
                     <td> {{ientry.links_subjects}} </td>
                     <td> {{ientry.snr}} </td>
                     <td> {{ientry.peak_frequency}} </td>

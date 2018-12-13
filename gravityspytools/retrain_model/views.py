@@ -36,8 +36,8 @@ def retrain_model(request):
             subjects_in_collection = [str(isubject) for isubject in subjects_in_collection]
 
             new_subjects = list(EventTable.fetch('gravityspy',
-                                                 'glitches WHERE CAST(links_subjects AS FLOAT) IN ({0})'.format(str(",".join(subjects_in_collection))),
-                                                  columns=["uniqueID"])['uniqueID'])
+                                                 'glitches_v2d0 WHERE CAST(links_subjects AS FLOAT) IN ({0})'.format(str(",".join(subjects_in_collection))),
+                                                  columns=["gravityspy_id"])['gravityspy_id'])
 
             requested_model, created = NewClass.objects.get_or_create(collection_owner=collection_owner,
                                                                       collection_name=collection_name,

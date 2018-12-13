@@ -43,19 +43,19 @@ def index(request):
             other_id = -1
 
         image_to_be_displayed = EventTable.fetch('gravityspy',
-                                                 'retired_images_for_testing WHERE \"uniqueID\" NOT IN (SELECT \"uniqueID\" FROM label_label WHERE user_id IN (40, {0}, {1})) ORDER BY RANDOM() LIMIT 1'.format(other_id, request.user.id),
-                                                 columns=['imgUrl1', 'imgUrl2', 'imgUrl3', 'imgUrl4', 'uniqueID', 'Label'], db='gravityspytools', passwd=os.getenv('GRAVITYSPYTOOLS_DATABASE_PASSWD'), user=os.getenv('GRAVITYSPYTOOLS_DATABASE_USER'))
-        url1=image_to_be_displayed['imgUrl1']
-        url2=image_to_be_displayed['imgUrl2']
-        url3=image_to_be_displayed['imgUrl3']
-        url4=image_to_be_displayed['imgUrl4']
-        uniqueID = list(image_to_be_displayed['uniqueID'])[0]
+                                                 'retired_images_for_testing WHERE \"gravityspy_id\" NOT IN (SELECT \"gravityspy_id\" FROM label_label WHERE user_id IN (40, {0}, {1})) ORDER BY RANDOM() LIMIT 1'.format(other_id, request.user.id),
+                                                 columns=['url1', 'url2', 'url3', 'url4', 'gravityspy_id', 'Label'], db='gravityspytools', passwd=os.getenv('GRAVITYSPYTOOLS_DATABASE_PASSWD'), user=os.getenv('GRAVITYSPYTOOLS_DATABASE_USER'))
+        url1=image_to_be_displayed['url1']
+        url2=image_to_be_displayed['url2']
+        url3=image_to_be_displayed['url3']
+        url4=image_to_be_displayed['url4']
+        gravityspy_id = list(image_to_be_displayed['gravityspy_id'])[0]
         retired_label = str(list(image_to_be_displayed['Label'])[0])
         retired_label = convert_string_labels[retired_label]
 
         # Check if this image has already been seen by this user
         try:
-            does_exist = Label.objects.get(uniqueID=uniqueID,
+            does_exist = Label.objects.get(gravityspy_id=gravityspy_id,
                                            user=request.user)
         except:
             does_exist = False
@@ -70,15 +70,15 @@ def index(request):
                 if form.is_valid():
                     label = str(form.cleaned_data['label'])
                     agreed = str(form.cleaned_data['agreed'])
-                    uniqueID = str(form.cleaned_data['uniqueID'])
+                    gravityspy_id = str(form.cleaned_data['gravityspy_id'])
                     classification, created = Label.objects.get_or_create(label=label,
                                                                  agreed=agreed,
-                                                                 uniqueID = uniqueID,
+                                                                 gravityspy_id = gravityspy_id,
                                                                  user=request.user)
                     classification.save()
                     return redirect('/label/')
             else:
-                form = LabelForm(initial={'label': retired_label, 'agreed' : 'AGREE', 'uniqueID' : uniqueID})
+                form = LabelForm(initial={'label': retired_label, 'agreed' : 'AGREE', 'gravityspy_id' : gravityspy_id})
 
         return render(request, 'home.html', {'form': form,
                                              'url1' : list(url1)[0],

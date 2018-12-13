@@ -11,7 +11,7 @@
        <thead>
           <tr>
             <th>image</th>
-            <th>uniqueID</th>
+            <th>gravityspy_id</th>
             <th>SNR</th>
             <th>Peak Frequency</th>
          </tr>
@@ -19,16 +19,16 @@
         {% for ientry in results %}
             <tr>
                 <td class ="noborder" style="padding:15px;" >
-                  <a class ="embimg" href="{{ientry.imgUrl1}}" TARGET="_blank" ><img class ="embimg"  src="{{ientry.imgUrl1}}"  alt="Gravity spy image" height="150" width="150"/>
+                  <a class ="embimg" href="{{ientry.url1}}" TARGET="_blank" ><img class ="embimg"  src="{{ientry.url1}}"  alt="Gravity spy image" height="150" width="150"/>
             </a>
-                  <a class ="embimg" href="{{ientry.imgUrl2}}" TARGET="_blank" ><img class ="embimg"  src="{{ientry.imgUrl2}}"  alt="Gravity spy image" height="150" width="150"/>
+                  <a class ="embimg" href="{{ientry.url2}}" TARGET="_blank" ><img class ="embimg"  src="{{ientry.url2}}"  alt="Gravity spy image" height="150" width="150"/>
             </a>
-                  <a class ="embimg" href="{{ientry.imgUrl3}}" TARGET="_blank" ><img class ="embimg"  src="{{ientry.imgUrl3}}"  alt="Gravity spy image" height="150" width="150"/>
+                  <a class ="embimg" href="{{ientry.url3}}" TARGET="_blank" ><img class ="embimg"  src="{{ientry.url3}}"  alt="Gravity spy image" height="150" width="150"/>
             </a>
-                  <a class ="embimg" href="{{ientry.imgUrl4}}" TARGET="_blank" ><img class ="embimg"  src="{{ientry.imgUrl4}}"  alt="Gravity spy image" height="150" width="150"/>
+                  <a class ="embimg" href="{{ientry.url4}}" TARGET="_blank" ><img class ="embimg"  src="{{ientry.url4}}"  alt="Gravity spy image" height="150" width="150"/>
             </a>
                 </td >
-                <td> {{ientry.uniqueID}} </td>
+                <td> {{ientry.gravityspy_id}} </td>
                 <td> {{ientry.snr}} </td>
                 <td> {{ientry.peak_frequency}} </td>
             </tr>
