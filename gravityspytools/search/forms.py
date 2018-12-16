@@ -40,11 +40,25 @@ class SearchForm(forms.Form):
         (V1, 'V1'),
     )
 
+    ALL = "event_time BETWEEN 1126400000 AND 1229176818"
+    O1 = "event_time BETWEEN 1126400000 AND 1137250000"
+    ER10 = "event_time BETWEEN 1161907217 AND 1164499217"
+    O2a = "event_time BETWEEN 1164499217 AND 1219276818"
+    ER13 = "event_time BETWEEN 1228838418 AND 1229176818"
+    ERAS = (
+        (ALL, 'ALL'),
+        (O1, 'O1'),
+        (ER10, 'ER10'),
+        (O2a, 'O2a'),
+        (ER13, 'ER13'),
+    )
+
     database = forms.ChoiceField(choices=DATABASE_CHOICES,)
     howmany = forms.IntegerField(label='How many similar images would you like to return', max_value=200, min_value=1)
     zooid = forms.CharField(label = 'This is the Zooniverse assigned random ID of the image (an integer value)', max_length=10, required=False)
     imageid = forms.CharField(label='The GravitySpy uniqueid (this is the 10 character hash that uniquely identifies all gravity spy images)', max_length=10, required=False)
     ifo = forms.ChoiceField(choices=IFO_CHOICES,)
+    era = forms.ChoiceField(choices=ERAS,)
 
     def clean(self):
         cleaned_data = super(SearchForm, self).clean()
@@ -52,6 +66,7 @@ class SearchForm(forms.Form):
         imageid = cleaned_data.get('imageid')
         ifos = str(cleaned_data.get('ifo'))
         database = cleaned_data.get('database')
+        era = cleaned_data.get('era')
  
         if zooid and imageid:
             raise forms.ValidationError("Please fill out "
