@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+  
+{% block content %}
+
+<h1>Retrain Model with New Class From Collection</h1>
+<form action="/retrain-model/retrain-model/" method="post" style="display: inline;">
+
+    {% csrf_token %}
+
+    {% if form.errors %}
+        {% for field in form %}
+            {% for error in field.errors %}
+                <div class="alert alert-danger">
+                    <strong>{{ error|escape }}</strong>
+                </div>
+            {% endfor %}
+        {% endfor %}
+        {% for error in form.non_field_errors %}
+            <div class="alert alert-danger">
+                <strong>{{ error|escape }}</strong>
+            </div>
+        {% endfor %}
+    {% endif %}
+
+    <fieldset>
+    {% for field in form.visible_fields %}
+        <label>
+        {{ field.label }} : {{ field }}
+        </label>
+    {% endfor %}
+    </fieldset>
+
+    <input type="submit" value="Add New Class and Train New Model" />
+</form>
+
+{% endblock %}

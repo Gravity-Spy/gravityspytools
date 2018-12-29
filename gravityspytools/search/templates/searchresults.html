@@ -2,20 +2,68 @@
 
 {% block content %}
 
-<a class ="embimg" href="{{histogramurl}}" TARGET="_blank" >
-<img src="{{histogramurl}}">
+<h1>Time Distribution of Glitches</h1>
+
+<a class ="embimg" href="{{daterangeurl}}" TARGET="_blank" >
+<img src="{{daterangeurl}}">
 </a>
 
+<br>
+<br>
+
+<h1>Search Form</h1>
+<div>
+  <form action="/search/do_collection_creation/" method="post" style="display: inline;">
+    {% if form.errors %}
+        {% for field in form %}
+            {% for error in field.errors %}
+                <div class="alert alert-danger">
+                    <strong>{{ error|escape }}</strong>
+                </div>
+            {% endfor %}
+        {% endfor %}
+        {% for error in form.non_field_errors %}
+            <div class="alert alert-danger">
+                <strong>{{ error|escape }}</strong>
+            </div>
+        {% endfor %}
+    {% endif %}
+
+    {% csrf_token %}
+
+    <fieldset>
+    {% for field in form.visible_fields %}
+        {% if field.id_for_label == 'id_imageid' or field.id_for_label == 'id_zooid' or field.id_for_label == 'id_gpstime' %}
+          <label class="ui-widget">
+            {{ field.label }} : {{ field }}
+          </label>
+        {% else %}
+          <label>
+            {{ field.label }} : {{ field }}
+          </label>
+        {% endif %}
+    {% endfor %}
+    </fieldset>
+
+    <button type="submit">Create Zoo Collection</button>
+  </form>
+</div>
+
+<br>
+<br>
+<br>
+
+<h1>Search Results</h1>
 {% for ientry in results %}
-{% if ientry.uniqueID == ientry.searchedID %}
+{% if ientry.gravityspy_id == ientry.searchedID %}
 <table style="border:3px;border-collapse:collapse;padding:15px;width:75%;" >
  <tbody>
   <tr class ="noborder" >
     <td class ="noborder" >
-      uniqueID
+      gravityspy_id
     </td >
     <td class ="noborder" >
-      {{ientry.uniqueID}}
+      {{ientry.gravityspy_id}}
     </td >
   </tr>
   <tr class ="noborder" >
@@ -34,6 +82,14 @@
       {{ientry.ifo}}
     </td >
   </tr>
+  <tr class ="noborder" >
+    <td class ="noborder" >
+      Similarity Score
+    </td >
+    <td class ="noborder" >
+      {{ientry.distances}}
+    </td >
+  </tr>
   {% if request.session.auth_user_backend == 'django.contrib.auth.backends.RemoteUserBackend' %}
   <tr class ="noborder" >
     <td class ="noborder" >
@@ -47,13 +103,13 @@
  </tbody></table>
 
     <td class ="noborder" style="padding:15px;" >
-      <a class ="embimg" href="{{ientry.imgUrl1}}" TARGET="_blank" ><img class ="embimg"  src="{{ientry.imgUrl1}}"  alt="Gravity spy image" height="150" width="150"/>
+      <a class ="embimg" href="{{ientry.url1}}" TARGET="_blank" ><img class ="embimg"  src="{{ientry.url1}}"  alt="Gravity spy image" height="150" width="150"/>
 </a>
-      <a class ="embimg" href="{{ientry.imgUrl2}}" TARGET="_blank" ><img class ="embimg"  src="{{ientry.imgUrl2}}"  alt="Gravity spy image" height="150" width="150"/>
+      <a class ="embimg" href="{{ientry.url2}}" TARGET="_blank" ><img class ="embimg"  src="{{ientry.url2}}"  alt="Gravity spy image" height="150" width="150"/>
 </a>
-      <a class ="embimg" href="{{ientry.imgUrl3}}" TARGET="_blank" ><img class ="embimg"  src="{{ientry.imgUrl3}}"  alt="Gravity spy image" height="150" width="150"/>
+      <a class ="embimg" href="{{ientry.url3}}" TARGET="_blank" ><img class ="embimg"  src="{{ientry.url3}}"  alt="Gravity spy image" height="150" width="150"/>
 </a>
-      <a class ="embimg" href="{{ientry.imgUrl4}}" TARGET="_blank" ><img class ="embimg"  src="{{ientry.imgUrl4}}"  alt="Gravity spy image" height="150" width="150"/>
+      <a class ="embimg" href="{{ientry.url4}}" TARGET="_blank" ><img class ="embimg"  src="{{ientry.url4}}"  alt="Gravity spy image" height="150" width="150"/>
 </a>
     </td >
 </table>
@@ -69,11 +125,12 @@
        <thead>
           <tr>
             <th>image</th>
-            <th>uniqueID</th>
+            <th>gravityspy_id</th>
             <th>zooID</th>
             <th>SNR</th>
             <th>Peak Frequency</th>
             <th>ifo</th>
+            <th>Similarity Score</th>
             {% if request.session.auth_user_backend == 'django.contrib.auth.backends.RemoteUserBackend' %}
                 <th>gps time</th>
             {% endif %}
@@ -82,20 +139,21 @@
         {% for ientry in results %}
             <tr>
                 <td class ="noborder" style="padding:15px;" >
-                  <a class ="embimg" href="{{ientry.imgUrl1}}" TARGET="_blank" ><img class ="embimg"  src="{{ientry.imgUrl1}}"  alt="Gravity spy image" height="150" width="150"/>
+                  <a class ="embimg" href="{{ientry.url1}}" TARGET="_blank" ><img class ="embimg"  src="{{ientry.url1}}"  alt="Gravity spy image" height="150" width="150"/>
             </a>
-                  <a class ="embimg" href="{{ientry.imgUrl2}}" TARGET="_blank" ><img class ="embimg"  src="{{ientry.imgUrl2}}"  alt="Gravity spy image" height="150" width="150"/>
+                  <a class ="embimg" href="{{ientry.url2}}" TARGET="_blank" ><img class ="embimg"  src="{{ientry.url2}}"  alt="Gravity spy image" height="150" width="150"/>
             </a>
-                  <a class ="embimg" href="{{ientry.imgUrl3}}" TARGET="_blank" ><img class ="embimg"  src="{{ientry.imgUrl3}}"  alt="Gravity spy image" height="150" width="150"/>
+                  <a class ="embimg" href="{{ientry.url3}}" TARGET="_blank" ><img class ="embimg"  src="{{ientry.url3}}"  alt="Gravity spy image" height="150" width="150"/>
             </a>
-                  <a class ="embimg" href="{{ientry.imgUrl4}}" TARGET="_blank" ><img class ="embimg"  src="{{ientry.imgUrl4}}"  alt="Gravity spy image" height="150" width="150"/>
+                  <a class ="embimg" href="{{ientry.url4}}" TARGET="_blank" ><img class ="embimg"  src="{{ientry.url4}}"  alt="Gravity spy image" height="150" width="150"/>
             </a>
                 </td >
-                <td> {{ientry.uniqueID}} </td>
+                <td> {{ientry.gravityspy_id}} </td>
                 <td> {{ientry.links_subjects}} </td>
                 <td> {{ientry.snr}} </td>
                 <td> {{ientry.peak_frequency}} </td>
                 <td> {{ientry.ifo}} </td>
+                <td> {{ientry.distances}} </td>
                 {% if request.session.auth_user_backend == 'django.contrib.auth.backends.RemoteUserBackend' %}
                     <td>{{ientry.peakGPS}}</td>
                 {% endif %}
@@ -104,6 +162,18 @@
         </table>
     </div>
 </div>
+<p:column headerText="Options">
+	<p:rowEditor />
+	<p:commandLink
+		action="#{mBean.action}"
+		value=" " styleClass="ui-icon ui-icon-trash"
+		update="@this" ajax="true">
+		<f:setPropertyActionListener
+			target="#{tabelaOutrasDespesasMBeanForm.selectedItem}"
+			value="#searchresults" />
+	</p:commandLink>
+</p:column>
+
 <script>
 $(document).ready(function() {
   $('#searchresults').DataTable( {

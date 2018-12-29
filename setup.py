@@ -40,12 +40,12 @@ setup_requires = [
     'pytest-runner',
 ]
 install_requires = [
-    'django',
-    'gwpy',
+    'django >= 2.1.0',
+    'gwpy >= 0.12.0',
     'django-sslserver',
     'psycopg2-binary',
     'sqlalchemy',
-    'pandas',
+    'pandas == 0.22',
 ]
 
 # -- run setup ----------------------------------------------------------------
