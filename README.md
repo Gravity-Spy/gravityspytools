@@ -1,5 +1,5 @@
 # gravityspytools
-Django Web App Hosted at gravityspytools.ciera.northwestern.edu
+Django Web App Hosted at [https://gravityspytools.ciera.northwestern.edu/](https://gravityspytools.ciera.northwestern.edu/)
 
 # Python Packges needed
 
