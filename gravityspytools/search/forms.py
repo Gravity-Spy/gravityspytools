@@ -3,21 +3,21 @@ from gwpy.table import EventTable
 
 
 def get_imageid_json(name=''):
-    return EventTable.fetch('gravityspy', 'updated_similarity_index_v2d0 WHERE \"gravityspy_id\" ~ \'{0}\' LIMIT 20'.format(name), columns=["gravityspy_id"]).to_pandas().rename(columns={'gravityspy_id': 'value'}).to_json(orient='records')
+    return EventTable.fetch('gravityspy', 'similarity_index_o3 WHERE \"gravityspy_id\" ~ \'{0}\' LIMIT 20'.format(name), columns=["gravityspy_id"]).to_pandas().rename(columns={'gravityspy_id': 'value'}).to_json(orient='records')
 
 
 def get_zooid_json(name=''):
-    return EventTable.fetch('gravityspy', 'updated_similarity_index_v2d0 WHERE CAST(links_subjects AS TEXT) ~ \'{0}\' LIMIT 20'.format(name), columns=["links_subjects"]).to_pandas().astype(str).rename(columns={'links_subjects': 'value'}).to_json(orient='records')
+    return EventTable.fetch('gravityspy', 'similarity_index_o3 WHERE CAST(links_subjects AS TEXT) ~ \'{0}\' LIMIT 20'.format(name), columns=["links_subjects"]).to_pandas().astype(str).rename(columns={'links_subjects': 'value'}).to_json(orient='records')
 
 
 def get_gpstimes_json(name=''):
-    return EventTable.fetch('gravityspy', 'updated_similarity_index_v2d0 WHERE CAST(\"peakGPS\" AS TEXT) ~ \'{0}\' LIMIT 20'.format(name), columns=["peakGPS"]).to_pandas().astype(str).rename(columns={'peakGPS': 'value'}).to_json(orient='records')
+    return EventTable.fetch('gravityspy', 'similarity_index_o3 WHERE CAST(\"peakGPS\" AS TEXT) ~ \'{0}\' LIMIT 20'.format(name), columns=["peakGPS"]).to_pandas().astype(str).rename(columns={'peakGPS': 'value'}).to_json(orient='records')
 
 
 class SearchForm(forms.Form):
 
     SINGLEVIEW = 'similarityindex'
-    MULTIVIEW = 'updated_similarity_index_v2d0'
+    MULTIVIEW = 'similarity_index_o3'
 
     DATABASE_CHOICES = (
         (MULTIVIEW, 'Multiview Model'),
@@ -130,7 +130,7 @@ class LIGOSearchForm(forms.Form):
     imageid = forms.CharField(label='The GravitySpy uniqueid (this is the 10 character hash that uniquely identifies all gravity spy images)', max_length=10, required=False)
     gpstime = forms.CharField(label = 'Supply a gps time of an excess noise feature', required=False) 
     SINGLEVIEW = 'similarityindex'
-    MULTIVIEW = 'updated_similarity_index_v2d0'
+    MULTIVIEW = 'similarity_index_o3'
 
     DATABASE_CHOICES = (
         (MULTIVIEW, 'Multiview Model'),
