@@ -48,7 +48,7 @@ def similarity_search(form):
     features = SI['cube'].apply(extract_feature_array)
     features = numpy.vstack(features.values)
 
-    glitches = EventTable.fetch('gravityspy', 'glitches_v2d0 WHERE "gravityspy_id" IN (\'{0}\')'.format(str("','".join(list(SI['gravityspy_id'])))), columns = ['gravityspy_id', 'url1', 'url2', 'url3', 'url4', 'ifo', 'links_subjects', 'snr', 'peak_frequency', 'ml_label', 'event_time', 'Filename1', 'Filename2', 'Filename3', 'Filename4', 'peak_time'])
+    glitches = EventTable.fetch('gravityspy', 'glitches_v2d0 WHERE "gravityspy_id" IN (\'{0}\')'.format(str("','".join(list(SI['gravityspy_id'])))), columns = ['gravityspy_id', 'url1', 'url2', 'url3', 'url4', 'ifo', 'links_subjects', 'snr', 'peak_frequency', 'duration', 'central_freq', 'bandwidth', 'ml_label', 'event_time', 'Filename1', 'Filename2', 'Filename3', 'Filename4', 'peak_time'])
 
     # Convert from astropy to pandas for easy manipulation
     SI_glitches = glitches.to_pandas()
