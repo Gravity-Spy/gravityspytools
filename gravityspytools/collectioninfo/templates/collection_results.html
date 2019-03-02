@@ -40,7 +40,7 @@
       gps time
     </td >
     <td class ="noborder" >
-      {{ientry.peakGPS}}
+      {{ientry.event_time}}
     </td >
   </tr>
   {% endif %}
@@ -97,7 +97,7 @@
                 <td> {{ientry.peak_frequency}} </td>
                 <td> {{ientry.ifo}} </td>
                 {% if request.session.auth_user_backend == 'django.contrib.auth.backends.RemoteUserBackend' %}
-                    <td>{{ientry.peakGPS}}</td>
+                    <td>{{ientry.event_time}}</td>
                 {% endif %}
             </tr>
         {% endfor %}

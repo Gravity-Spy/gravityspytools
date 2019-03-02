@@ -11,7 +11,7 @@ def get_zooid_json(name=''):
 
 
 def get_gpstimes_json(name=''):
-    return EventTable.fetch('gravityspy', 'similarity_index_o3 WHERE CAST(\"peakGPS\" AS TEXT) ~ \'{0}\' LIMIT 20'.format(name), columns=["peakGPS"]).to_pandas().astype(str).rename(columns={'peakGPS': 'value'}).to_json(orient='records')
+    return EventTable.fetch('gravityspy', 'similarity_index_o3 WHERE CAST(\"event_time\" AS TEXT) ~ \'{0}\' LIMIT 20'.format(name), columns=["event_time"]).to_pandas().astype(str).rename(columns={'event_time': 'value'}).to_json(orient='records')
 
 
 class SearchForm(forms.Form):

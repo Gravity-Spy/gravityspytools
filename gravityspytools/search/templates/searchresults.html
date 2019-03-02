@@ -96,7 +96,7 @@
       gps time
     </td >
     <td class ="noborder" >
-      {{ientry.peakGPS}}
+      {{ientry.event_time}}
     </td >
   </tr>
   {% endif %}
@@ -126,13 +126,16 @@
           <tr>
             <th>image</th>
             <th>gravityspy_id</th>
-            <th>zooID</th>
-            <th>SNR</th>
-            <th>Peak Frequency</th>
+            <th>links_subject</th>
+            <th>snr</th>
+            <th>peak_frequency</th>
             <th>ifo</th>
-            <th>Similarity Score</th>
+            <th>duration</th>
+            <th>central_freq</th>
+            <th>bandwidth</th>
+            <th>similarity_score</th>
             {% if request.session.auth_user_backend == 'django.contrib.auth.backends.RemoteUserBackend' %}
-                <th>gps time</th>
+                <th>event_time</th>
             {% endif %}
          </tr>
        </thead>
@@ -153,9 +156,12 @@
                 <td> {{ientry.snr}} </td>
                 <td> {{ientry.peak_frequency}} </td>
                 <td> {{ientry.ifo}} </td>
+                <td> {{ientry.duration}} </td>
+                <td> {{ientry.central_freq}} </td>
+                <td> {{ientry.bandwidth}} </td>
                 <td> {{ientry.distances}} </td>
                 {% if request.session.auth_user_backend == 'django.contrib.auth.backends.RemoteUserBackend' %}
-                    <td>{{ientry.peakGPS}}</td>
+                    <td>{{ientry.event_time}}</td>
                 {% endif %}
             </tr>
         {% endfor %}
@@ -179,8 +185,47 @@ $(document).ready(function() {
   $('#searchresults').DataTable( {
     dom: 'Bfrtip',
     buttons: [
-        'copy', 'csv', 'excel', 'pdf', 'print'
-    ]
+            {
+                extend: 'csv',
+                exportOptions: {
+                    {% if request.session.auth_user_backend == 'django.contrib.auth.backends.RemoteUserBackend' %}
+                      columns: [ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 ]
+                    {% else %}
+                      columns: [ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 ]
+                    {% endif %}
+                }
+            },
+            {
+                extend: 'copyHtml5',
+                exportOptions: {
+                    {% if request.session.auth_user_backend == 'django.contrib.auth.backends.RemoteUserBackend' %}
+                      columns: [ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 ]
+                    {% else %}
+                      columns: [ 1, 2, 3, 4, 5, 6, 7, 8, 9]
+                    {% endif %}
+                }
+            },
+            {
+                extend: 'excelHtml5',
+                exportOptions: {
+                    {% if request.session.auth_user_backend == 'django.contrib.auth.backends.RemoteUserBackend' %}
+                      columns: [ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 ]
+                    {% else %}
+                      columns: [ 1, 2, 3, 4, 5, 6, 7, 8, 9]
+                    {% endif %}
+                }
+            },
+            {
+                extend: 'pdfHtml5',
+                exportOptions: {
+		    {% if request.session.auth_user_backend == 'django.contrib.auth.backends.RemoteUserBackend' %}
+		      columns: [ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 ]
+                    {% else %}
+                      columns: [ 1, 2, 3, 4, 5, 6, 7, 8, 9]
+		    {% endif %}
+                }
+            },
+        ]
   } );
 } );
 </script>
