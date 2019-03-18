@@ -40,17 +40,19 @@ class SearchForm(forms.Form):
         (V1, 'V1'),
     )
 
-    ALL = "event_time BETWEEN 1126400000 AND 1229176818"
+    ALL = "event_time BETWEEN 1126400000 AND 1584057618"
     O1 = "event_time BETWEEN 1126400000 AND 1137250000"
     ER10 = "event_time BETWEEN 1161907217 AND 1164499217"
     O2a = "event_time BETWEEN 1164499217 AND 1219276818"
     ER13 = "event_time BETWEEN 1228838418 AND 1229176818"
+    ER14 = "event_time BETWEEN 1235750418 AND 1238112018"
     ERAS = (
         (ALL, 'ALL'),
         (O1, 'O1'),
         (ER10, 'ER10'),
         (O2a, 'O2a'),
         (ER13, 'ER13'),
+        (ER14, 'ER14'),
     )
 
     database = forms.ChoiceField(choices=DATABASE_CHOICES,)
@@ -153,8 +155,24 @@ class LIGOSearchForm(forms.Form):
         (V1, 'V1'),
     )
 
+    ALL = "event_time BETWEEN 1126400000 AND 1584057618"
+    O1 = "event_time BETWEEN 1126400000 AND 1137250000"
+    ER10 = "event_time BETWEEN 1161907217 AND 1164499217"
+    O2a = "event_time BETWEEN 1164499217 AND 1219276818"
+    ER13 = "event_time BETWEEN 1228838418 AND 1229176818"
+    ER14 = "event_time BETWEEN 1235750418 AND 1238112018"
+    ERAS = (
+        (ALL, 'ALL'),
+        (O1, 'O1'),
+        (ER10, 'ER10'),
+        (O2a, 'O2a'),
+        (ER13, 'ER13'),
+        (ER14, 'ER14'),
+    )
+
     ifo = forms.ChoiceField(choices=IFO_CHOICES,)
     database = forms.ChoiceField(choices=DATABASE_CHOICES,)
+    era = forms.ChoiceField(choices=ERAS,)
     def clean(self):
         cleaned_data = super(LIGOSearchForm, self).clean()
         zooid = cleaned_data.get('zooid')
