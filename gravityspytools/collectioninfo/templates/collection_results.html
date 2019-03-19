@@ -61,6 +61,8 @@
 {% endfor %}
 <br>
 <div align="center">
+
+
 <h2 align="center">Results</h2>
 </div>
 <div class="panel panel-success">
@@ -70,12 +72,16 @@
           <tr>
             <th>image</th>
             <th>gravityspy_id</th>
-            <th>zooID</th>
-            <th>SNR</th>
-            <th>Peak Frequency</th>
+            <th>links_subject</th>
+            <th>snr</th>
+            <th>peak_frequency</th>
             <th>ifo</th>
+            <th>duration</th>
+            <th>central_freq</th>
+            <th>bandwidth</th>
+            <th>similarity_score</th>
             {% if request.session.auth_user_backend == 'django.contrib.auth.backends.RemoteUserBackend' %}
-                <th>gps time</th>
+                <th>event_time</th>
             {% endif %}
          </tr>
        </thead>
@@ -96,6 +102,10 @@
                 <td> {{ientry.snr}} </td>
                 <td> {{ientry.peak_frequency}} </td>
                 <td> {{ientry.ifo}} </td>
+                <td> {{ientry.duration}} </td>
+                <td> {{ientry.central_freq}} </td>
+                <td> {{ientry.bandwidth}} </td>
+                <td> {{ientry.distances}} </td>
                 {% if request.session.auth_user_backend == 'django.contrib.auth.backends.RemoteUserBackend' %}
                     <td>{{ientry.event_time}}</td>
                 {% endif %}
@@ -104,6 +114,9 @@
         </table>
     </div>
 </div>
+
+
+
 <p:column headerText="Options">
 	<p:rowEditor />
 	<p:commandLink
