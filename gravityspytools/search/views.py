@@ -141,6 +141,9 @@ def daterange(request):
 
 
 def runhveto(request):
+    return HttpResponse("Come on you thought I had time for this yet?????")
+
+def runhveto1(request):
     import os, string, random
 
     def id_generator(size=5, chars=string.ascii_uppercase + string.digits +string.ascii_lowercase):

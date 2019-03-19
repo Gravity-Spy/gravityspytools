@@ -42,6 +42,10 @@
     <button type="submit">Create Zoo Collection</button>
     {% if request.session.auth_user_backend == 'django.contrib.auth.backends.RemoteUserBackend' %}
         <input type="submit" value="Run Hveto" formaction="/search/runhveto/" formmethod="post"/>
+        <input type="submit" value="Pointy Poisson" formaction="/search/runhveto/" formmethod="post"/>
+        <input type="submit" value="Karoo GP" formaction="/search/runhveto/" formmethod="post"/>
+        <input type="submit" value="Guillermo's Scattering Code" formaction="/search/runhveto/" formmethod="post"/>
+        <input type="submit" value="YOUR ALGORITHM HERE!!!" formaction="/search/runhveto/" formmethod="post"/>
     {% endif %}
   </form>
 </div>
