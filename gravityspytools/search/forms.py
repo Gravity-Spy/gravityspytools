@@ -48,6 +48,7 @@ class SearchForm(forms.Form):
     ER14 = "event_time BETWEEN 1235750418 AND 1238112018"
     O3a = "event_time BETWEEN 1238166018 AND 1254009618"
     O3b = "event_time BETWEEN 1256655642 AND 1272326418"
+    O3 = "event_time BETWEEN 1238166018 AND 1272326418"
     ERAS = (
         (ALL, 'ALL'),
         (O1, 'O1'),
@@ -57,6 +58,7 @@ class SearchForm(forms.Form):
         (ER14, 'ER14'),
         (O3a, 'O3a'),
         (O3b, 'O3b'),
+        (O3, 'O3'),
     )
 
     database = forms.ChoiceField(choices=DATABASE_CHOICES,)
@@ -167,6 +169,7 @@ class LIGOSearchForm(forms.Form):
     ER14 = "event_time BETWEEN 1235750418 AND 1238112018"
     O3a = "event_time BETWEEN 1238166018 AND 1254009618"
     O3b = "event_time BETWEEN 1256655642 AND 1272326418"
+    O3 = "event_time BETWEEN 1238166018 AND 1272326418"
     ERAS = (
         (ALL, 'ALL'),
         (O1, 'O1'),
@@ -176,6 +179,7 @@ class LIGOSearchForm(forms.Form):
         (ER14, 'ER14'),
         (O3a, 'O3a'),
         (O3b, 'O3b'),
+        (O3, 'O3'),
     )
 
     ifo = forms.ChoiceField(choices=IFO_CHOICES,)
