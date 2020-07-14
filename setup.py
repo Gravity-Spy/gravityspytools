@@ -41,11 +41,12 @@ setup_requires = [
 ]
 install_requires = [
     'django >= 2.1.0',
-    'gwpy >= 0.12.0',
+    'gwpy >= 1.0.0',
     'django-sslserver',
     'psycopg2-binary',
     'sqlalchemy',
-    'pandas == 0.22',
+    'pandas',
+    'panoptes_client',
 ]
 
 # -- run setup ----------------------------------------------------------------

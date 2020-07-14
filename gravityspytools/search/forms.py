@@ -3,15 +3,15 @@ from gwpy.table import EventTable
 
 
 def get_imageid_json(name=''):
-    return EventTable.fetch('gravityspy', 'similarity_index_o3 WHERE \"gravityspy_id\" ~ \'{0}\' LIMIT 20'.format(name), columns=["gravityspy_id"]).to_pandas().rename(columns={'gravityspy_id': 'value'}).to_json(orient='records')
+    return EventTable.fetch('gravityspy', 'similarity_index_o3 WHERE \"gravityspy_id\" ~ \'{0}\' LIMIT 20'.format(name), columns=["gravityspy_id"], host='gravityspyplus.ciera.northwestern.edu').to_pandas().rename(columns={'gravityspy_id': 'value'}).to_json(orient='records')
 
 
 def get_zooid_json(name=''):
-    return EventTable.fetch('gravityspy', 'similarity_index_o3 WHERE CAST(links_subjects AS TEXT) ~ \'{0}\' LIMIT 20'.format(name), columns=["links_subjects"]).to_pandas().astype(str).rename(columns={'links_subjects': 'value'}).to_json(orient='records')
+    return EventTable.fetch('gravityspy', 'similarity_index_o3 WHERE CAST(links_subjects AS TEXT) ~ \'{0}\' LIMIT 20'.format(name), columns=["links_subjects"], host='gravityspyplus.ciera.northwestern.edu').to_pandas().astype(str).rename(columns={'links_subjects': 'value'}).to_json(orient='records')
 
 
 def get_gpstimes_json(name=''):
-    return EventTable.fetch('gravityspy', 'similarity_index_o3 WHERE CAST(\"event_time\" AS TEXT) ~ \'{0}\' LIMIT 20'.format(name), columns=["event_time"]).to_pandas().astype(str).rename(columns={'event_time': 'value'}).to_json(orient='records')
+    return EventTable.fetch('gravityspy', 'similarity_index_o3 WHERE CAST(\"event_time\" AS TEXT) ~ \'{0}\' LIMIT 20'.format(name), columns=["event_time"], host='gravityspyplus.ciera.northwestern.edu').to_pandas().astype(str).rename(columns={'event_time': 'value'}).to_json(orient='records')
 
 
 class SearchForm(forms.Form):
@@ -89,30 +89,30 @@ class SearchForm(forms.Form):
                                         )
 
         if zooid and not imageid:
-            if not EventTable.fetch('gravityspy', 'nonanalysisreadyids WHERE links_subjects = {0}'.format(zooid)).to_pandas().empty:
+            if not EventTable.fetch('gravityspy', 'nonanalysisreadyids WHERE links_subjects = {0}'.format(zooid), host='gravityspyplus.ciera.northwestern.edu').to_pandas().empty:
                 raise forms.ValidationError("This zooID is one of a handful of glitches that were mistakenly uploaded, despite being glitches"
                                             "occuring while the detector was not in a state to be taking quality data "
                                             "(i.e. people may have been working on the instrument at the time."
                                         )
 
-            if EventTable.fetch('gravityspy', '{0} WHERE links_subjects = {1}'.format(database, zooid), columns=['links_subjects']).to_pandas().empty:
+            if EventTable.fetch('gravityspy', '{0} WHERE links_subjects = {1}'.format(database, zooid), columns=['links_subjects'], host='gravityspyplus.ciera.northwestern.edu').to_pandas().empty:
                     raise forms.ValidationError("zooid does not exist")
 
-            elif EventTable.fetch('gravityspy', '{0} WHERE links_subjects = {1} AND ifo IN ({2})'.format(database, zooid, ifos), columns=['links_subjects']).to_pandas().empty:
+            elif EventTable.fetch('gravityspy', '{0} WHERE links_subjects = {1} AND ifo IN ({2})'.format(database, zooid, ifos), columns=['links_subjects'], host='gravityspyplus.ciera.northwestern.edu').to_pandas().empty:
                 raise forms.ValidationError("This image is not from one of the interferometers you selected"
                                         )
 
         if imageid and not zooid:
-            if not EventTable.fetch('gravityspy', 'nonanalysisreadyids WHERE \"gravityspy_id\" = \'{0}\''.format(imageid)).to_pandas().empty:
+            if not EventTable.fetch('gravityspy', 'nonanalysisreadyids WHERE \"gravityspy_id\" = \'{0}\''.format(imageid), host='gravityspyplus.ciera.northwestern.edu').to_pandas().empty:
                 raise forms.ValidationError("This gravityspy_id is one of a handful of glitches that were mistakenly uploaded, despite being glitches"
                                             "occuring while the detector was not in a state to be taking quality data "
                                             "(i.e. people may have been working on the instrument at the time."
                                             )
 
-            if EventTable.fetch('gravityspy', '{0} WHERE \"gravityspy_id\" = \'{1}\''.format(database, imageid), columns=['gravityspy_id']).to_pandas().empty:
+            if EventTable.fetch('gravityspy', '{0} WHERE \"gravityspy_id\" = \'{1}\''.format(database, imageid), columns=['gravityspy_id'], host='gravityspyplus.ciera.northwestern.edu').to_pandas().empty:
                 raise forms.ValidationError("uniqueid does not exist")
 
-            elif EventTable.fetch('gravityspy', '{0} WHERE \"gravityspy_id\" = \'{1}\' AND ifo IN ({2})'.format(database, imageid, ifos), columns=['gravityspy_id']).to_pandas().empty:
+            elif EventTable.fetch('gravityspy', '{0} WHERE \"gravityspy_id\" = \'{1}\' AND ifo IN ({2})'.format(database, imageid, ifos), columns=['gravityspy_id'], host='gravityspyplus.ciera.northwestern.edu').to_pandas().empty:
                 raise forms.ValidationError("This image is not from one of the interferometers you selected"
                                             )
 
@@ -207,12 +207,12 @@ class LIGOSearchForm(forms.Form):
                                         )
 
         if zooid and not imageid and not gpstime:
-            if EventTable.fetch('gravityspy', '{0} WHERE links_subjects = {1}'.format(database, zooid), columns=['links_subjects']).to_pandas().empty:
+            if EventTable.fetch('gravityspy', '{0} WHERE links_subjects = {1}'.format(database, zooid), columns=['links_subjects'], host='gravityspyplus.ciera.northwestern.edu').to_pandas().empty:
                 raise forms.ValidationError("zooid does not exist"
                                         )
 
         if imageid and not zooid and not gpstime:
-            if EventTable.fetch('gravityspy', '{0} WHERE \"gravityspy_id\" = \'{1}\''.format(database, imageid), columns=['gravityspy_id']).to_pandas().empty:
+            if EventTable.fetch('gravityspy', '{0} WHERE \"gravityspy_id\" = \'{1}\''.format(database, imageid), columns=['gravityspy_id'], host='gravityspyplus.ciera.northwestern.edu').to_pandas().empty:
                 raise forms.ValidationError("uniqueid does not exist"
                                         )
 

@@ -38,7 +38,7 @@ def collectioninfo(request):
 
             subjects_in_collection, tmp = retrieve_subjects_from_collection(username, collection_display_name)
             subjects_in_collection = [str(isubject) for isubject in subjects_in_collection]
-            SI_glitches = EventTable.fetch('gravityspy', 'glitches_v2d0 WHERE CAST(links_subjects AS FLOAT) IN ({0})'.format(str(",".join(subjects_in_collection)))).to_pandas() 
+            SI_glitches = EventTable.fetch('gravityspy', 'glitches WHERE CAST(links_subjects AS FLOAT) IN ({0})'.format(str(",".join(subjects_in_collection))), host='gravityspyplus.ciera.northwestern.edu').to_pandas() 
             dategraph_url = request.get_full_path()[::-1].replace('collection-info'[::-1], 'dategraph'[::-1], 1)[::-1] 
 
             return render(request, 'collection_results.html', {'results': SI_glitches.to_dict(orient='records'), 'dategraph_url' : dategraph_url})
@@ -58,7 +58,7 @@ def dategraph(request):
 
             subjects_in_collection, tmp = retrieve_subjects_from_collection(username, collection_display_name)
             subjects_in_collection = [str(isubject) for isubject in subjects_in_collection]
-            SI_glitches = EventTable.fetch('gravityspy', 'glitches_v2d0 WHERE CAST(links_subjects AS FLOAT) IN ({0})'.format(str(",".join(subjects_in_collection)))).to_pandas()
+            SI_glitches = EventTable.fetch('gravityspy', 'glitches WHERE CAST(links_subjects AS FLOAT) IN ({0})'.format(str(",".join(subjects_in_collection))), host='gravityspyplus.ciera.northwestern.edu').to_pandas()
             fig = obtain_figure(SI_glitches)
             canvas = FigureCanvas(fig)
             buf = io.BytesIO()
