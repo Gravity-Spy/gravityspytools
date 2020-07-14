@@ -63,7 +63,7 @@ def index(request):
             form = LIGOSearchForm()
         else:
             form = SearchForm()
-        return render(request, 'form.html', {'form': form})
+            return render(request, 'form.html', {'form': form})
     else:
         return redirect(make_authorization_url())
 
@@ -113,7 +113,7 @@ def do_collection_creation(request):
             howmany = int(form.cleaned_data['howmany'])
             collection_url = create_collection(request, SI_glitches)
 
-            engine = create_engine('postgresql://{0}:{1}@gravityspy.ciera.northwestern.edu:5432/gravityspy'.format(os.environ['GRAVITYSPY_DATABASE_USER'], os.environ['GRAVITYSPY_DATABASE_PASSWD']))
+            engine = create_engine('postgresql://{0}:{1}@gravityspyplus.ciera.northwestern.edu:5432/gravityspy'.format(os.environ['GRAVITYSPYPLUS_DATABASE_USER'], os.environ['GRAVITYSPY_DATABASE_PASSWD']))
             searchquery = pd.DataFrame({'search_created_at' : pd.to_datetime('now'), 'uniqueid_searched' : SI_glitches['searchedID'].iloc[0], 'zooid_searched' : int(SI_glitches['searchedzooID'].iloc[0]), 'user': request.user.username, 'returned_ids' : ','.join(SI_glitches.links_subjects.apply(str).tolist()), 'howmany': howmany}, index=[0])
             searchquery.to_sql('searchlog', engine, if_exists='append', index=False)
 
