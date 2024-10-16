@@ -21,7 +21,6 @@ class SearchForm(forms.Form):
 
     DATABASE_CHOICES = (
         (MULTIVIEW, 'Multiview Model'),
-        (SINGLEVIEW, 'Single View Model'),
     )
 
     H1 = "\'H1\'"
@@ -49,6 +48,8 @@ class SearchForm(forms.Form):
     O3a = "event_time BETWEEN 1238166018 AND 1254009618"
     O3b = "event_time BETWEEN 1256655642 AND 1272326418"
     O3 = "event_time BETWEEN 1238166018 AND 1272326418"
+    ER15 = "event_time BETWEEN 1362960018 AND 1368921618"
+    O4 = "event_time BETWEEN 1368921618 AND 1938112018"
     ERAS = (
         (ALL, 'ALL'),
         (O1, 'O1'),
@@ -59,6 +60,8 @@ class SearchForm(forms.Form):
         (O3a, 'O3a'),
         (O3b, 'O3b'),
         (O3, 'O3'),
+        (ER15, 'ER15'),
+        (O4, 'O4'),
     )
 
     database = forms.ChoiceField(choices=DATABASE_CHOICES,)
@@ -96,7 +99,7 @@ class SearchForm(forms.Form):
                                         )
 
             if EventTable.fetch('gravityspy', '{0} WHERE links_subjects = {1}'.format(database, zooid), columns=['links_subjects'], host='gravityspyplus.ciera.northwestern.edu').to_pandas().empty:
-                    raise forms.ValidationError("zooid does not exist")
+                    raise forms.ValidationError("Cannot find zooniverse subject in database. This is possibly due to this subject/glitch being a duplicate that was removed from the database but not yet the zooniverse site.")
 
             elif EventTable.fetch('gravityspy', '{0} WHERE links_subjects = {1} AND ifo IN ({2})'.format(database, zooid, ifos), columns=['links_subjects'], host='gravityspyplus.ciera.northwestern.edu').to_pandas().empty:
                 raise forms.ValidationError("This image is not from one of the interferometers you selected"
@@ -110,7 +113,7 @@ class SearchForm(forms.Form):
                                             )
 
             if EventTable.fetch('gravityspy', '{0} WHERE \"gravityspy_id\" = \'{1}\''.format(database, imageid), columns=['gravityspy_id'], host='gravityspyplus.ciera.northwestern.edu').to_pandas().empty:
-                raise forms.ValidationError("uniqueid does not exist")
+                raise forms.ValidationError("Cannot find unique ID in database. This is possibly due to this subject/glitch being a duplicate that was removed from the database but not yet the zooniverse site.")
 
             elif EventTable.fetch('gravityspy', '{0} WHERE \"gravityspy_id\" = \'{1}\' AND ifo IN ({2})'.format(database, imageid, ifos), columns=['gravityspy_id'], host='gravityspyplus.ciera.northwestern.edu').to_pandas().empty:
                 raise forms.ValidationError("This image is not from one of the interferometers you selected"
@@ -142,7 +145,6 @@ class LIGOSearchForm(forms.Form):
 
     DATABASE_CHOICES = (
         (MULTIVIEW, 'Multiview Model'),
-        (SINGLEVIEW, 'Single View Model'),
     )
 
     H1 = "\'H1\'"
@@ -170,6 +172,8 @@ class LIGOSearchForm(forms.Form):
     O3a = "event_time BETWEEN 1238166018 AND 1254009618"
     O3b = "event_time BETWEEN 1256655642 AND 1272326418"
     O3 = "event_time BETWEEN 1238166018 AND 1272326418"
+    ER15 = "event_time BETWEEN 1362960018 AND 1368921618"
+    O4 = "event_time BETWEEN 1368921618 AND 1938112018"
     ERAS = (
         (ALL, 'ALL'),
         (O1, 'O1'),
@@ -180,6 +184,8 @@ class LIGOSearchForm(forms.Form):
         (O3a, 'O3a'),
         (O3b, 'O3b'),
         (O3, 'O3'),
+        (ER15, 'ER15'),
+        (O4, 'O4'),
     )
 
     ifo = forms.ChoiceField(choices=IFO_CHOICES,)
@@ -208,13 +214,11 @@ class LIGOSearchForm(forms.Form):
 
         if zooid and not imageid and not gpstime:
             if EventTable.fetch('gravityspy', '{0} WHERE links_subjects = {1}'.format(database, zooid), columns=['links_subjects'], host='gravityspyplus.ciera.northwestern.edu').to_pandas().empty:
-                raise forms.ValidationError("zooid does not exist"
-                                        )
+                raise forms.ValidationError("Cannot find zooniverse ID in database. This is possibly due to this subject/glitch being a duplicate that was removed from the database but not yet the zooniverse site.")
 
         if imageid and not zooid and not gpstime:
             if EventTable.fetch('gravityspy', '{0} WHERE \"gravityspy_id\" = \'{1}\''.format(database, imageid), columns=['gravityspy_id'], host='gravityspyplus.ciera.northwestern.edu').to_pandas().empty:
-                raise forms.ValidationError("uniqueid does not exist"
-                                        )
+                raise forms.ValidationError("Cannot find unique ID in database. This is possibly due to this subject/glitch being a duplicate that was removed from the database but not yet the zooniverse site.")
 
     def clean_zooid(self):
         zooid = self.cleaned_data['zooid']

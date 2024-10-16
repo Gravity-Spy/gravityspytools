@@ -96,9 +96,11 @@ def similarity_search_restful_API(request):
         # check whether it's valid:
         if form.is_valid():
             SI_glitches = similarity_search(form)
-            SI_glitches = SI_glitches[['ifo', 'peak_frequency', 'links_subjects', 'ml_label', 'searchedID', 'snr', 'gravityspy_id', 'searchedzooID', 'url4', 'url3', 'url2', 'url1']]
+            SI_glitches = SI_glitches[['gravityspy_id', 'event_time', 'ifo', 'peak_frequency', 'links_subjects', 'ml_label', 'searchedID', 'snr', 'searchedzooID', 'url4', 'url3', 'url2', 'url1']]
 
             return JsonResponse(SI_glitches.to_dict(orient='list'))
+        else:
+            return render(request, 'form.html', {'form': form})
 
 
 def do_collection_creation(request):
@@ -113,7 +115,7 @@ def do_collection_creation(request):
             howmany = int(form.cleaned_data['howmany'])
             collection_url = create_collection(request, SI_glitches)
 
-            engine = create_engine('postgresql://{0}:{1}@gravityspyplus.ciera.northwestern.edu:5432/gravityspy'.format(os.environ['GRAVITYSPYPLUS_DATABASE_USER'], os.environ['GRAVITYSPY_DATABASE_PASSWD']))
+            engine = create_engine('postgresql://{0}:{1}@gravityspyplus.ciera.northwestern.edu:5432/gravityspy'.format(os.environ['GRAVITYSPY_DATABASE_USER'], os.environ['GRAVITYSPY_DATABASE_PASSWD']))
             searchquery = pd.DataFrame({'search_created_at' : pd.to_datetime('now'), 'uniqueid_searched' : SI_glitches['searchedID'].iloc[0], 'zooid_searched' : int(SI_glitches['searchedzooID'].iloc[0]), 'user': request.user.username, 'returned_ids' : ','.join(SI_glitches.links_subjects.apply(str).tolist()), 'howmany': howmany}, index=[0])
             searchquery.to_sql('searchlog', engine, if_exists='append', index=False)
 

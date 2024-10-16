@@ -84,22 +84,26 @@
   </tr>
   <tr class ="noborder" >
     <td class ="noborder" >
+      gps time
+    </td >
+{% if ientry.event_time < 1362960018 %}
+    <td class ="noborder" >
+      {{ientry.event_time}}
+    </td >
+{% else %}
+    <td class ="noborder" >
+      ""
+    </td >
+{% endif %}
+  </tr>
+  <tr class ="noborder" >
+    <td class ="noborder" >
       Similarity Score
     </td >
     <td class ="noborder" >
       {{ientry.distances}}
     </td >
   </tr>
-  {% if request.session.auth_user_backend == 'django.contrib.auth.backends.RemoteUserBackend' %}
-  <tr class ="noborder" >
-    <td class ="noborder" >
-      gps time
-    </td >
-    <td class ="noborder" >
-      {{ientry.event_time}}
-    </td >
-  </tr>
-  {% endif %}
  </tbody></table>
 
     <td class ="noborder" style="padding:15px;" >
@@ -133,10 +137,8 @@
             <th>duration</th>
             <th>central_freq</th>
             <th>bandwidth</th>
+            <th>event_time</th>
             <th>similarity_score</th>
-            {% if request.session.auth_user_backend == 'django.contrib.auth.backends.RemoteUserBackend' %}
-                <th>event_time</th>
-            {% endif %}
          </tr>
        </thead>
         {% for ientry in results %}
@@ -159,10 +161,12 @@
                 <td> {{ientry.duration}} </td>
                 <td> {{ientry.central_freq}} </td>
                 <td> {{ientry.bandwidth}} </td>
+{% if ientry.event_time < 1362960018 %}
+                <td>{{ientry.event_time}}</td>
+{% else %}
+                <td>0</td>
+{% endif %}
                 <td> {{ientry.distances}} </td>
-                {% if request.session.auth_user_backend == 'django.contrib.auth.backends.RemoteUserBackend' %}
-                    <td>{{ientry.event_time}}</td>
-                {% endif %}
             </tr>
         {% endfor %}
         </table>
