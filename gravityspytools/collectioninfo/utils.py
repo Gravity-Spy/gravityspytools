@@ -5,7 +5,7 @@ from matplotlib import pyplot
 from gwpy.time import from_gps
 
 def obtain_figure(SI_glitches):
-    SI_glitches['date'] = SI_glitches['peak_time'].apply(from_gps)
+    SI_glitches['date'] = SI_glitches['event_time'].apply(from_gps)
 
     newestGPS = SI_glitches['date'].max() 
     oldestGPS = SI_glitches['date'].min()
