@@ -103,3 +103,7 @@ ENV/
 # dev environment
 gravityspytools/db.sqlite3
 gravityspytools/secret.txt
+gravityspytools/tmp
+
+# Security
+gravityspytools/gravityspytools/wsgi.py
