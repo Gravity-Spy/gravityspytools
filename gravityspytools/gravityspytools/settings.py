@@ -12,7 +12,7 @@ https://docs.djangoproject.com/en/1.11/ref/settings/
 
 import os
 
-from gravityspytools.dbconfig import require_env
+from gravityspytools.dbconfig import require_env, allowed_hosts
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -42,7 +42,7 @@ except NameError:
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = ['gravityspy.ciera.northwestern.edu', 'gravityspytools.ciera.northwestern.edu', '127.0.0.1']
+ALLOWED_HOSTS = allowed_hosts()
 
 
 # Application definition
