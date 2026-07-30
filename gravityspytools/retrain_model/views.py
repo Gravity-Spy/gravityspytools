@@ -10,6 +10,7 @@ from .forms import NewClassForm
 from .models import NewClass
 
 from gwpy.table import EventTable
+from gravityspytools.dbconfig import science_db_host
 
 def index(request):
     if request.user.is_authenticated:
@@ -37,7 +38,7 @@ def retrain_model(request):
 
             new_subjects = list(EventTable.fetch('gravityspy',
                                                  'glitches WHERE CAST(links_subjects AS FLOAT) IN ({0})'.format(str(",".join(subjects_in_collection))),
-                                                  columns=["gravityspy_id"], host='gravityspyplus.ciera.northwestern.edu')['gravityspy_id'])
+                                                  columns=["gravityspy_id"], host=science_db_host())['gravityspy_id'])
 
             requested_model, created = NewClass.objects.get_or_create(collection_owner=collection_owner,
                                                                       collection_name=collection_name,

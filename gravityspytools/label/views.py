@@ -6,6 +6,7 @@ from login.utils import make_authorization_url
 from .forms import LabelForm
 from .models import Label
 from gwpy.table import EventTable
+from gravityspytools.dbconfig import science_db_host
 import os
 
 # Create your views here.
@@ -162,7 +163,7 @@ def index(request):
 
         image_to_be_displayed = EventTable.fetch('gravityspy',
                                                   'extra_image_for_testing WHERE gravityspy_id IN (\'{1}\') AND gravityspy_id NOT IN (SELECT gravityspy_id FROM label_label WHERE user_id = {0}) ORDER BY RANDOM() LIMIT 1'.format(request.user.id, str("','".join(ids_to_check))),
-                                                  columns=['url1', 'url2', 'url3', 'url4', 'gravityspy_id', 'ml_label'], db='gravityspytools', passwd=os.getenv('GRAVITYSPYTOOLS_DATABASE_PASSWD'), user=os.getenv('GRAVITYSPYTOOLS_DATABASE_USER'), host='gravityspyplus.ciera.northwestern.edu')
+                                                  columns=['url1', 'url2', 'url3', 'url4', 'gravityspy_id', 'ml_label'], db='gravityspytools', passwd=os.getenv('GRAVITYSPYTOOLS_DATABASE_PASSWD'), user=os.getenv('GRAVITYSPYTOOLS_DATABASE_USER'), host=science_db_host())
 
         url1=image_to_be_displayed['url1']
         url2=image_to_be_displayed['url2']

@@ -12,6 +12,7 @@ from login.utils import make_authorization_url
 from .forms import SearchForm
 from collection_to_subjectset.utils import retrieve_subjects_from_collection
 from gwpy.table import EventTable
+from gravityspytools.dbconfig import science_db_host
 from .utils import obtain_figure
 
 import io
@@ -38,7 +39,7 @@ def collectioninfo(request):
 
             subjects_in_collection, tmp = retrieve_subjects_from_collection(username, collection_display_name)
             subjects_in_collection = [str(isubject) for isubject in subjects_in_collection]
-            SI_glitches = EventTable.fetch('gravityspy', 'glitches_v2d0 WHERE CAST(links_subjects AS FLOAT) IN ({0})'.format(str(",".join(subjects_in_collection))), host='gravityspyplus.ciera.northwestern.edu').to_pandas() 
+            SI_glitches = EventTable.fetch('gravityspy', 'glitches_v2d0 WHERE CAST(links_subjects AS FLOAT) IN ({0})'.format(str(",".join(subjects_in_collection))), host=science_db_host()).to_pandas() 
             dategraph_url = request.get_full_path()[::-1].replace('collection-info'[::-1], 'dategraph'[::-1], 1)[::-1] 
 
             return render(request, 'collection_results.html', {'results': SI_glitches.to_dict(orient='records'), 'dategraph_url' : dategraph_url})
@@ -58,7 +59,7 @@ def dategraph(request):
 
             subjects_in_collection, tmp = retrieve_subjects_from_collection(username, collection_display_name)
             subjects_in_collection = [str(isubject) for isubject in subjects_in_collection]
-            SI_glitches = EventTable.fetch('gravityspy', 'glitches_v2d0 WHERE CAST(links_subjects AS FLOAT) IN ({0})'.format(str(",".join(subjects_in_collection))), host='gravityspyplus.ciera.northwestern.edu').to_pandas()
+            SI_glitches = EventTable.fetch('gravityspy', 'glitches_v2d0 WHERE CAST(links_subjects AS FLOAT) IN ({0})'.format(str(",".join(subjects_in_collection))), host=science_db_host()).to_pandas()
             fig = obtain_figure(SI_glitches)
             canvas = FigureCanvas(fig)
             buf = io.BytesIO()

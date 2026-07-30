@@ -1,17 +1,20 @@
 from django import forms
 from gwpy.table import EventTable
 
+from gravityspytools.dbconfig import science_db_host
+from .science_tables import validate_science_table, UnsupportedScienceTable
+
 
 def get_imageid_json(name=''):
-    return EventTable.fetch('gravityspy', 'similarity_index_o3 WHERE \"gravityspy_id\" ~ \'{0}\' LIMIT 20'.format(name), columns=["gravityspy_id"], host='gravityspyplus.ciera.northwestern.edu').to_pandas().rename(columns={'gravityspy_id': 'value'}).to_json(orient='records')
+    return EventTable.fetch('gravityspy', 'similarity_index_o3 WHERE \"gravityspy_id\" ~ \'{0}\' LIMIT 20'.format(name), columns=["gravityspy_id"], host=science_db_host()).to_pandas().rename(columns={'gravityspy_id': 'value'}).to_json(orient='records')
 
 
 def get_zooid_json(name=''):
-    return EventTable.fetch('gravityspy', 'similarity_index_o3 WHERE CAST(links_subjects AS TEXT) ~ \'{0}\' LIMIT 20'.format(name), columns=["links_subjects"], host='gravityspyplus.ciera.northwestern.edu').to_pandas().astype(str).rename(columns={'links_subjects': 'value'}).to_json(orient='records')
+    return EventTable.fetch('gravityspy', 'similarity_index_o3 WHERE CAST(links_subjects AS TEXT) ~ \'{0}\' LIMIT 20'.format(name), columns=["links_subjects"], host=science_db_host()).to_pandas().astype(str).rename(columns={'links_subjects': 'value'}).to_json(orient='records')
 
 
 def get_gpstimes_json(name=''):
-    return EventTable.fetch('gravityspy', 'similarity_index_o3 WHERE CAST(\"event_time\" AS TEXT) ~ \'{0}\' LIMIT 20'.format(name), columns=["event_time"], host='gravityspyplus.ciera.northwestern.edu').to_pandas().astype(str).rename(columns={'event_time': 'value'}).to_json(orient='records')
+    return EventTable.fetch('gravityspy', 'similarity_index_o3 WHERE CAST(\"event_time\" AS TEXT) ~ \'{0}\' LIMIT 20'.format(name), columns=["event_time"], host=science_db_host()).to_pandas().astype(str).rename(columns={'event_time': 'value'}).to_json(orient='records')
 
 
 class SearchForm(forms.Form):
@@ -78,7 +81,12 @@ class SearchForm(forms.Form):
         ifos = str(cleaned_data.get('ifo'))
         database = cleaned_data.get('database')
         era = cleaned_data.get('era')
- 
+
+        try:
+            validate_science_table(database)
+        except UnsupportedScienceTable:
+            raise forms.ValidationError("Please select a valid similarity model.")
+
         if zooid and imageid:
             raise forms.ValidationError("Please fill out "
                                         "only one of the zooid "
@@ -92,30 +100,30 @@ class SearchForm(forms.Form):
                                         )
 
         if zooid and not imageid:
-            if not EventTable.fetch('gravityspy', 'nonanalysisreadyids WHERE links_subjects = {0}'.format(zooid), host='gravityspyplus.ciera.northwestern.edu').to_pandas().empty:
+            if not EventTable.fetch('gravityspy', 'nonanalysisreadyids WHERE links_subjects = {0}'.format(zooid), host=science_db_host()).to_pandas().empty:
                 raise forms.ValidationError("This zooID is one of a handful of glitches that were mistakenly uploaded, despite being glitches"
                                             "occuring while the detector was not in a state to be taking quality data "
                                             "(i.e. people may have been working on the instrument at the time."
                                         )
 
-            if EventTable.fetch('gravityspy', '{0} WHERE links_subjects = {1}'.format(database, zooid), columns=['links_subjects'], host='gravityspyplus.ciera.northwestern.edu').to_pandas().empty:
+            if EventTable.fetch('gravityspy', '{0} WHERE links_subjects = {1}'.format(database, zooid), columns=['links_subjects'], host=science_db_host()).to_pandas().empty:
                     raise forms.ValidationError("Cannot find zooniverse subject in database. This is possibly due to this subject/glitch being a duplicate that was removed from the database but not yet the zooniverse site.")
 
-            elif EventTable.fetch('gravityspy', '{0} WHERE links_subjects = {1} AND ifo IN ({2})'.format(database, zooid, ifos), columns=['links_subjects'], host='gravityspyplus.ciera.northwestern.edu').to_pandas().empty:
+            elif EventTable.fetch('gravityspy', '{0} WHERE links_subjects = {1} AND ifo IN ({2})'.format(database, zooid, ifos), columns=['links_subjects'], host=science_db_host()).to_pandas().empty:
                 raise forms.ValidationError("This image is not from one of the interferometers you selected"
                                         )
 
         if imageid and not zooid:
-            if not EventTable.fetch('gravityspy', 'nonanalysisreadyids WHERE \"gravityspy_id\" = \'{0}\''.format(imageid), host='gravityspyplus.ciera.northwestern.edu').to_pandas().empty:
+            if not EventTable.fetch('gravityspy', 'nonanalysisreadyids WHERE \"gravityspy_id\" = \'{0}\''.format(imageid), host=science_db_host()).to_pandas().empty:
                 raise forms.ValidationError("This gravityspy_id is one of a handful of glitches that were mistakenly uploaded, despite being glitches"
                                             "occuring while the detector was not in a state to be taking quality data "
                                             "(i.e. people may have been working on the instrument at the time."
                                             )
 
-            if EventTable.fetch('gravityspy', '{0} WHERE \"gravityspy_id\" = \'{1}\''.format(database, imageid), columns=['gravityspy_id'], host='gravityspyplus.ciera.northwestern.edu').to_pandas().empty:
+            if EventTable.fetch('gravityspy', '{0} WHERE \"gravityspy_id\" = \'{1}\''.format(database, imageid), columns=['gravityspy_id'], host=science_db_host()).to_pandas().empty:
                 raise forms.ValidationError("Cannot find unique ID in database. This is possibly due to this subject/glitch being a duplicate that was removed from the database but not yet the zooniverse site.")
 
-            elif EventTable.fetch('gravityspy', '{0} WHERE \"gravityspy_id\" = \'{1}\' AND ifo IN ({2})'.format(database, imageid, ifos), columns=['gravityspy_id'], host='gravityspyplus.ciera.northwestern.edu').to_pandas().empty:
+            elif EventTable.fetch('gravityspy', '{0} WHERE \"gravityspy_id\" = \'{1}\' AND ifo IN ({2})'.format(database, imageid, ifos), columns=['gravityspy_id'], host=science_db_host()).to_pandas().empty:
                 raise forms.ValidationError("This image is not from one of the interferometers you selected"
                                             )
 
@@ -199,6 +207,11 @@ class LIGOSearchForm(forms.Form):
         ifos = cleaned_data.get('ifo')
         database = cleaned_data.get('database')
 
+        try:
+            validate_science_table(database)
+        except UnsupportedScienceTable:
+            raise forms.ValidationError("Please select a valid similarity model.")
+
         if (zooid and imageid and gpstime) or (zooid and imageid) or \
                (zooid and gpstime) or (gpstime and imageid):
             raise forms.ValidationError("Please fill out "
@@ -213,11 +226,11 @@ class LIGOSearchForm(forms.Form):
                                         )
 
         if zooid and not imageid and not gpstime:
-            if EventTable.fetch('gravityspy', '{0} WHERE links_subjects = {1}'.format(database, zooid), columns=['links_subjects'], host='gravityspyplus.ciera.northwestern.edu').to_pandas().empty:
+            if EventTable.fetch('gravityspy', '{0} WHERE links_subjects = {1}'.format(database, zooid), columns=['links_subjects'], host=science_db_host()).to_pandas().empty:
                 raise forms.ValidationError("Cannot find zooniverse ID in database. This is possibly due to this subject/glitch being a duplicate that was removed from the database but not yet the zooniverse site.")
 
         if imageid and not zooid and not gpstime:
-            if EventTable.fetch('gravityspy', '{0} WHERE \"gravityspy_id\" = \'{1}\''.format(database, imageid), columns=['gravityspy_id'], host='gravityspyplus.ciera.northwestern.edu').to_pandas().empty:
+            if EventTable.fetch('gravityspy', '{0} WHERE \"gravityspy_id\" = \'{1}\''.format(database, imageid), columns=['gravityspy_id'], host=science_db_host()).to_pandas().empty:
                 raise forms.ValidationError("Cannot find unique ID in database. This is possibly due to this subject/glitch being a duplicate that was removed from the database but not yet the zooniverse site.")
 
     def clean_zooid(self):
