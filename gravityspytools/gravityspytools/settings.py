@@ -12,6 +12,8 @@ https://docs.djangoproject.com/en/1.11/ref/settings/
 
 import os
 
+from gravityspytools.dbconfig import require_env
+
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
@@ -123,11 +125,11 @@ AUTHENTICATION_BACKENDS = (
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': os.environ['GRAVITYSPYTOOLS_NAME'],
-        'USER': os.environ['GRAVITYSPYTOOLS_USER'],
-        'PASSWORD': os.environ['GRAVITYSPYTOOLS_PASSWORD'],
-        'HOST': os.environ['GRAVITYSPYTOOLS_HOST'],
-        'PORT': os.environ['GRAVITYSPYTOOLS_PORT'],
+        'NAME': require_env('GRAVITYSPYTOOLS_NAME'),
+        'USER': require_env('GRAVITYSPYTOOLS_DATABASE_USER', legacy=['GRAVITYSPYTOOLS_USER']),
+        'PASSWORD': require_env('GRAVITYSPYTOOLS_DATABASE_PASSWD', legacy=['GRAVITYSPYTOOLS_PASSWORD']),
+        'HOST': require_env('GRAVITYSPYTOOLS_HOST'),
+        'PORT': require_env('GRAVITYSPYTOOLS_PORT', default='5432'),
     }
 }
 
