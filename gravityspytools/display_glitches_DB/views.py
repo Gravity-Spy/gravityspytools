@@ -24,3 +24,5 @@ def do_DB_search(request):
             SI_glitches = searchDB(form)
 
             return render(request, 'searchDBresults.html', {'results': SI_glitches.to_dict(orient='records')})
+        else:
+            return render(request, 'form_for_DB.html', {'form': form})

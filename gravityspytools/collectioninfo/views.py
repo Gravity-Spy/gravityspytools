@@ -67,3 +67,5 @@ def dategraph(request):
             response=HttpResponse(buf.getvalue(),content_type='image/png')
             fig.clear()
             return response
+        else:
+            return HttpResponse('Invalid search parameters.', status=400, content_type='text/plain')
