@@ -4,6 +4,7 @@
 from django.shortcuts import render, redirect
 import os
 import io
+import logging
 import subprocess
 from django.http import HttpResponse
 from django.http import JsonResponse
@@ -25,6 +26,8 @@ import pandas as pd
 from sqlalchemy.engine import create_engine
 
 from gravityspytools.dbconfig import science_db_host, require_env
+
+logger = logging.getLogger(__name__)
 
 
 # Create your views here.
@@ -117,9 +120,20 @@ def do_collection_creation(request):
             howmany = int(form.cleaned_data['howmany'])
             collection_url = create_collection(request, SI_glitches)
 
-            engine = create_engine('postgresql://{0}:{1}@{2}:5432/gravityspy'.format(require_env('GRAVITYSPY_DATABASE_USER', legacy=['GRAVITYSPYPLUS_DATABASE_USER']), require_env('GRAVITYSPY_DATABASE_PASSWD', legacy=['GRAVITYSPYPLUS_DATABASE_PASSWD']), science_db_host()))
-            searchquery = pd.DataFrame({'search_created_at' : pd.to_datetime('now'), 'uniqueid_searched' : SI_glitches['searchedID'].iloc[0], 'zooid_searched' : int(SI_glitches['searchedzooID'].iloc[0]), 'user': request.user.username, 'returned_ids' : ','.join(SI_glitches.links_subjects.apply(str).tolist()), 'howmany': howmany}, index=[0])
-            searchquery.to_sql('searchlog', engine, if_exists='append', index=False)
+            # Persisting the search to `searchlog` is optional analytics. It must never fail the
+            # request after the Zooniverse collection has already been created, so the whole
+            # logging block (engine + DataFrame + to_sql) is isolated. A broad `except Exception`
+            # is deliberate here: pandas/SQLAlchemy can surface a database privilege/connection
+            # failure as several unrelated types, and at this optional-analytics boundary any of
+            # them should be swallowed rather than 500 a completed collection. Only the exception
+            # class name is logged (never the exception message/SQL, which would carry the bound
+            # row values) to avoid leaking credentials, request bodies, or search inputs.
+            try:
+                engine = create_engine('postgresql://{0}:{1}@{2}:5432/gravityspy'.format(require_env('GRAVITYSPY_DATABASE_USER', legacy=['GRAVITYSPYPLUS_DATABASE_USER']), require_env('GRAVITYSPY_DATABASE_PASSWD', legacy=['GRAVITYSPYPLUS_DATABASE_PASSWD']), science_db_host()))
+                searchquery = pd.DataFrame({'search_created_at' : pd.to_datetime('now'), 'uniqueid_searched' : SI_glitches['searchedID'].iloc[0], 'zooid_searched' : int(SI_glitches['searchedzooID'].iloc[0]), 'user': request.user.username, 'returned_ids' : ','.join(SI_glitches.links_subjects.apply(str).tolist()), 'howmany': howmany}, index=[0])
+                searchquery.to_sql('searchlog', engine, if_exists='append', index=False)
+            except Exception as exc:
+                logger.warning('Failed to persist search to searchlog (%s); collection creation succeeded and the request continues.', type(exc).__name__)
 
             return render(request, 'createcollection.html', {'urls' : {collection_url}, 'results': SI_glitches.to_dict(orient='records')})
         else:
