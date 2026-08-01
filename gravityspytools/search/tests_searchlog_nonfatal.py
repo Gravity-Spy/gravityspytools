@@ -95,7 +95,17 @@ class SearchlogNonFatalTests(SimpleTestCase):
             Form.return_value.cleaned_data = {'howmany': '5'}
             search_views.do_collection_creation(self._post())
         warn.assert_called_once()
-        logged = ' '.join(str(a) for a in warn.call_args.args)
-        self.assertIn('ValueError', logged)
-        self.assertNotIn('parameters', logged)
-        self.assertNotIn('returned_ids', logged)
+        # call_args.args/.kwargs accessors are Python 3.8+; on the deployed Python 3.6 they resolve
+        # to a chained mock, not the call arguments. Unpack the call tuple and render with logging
+        # %-semantics instead of stringifying the mock call object.
+        call_args, call_kwargs = warn.call_args
+        fmt = call_args[0]
+        fmt_args = tuple(call_args[1:])
+        rendered = fmt % fmt_args
+        self.assertEqual(fmt_args, ('ValueError',))   # ONLY the exception class is passed to the logger
+        self.assertEqual(call_kwargs, {})             # no keyword args carrying data
+        self.assertIn('ValueError', rendered)         # class name is present
+        self.assertNotIn(secret_sql, rendered)        # original exception message absent
+        self.assertNotIn(secret_sql, fmt)             # not hidden in the format string either
+        self.assertNotIn('parameters', rendered)      # SQL parameters marker absent
+        self.assertNotIn('returned_ids', rendered)    # bound row values absent
