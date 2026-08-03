@@ -8,6 +8,7 @@ import logging
 import subprocess
 from django.http import HttpResponse
 from django.http import JsonResponse
+from django.http import HttpResponseNotAllowed
 from matplotlib import use
 use('agg')
 from matplotlib.backends.backend_agg import FigureCanvasAgg as FigureCanvas
@@ -138,6 +139,10 @@ def do_collection_creation(request):
             return render(request, 'createcollection.html', {'urls' : {collection_url}, 'results': SI_glitches.to_dict(orient='records')})
         else:
             return render(request, 'form.html', {'form': form})
+    else:
+        # A non-POST request must never fall through to an implicit None return (which Django
+        # rejects with "didn't return an HttpResponse object"). This endpoint only accepts POST.
+        return HttpResponseNotAllowed(['POST'])
 
 
 def daterange(request):

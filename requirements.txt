@@ -5,4 +5,4 @@ django-sslserver
 psycopg2-binary
 sqlalchemy
 pandas == 0.22
-git+https://github.com/zooniverse/panoptes-python-client.git
+panoptes-client==1.1.1
